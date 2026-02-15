@@ -9,20 +9,63 @@ import { motion } from 'framer-motion';
 import WhatsAppButton from '../components/shared/WhatsAppButton';
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
+  const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Full name is required';
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!form.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^[\d\s+\-()]+$/.test(form.phone) || form.phone.replace(/\D/g, '').length < 10) {
+      newErrors.phone = 'Please enter a valid phone number';
+    }
+
+    if (!form.company.trim()) {
+      newErrors.company = 'Company name is required';
+    }
+
+    if (!form.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    }
+
+    if (!form.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (form.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters long';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
+
     setSending(true);
     await base44.integrations.Core.SendEmail({
       to: 'operation@tactfreight.com',
       subject: `Contact Form: ${form.subject}`,
-      body: `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
+      body: `Name: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nSubject: ${form.subject}\n\nMessage:\n${form.message}`,
     });
+    setForm({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
     setSent(true);
     setSending(false);
+    setTimeout(() => setSent(false), 5000);
   };
 
   return (
@@ -89,38 +132,84 @@ export default function Contact() {
             {/* Form */}
             <div className="lg:col-span-3">
               {sent ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  exit={{ opacity: 0 }}
+                  className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center py-20"
+                >
                   <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto" />
-                  <h3 className="text-2xl font-bold mt-6">Message Sent!</h3>
-                  <p className="text-gray-500 mt-2">We'll get back to you within 24 hours.</p>
+                  <h3 className="text-2xl font-bold text-[#1A1A1A] mt-6">Message Sent Successfully!</h3>
+                  <p className="text-gray-600 mt-2">Thank you for contacting us. Our team will get back to you within 24 hours.</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="bg-[#F2F2F2] rounded-2xl p-8 space-y-6">
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label>Full Name</Label>
-                      <Input required placeholder="Your name" className="bg-white border-0 h-12" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
+                      <Label className="text-sm font-semibold">Full Name *</Label>
+                      <Input 
+                        placeholder="Your name" 
+                        className={`bg-white border-0 h-12 ${errors.name ? 'ring-2 ring-red-500' : ''}`}
+                        value={form.name} 
+                        onChange={e => { setForm({...form, name: e.target.value}); if (errors.name) setErrors({...errors, name: ''}) }} 
+                      />
+                      {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
-                      <Label>Email</Label>
-                      <Input required type="email" placeholder="your@email.com" className="bg-white border-0 h-12" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
+                      <Label className="text-sm font-semibold">Email *</Label>
+                      <Input 
+                        type="email" 
+                        placeholder="your@email.com" 
+                        className={`bg-white border-0 h-12 ${errors.email ? 'ring-2 ring-red-500' : ''}`}
+                        value={form.email} 
+                        onChange={e => { setForm({...form, email: e.target.value}); if (errors.email) setErrors({...errors, email: ''}) }} 
+                      />
+                      {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label>Phone</Label>
-                      <Input placeholder="+20 xxx xxx xxxx" className="bg-white border-0 h-12" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
+                      <Label className="text-sm font-semibold">Phone *</Label>
+                      <Input 
+                        placeholder="+20 xxx xxx xxxx" 
+                        className={`bg-white border-0 h-12 ${errors.phone ? 'ring-2 ring-red-500' : ''}`}
+                        value={form.phone} 
+                        onChange={e => { setForm({...form, phone: e.target.value}); if (errors.phone) setErrors({...errors, phone: ''}) }} 
+                      />
+                      {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
                     <div className="space-y-2">
-                      <Label>Subject</Label>
-                      <Input required placeholder="How can we help?" className="bg-white border-0 h-12" value={form.subject} onChange={e => setForm({...form, subject: e.target.value})} />
+                      <Label className="text-sm font-semibold">Company Name *</Label>
+                      <Input 
+                        placeholder="Your company" 
+                        className={`bg-white border-0 h-12 ${errors.company ? 'ring-2 ring-red-500' : ''}`}
+                        value={form.company} 
+                        onChange={e => { setForm({...form, company: e.target.value}); if (errors.company) setErrors({...errors, company: ''}) }} 
+                      />
+                      {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Message</Label>
-                    <Textarea required placeholder="Tell us about your requirements..." className="bg-white border-0 min-h-[150px]" value={form.message} onChange={e => setForm({...form, message: e.target.value})} />
+                    <Label className="text-sm font-semibold">Subject *</Label>
+                    <Input 
+                      placeholder="How can we help?" 
+                      className={`bg-white border-0 h-12 ${errors.subject ? 'ring-2 ring-red-500' : ''}`}
+                      value={form.subject} 
+                      onChange={e => { setForm({...form, subject: e.target.value}); if (errors.subject) setErrors({...errors, subject: ''}) }} 
+                    />
+                    {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
                   </div>
-                  <Button type="submit" disabled={sending} className="bg-[#D50000] hover:bg-[#B00000] text-white h-12 px-8">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold">Message *</Label>
+                    <Textarea 
+                      placeholder="Tell us about your requirements..." 
+                      className={`bg-white border-0 min-h-[150px] ${errors.message ? 'ring-2 ring-red-500' : ''}`}
+                      value={form.message} 
+                      onChange={e => { setForm({...form, message: e.target.value}); if (errors.message) setErrors({...errors, message: ''}) }} 
+                    />
+                    {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                  </div>
+                  <Button type="submit" disabled={sending} className="w-full bg-[#D50000] hover:bg-[#B00000] text-white h-12 font-semibold">
                     {sending ? 'Sending...' : 'Send Message'}
                     <Send className="w-4 h-4 ml-2" />
                   </Button>
