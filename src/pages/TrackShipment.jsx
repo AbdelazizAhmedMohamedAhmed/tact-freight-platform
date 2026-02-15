@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import StatusBadge from '../components/shared/StatusBadge';
 import ShipmentMap from '../components/tracking/ShipmentMap';
+import ShipmentMessages from '../components/tracking/ShipmentMessages';
 import { Search, Ship, Plane, Truck, MapPin, Calendar, Clock, FileText, Package, Check, AlertCircle, Radio } from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -33,6 +34,11 @@ export default function TrackShipment() {
   const [searching, setSearching] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [liveUpdates, setLiveUpdates] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
 
   const handleTrack = async (e) => {
     e?.preventDefault();
@@ -230,6 +236,9 @@ export default function TrackShipment() {
                   <p className="text-gray-600 text-sm leading-relaxed">{shipment.operations_notes}</p>
                 </div>
               )}
+
+              {/* Messages */}
+              <ShipmentMessages shipment={shipment} userRole={user?.department || 'client'} />
             </motion.div>
           )}
         </div>

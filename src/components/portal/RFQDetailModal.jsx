@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatusBadge from '../shared/StatusBadge';
+import MessageThread from '../messaging/MessageThread';
 import { base44 } from '@/api/base44Client';
-import { Ship, Plane, Truck, FileText, Upload } from 'lucide-react';
+import { Ship, Plane, Truck, FileText, Upload, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
@@ -41,7 +43,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span className="font-mono text-[#D50000]">{rfq.reference_number}</span>
@@ -49,7 +51,15 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 mt-4">
+        <Tabs defaultValue="details" className="mt-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" /> Messages
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="details" className="space-y-6 mt-4">
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div><span className="text-gray-500 block">Company</span><span className="font-semibold">{rfq.company_name}</span></div>
