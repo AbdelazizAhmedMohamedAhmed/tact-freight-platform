@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import StatsCard from '../components/portal/StatsCard';
 import ClientRFQCard from '../components/client/ClientRFQCard';
@@ -13,6 +13,7 @@ import { FileText, Ship, Truck, Plus, ArrowRight, Clock, CheckCircle } from 'luc
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ClientDashboard() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [selectedRFQ, setSelectedRFQ] = useState(null);
   const [uploadEntity, setUploadEntity] = useState(null);
@@ -33,6 +34,16 @@ export default function ClientDashboard() {
     queryFn: () => base44.entities.Shipment.filter({ client_email: user.email }, '-created_date', 50),
     enabled: !!user?.email,
   });
+
+  // Redirect to first active shipment if any exist
+  useEffect(() => {
+    if (shipments.length > 0 && !shipLoading) {
+      const activeShipment = shipments.find(s => s.status !== 'delivered');
+      if (activeShipment) {
+        navigate(createPageUrl(`ClientShipments?ship=${activeShipment.id}`));
+      }
+    }
+  }, [shipments, shipLoading, navigate]);
 
   if (!user) return <div className="flex items-center justify-center h-96"><Skeleton className="w-64 h-8" /></div>;
 
