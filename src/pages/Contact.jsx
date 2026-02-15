@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
+import WhatsAppButton from '../components/shared/WhatsAppButton';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -129,6 +130,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <WhatsAppButton />
     </div>
   );
 }

@@ -18,6 +18,7 @@ export default function Home() {
       <PartnersSection />
       <ClientsCarousel />
       <CTASection />
+      <WhatsAppButton />
     </div>
   );
 }
