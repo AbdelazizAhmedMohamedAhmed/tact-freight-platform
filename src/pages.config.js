@@ -55,6 +55,7 @@ import AdminRFQs from './pages/AdminRFQs';
 import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
 import ClientDashboard from './pages/ClientDashboard';
+import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
 import ClientShipments from './pages/ClientShipments';
 import Clients from './pages/Clients';
@@ -74,7 +75,14 @@ import SalesRFQQueue from './pages/SalesRFQQueue';
 import Services from './pages/Services';
 import TrackShipment from './pages/TrackShipment';
 import WhyChooseUs from './pages/WhyChooseUs';
-import ClientPreferences from './pages/ClientPreferences';
+import SeaFreight from './pages/SeaFreight';
+import AirFreight from './pages/AirFreight';
+import InlandTransport from './pages/InlandTransport';
+import CustomsClearance from './pages/CustomsClearance';
+import Warehousing from './pages/Warehousing';
+import ProjectLogistics from './pages/ProjectLogistics';
+import RoRoServices from './pages/RoRoServices';
+import Consultancy from './pages/Consultancy';
 import __Layout from './Layout.jsx';
 
 
@@ -87,6 +95,7 @@ export const PAGES = {
     "AdminShipments": AdminShipments,
     "AdminUsers": AdminUsers,
     "ClientDashboard": ClientDashboard,
+    "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
     "ClientShipments": ClientShipments,
     "Clients": Clients,
@@ -106,7 +115,14 @@ export const PAGES = {
     "Services": Services,
     "TrackShipment": TrackShipment,
     "WhyChooseUs": WhyChooseUs,
-    "ClientPreferences": ClientPreferences,
+    "SeaFreight": SeaFreight,
+    "AirFreight": AirFreight,
+    "InlandTransport": InlandTransport,
+    "CustomsClearance": CustomsClearance,
+    "Warehousing": Warehousing,
+    "ProjectLogistics": ProjectLogistics,
+    "RoRoServices": RoRoServices,
+    "Consultancy": Consultancy,
 }
 
 export const pagesConfig = {

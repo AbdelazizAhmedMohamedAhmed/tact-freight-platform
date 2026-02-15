@@ -27,15 +27,27 @@ export default function ServicesOverview() {
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
-          {services.map((service, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100/50"
-            >
+          {services.map((service, i) => {
+            const pageMap = {
+              'Sea Freight': 'SeaFreight',
+              'Air Freight': 'AirFreight',
+              'Inland Transport': 'InlandTransport',
+              'Customs Clearance': 'CustomsClearance',
+              'Warehousing': 'Warehousing',
+              'Project Logistics': 'ProjectLogistics',
+              'RoRo Services': 'RoRoServices',
+              'Consultancy': 'Consultancy'
+            };
+
+            return (
+            <Link key={i} to={createPageUrl(pageMap[service.title])}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100/50"
+              >
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={service.image} 
@@ -55,8 +67,10 @@ export default function ServicesOverview() {
                   {service.desc}
                 </p>
               </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            </Link>
+            );
+          })}
         </div>
 
         <div className="text-center mt-12">
