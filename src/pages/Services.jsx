@@ -54,7 +54,8 @@ export default function Services() {
     <div>
       <section className="relative py-32 bg-[#1A1A1A]">
         <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1605732562742-3023a888e56e?w=1920&q=80" alt="" className="w-full h-full object-cover opacity-15" />
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80" alt="" className="w-full h-full object-cover opacity-25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/60" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">Our Services</span>
@@ -90,8 +91,22 @@ export default function Services() {
                 </div>
               </div>
               <div className="flex-1 w-full">
-                <div className="aspect-[4/3] bg-[#F2F2F2] rounded-2xl flex items-center justify-center">
-                  <service.icon className="w-24 h-24 text-[#D50000]/20" />
+                <div className="aspect-[4/3] bg-gradient-to-br from-[#F2F2F2] to-gray-100 rounded-2xl overflow-hidden relative">
+                  <img 
+                    src={`https://images.unsplash.com/photo-${
+                      service.title === 'Sea Freight' ? '1494412574643-ff11b0a5eb19' :
+                      service.title === 'Air Freight' ? '1436491865332-7a61a109cc05' :
+                      service.title === 'Inland Transportation' ? '1601584115197-04ecc0da31d7' :
+                      service.title === 'Customs Clearance' ? '1450101499163-c8848c66ca85' :
+                      service.title === 'Warehousing & Distribution' ? '1553413077-190dd305871c' :
+                      service.title === 'Project Logistics' ? '1586528116311-ad8dd3c8310d' :
+                      service.title === 'RoRo Services' ? '1492144534655-ae79c964c9d7' :
+                      '1454165804606-c3d57bc86b40'
+                    }?w=800&q=80`}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#D50000]/20 to-transparent" />
                 </div>
               </div>
             </motion.div>

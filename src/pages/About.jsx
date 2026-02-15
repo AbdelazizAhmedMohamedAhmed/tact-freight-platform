@@ -17,10 +17,11 @@ export default function About() {
       <section className="relative py-32 bg-[#1A1A1A] overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80"
             alt="Logistics"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-25"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">About Us</span>

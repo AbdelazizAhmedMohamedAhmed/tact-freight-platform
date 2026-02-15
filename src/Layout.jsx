@@ -15,8 +15,10 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+    if (!publicPages.includes(currentPageName)) {
+      base44.auth.me().then(setUser).catch(() => {});
+    }
+  }, [currentPageName]);
 
   const isPublic = publicPages.includes(currentPageName);
   
