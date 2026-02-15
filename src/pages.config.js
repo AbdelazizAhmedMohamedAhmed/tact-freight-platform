@@ -54,6 +54,9 @@ import Industries from './pages/Industries';
 import WhyChooseUs from './pages/WhyChooseUs';
 import GlobalNetwork from './pages/GlobalNetwork';
 import Contact from './pages/Contact';
+import RequestQuote from './pages/RequestQuote';
+import TrackShipment from './pages/TrackShipment';
+import Clients from './pages/Clients';
 import __Layout from './Layout.jsx';
 
 
@@ -65,6 +68,9 @@ export const PAGES = {
     "WhyChooseUs": WhyChooseUs,
     "GlobalNetwork": GlobalNetwork,
     "Contact": Contact,
+    "RequestQuote": RequestQuote,
+    "TrackShipment": TrackShipment,
+    "Clients": Clients,
 }
 
 export const pagesConfig = {
