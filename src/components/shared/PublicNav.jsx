@@ -28,7 +28,12 @@ export default function PublicNav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md' : 'bg-white'}`}>
+      <motion.nav 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg backdrop-blur-md bg-opacity-95' : 'bg-white'}`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             <Link to={createPageUrl('Home')} className="flex-shrink-0">
@@ -37,36 +42,48 @@ export default function PublicNav() {
 
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map(link => (
-                <Link
-                  key={link.page}
-                  to={createPageUrl(link.page)}
-                  className="text-sm font-medium text-[#1A1A1A] hover:text-[#D50000] transition-colors relative group"
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D50000] group-hover:w-full transition-all duration-300"></span>
-                </Link>
+                <motion.div key={link.page} whileHover={{ y: -2 }}>
+                  <Link
+                    to={createPageUrl(link.page)}
+                    className="text-sm font-medium text-[#1A1A1A] hover:text-[#D50000] transition-colors relative group"
+                  >
+                    {link.label}
+                    <motion.span 
+                      className="absolute bottom-0 left-0 h-0.5 bg-[#D50000]"
+                      initial={{ width: 0 }}
+                      whileHover={{ width: '100%' }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </Link>
+                </motion.div>
               ))}
             </div>
 
-            <div className="hidden lg:flex items-center gap-4">
-              <Link to={createPageUrl('TrackShipment')}>
-                <Button variant="outline" size="sm" className="border border-gray-300 text-[#1A1A1A] hover:bg-gray-50 font-medium">
-                  <Search className="w-4 h-4 mr-2" />
-                  Track
-                </Button>
-              </Link>
-              <Link to={createPageUrl('RequestQuote')}>
-                <Button size="sm" className="bg-[#D50000] hover:bg-[#B00000] text-white font-medium">
-                  Request Quote
-                </Button>
-              </Link>
-              <Link to={createPageUrl('Portal')}>
-                <Button variant="ghost" size="sm" className="text-[#1A1A1A] hover:bg-gray-100 font-medium">
-                  <User className="w-4 h-4 mr-2" />
-                  Portal
-                </Button>
-              </Link>
-            </div>
+            <div className="hidden lg:flex items-center gap-3">
+               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                 <Link to={createPageUrl('TrackShipment')}>
+                   <Button variant="outline" size="sm" className="border-2 border-gray-300 text-[#1A1A1A] hover:border-[#D50000] hover:bg-gray-50 font-medium">
+                     <Search className="w-4 h-4 mr-2" />
+                     Track
+                   </Button>
+                 </Link>
+               </motion.div>
+               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                 <Link to={createPageUrl('RequestQuote')}>
+                   <Button size="sm" className="bg-[#D50000] hover:bg-[#B00000] text-white font-medium shadow-lg hover:shadow-xl transition-all">
+                     Request Quote
+                   </Button>
+                 </Link>
+               </motion.div>
+               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                 <Link to={createPageUrl('Portal')}>
+                   <Button variant="ghost" size="sm" className="text-[#1A1A1A] hover:bg-[#D50000]/10 hover:text-[#D50000] font-medium">
+                     <User className="w-4 h-4 mr-2" />
+                     Portal
+                   </Button>
+                 </Link>
+               </motion.div>
+             </div>
 
             <button
               className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-[#1A1A1A]"
@@ -76,7 +93,7 @@ export default function PublicNav() {
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {mobileOpen && (
