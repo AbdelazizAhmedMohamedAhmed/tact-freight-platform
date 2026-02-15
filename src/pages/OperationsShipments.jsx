@@ -12,6 +12,7 @@ import StatusBadge from '../components/shared/StatusBadge';
 import { Ship, Plane, Truck, Upload, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { Skeleton } from "@/components/ui/skeleton";
+import { sendStatusNotification } from '../components/utils/notificationService';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 const statusOrder = [
@@ -42,7 +43,11 @@ export default function OperationsShipments() {
     setUpdating(true);
     const now = new Date().toISOString();
     const history = [...(selected.status_history || []), { status: newStatus, timestamp: now, note }];
-    await base44.entities.Shipment.update(selected.id, { status: newStatus, status_history: history });
+    const updatedShipment = await base44.entities.Shipment.update(selected.id, { status: newStatus, status_history: history });
+    
+    // Send notification to client
+    await sendStatusNotification('shipment', updatedShipment, selected.status, newStatus);
+    
     setUpdating(false);
     setNote('');
     setNewStatus('');
