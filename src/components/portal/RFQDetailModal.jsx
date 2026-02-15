@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatusBadge from '../shared/StatusBadge';
 import MessageThread from '../messaging/MessageThread';
 import { base44 } from '@/api/base44Client';
-import { hasPermission } from '../utils/permissions';
+import { hasPermission } from '@/components/utils/permissions';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 

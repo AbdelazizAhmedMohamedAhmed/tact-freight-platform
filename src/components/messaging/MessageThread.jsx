@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Send, Paperclip, FileText, User, Clock, Lock } from 'lucide-react';
 import { format } from 'date-fns';
-import { hasPermission, filterMessages } from '../utils/permissions';
+import { hasPermission, filterMessages } from '@/components/utils/permissions';
 
 export default function MessageThread({ entityType, entityId, userRole = 'client' }) {
   const [newMessage, setNewMessage] = useState('');
