@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Send, Paperclip, FileText, User, Clock, Lock } from 'lucide-react';
 import { format } from 'date-fns';
 import { hasPermission, filterMessages } from '@/components/utils/permissions';
+import { logActivity } from '@/components/utils/activityLogger';
 
 export default function MessageThread({ entityType, entityId, userRole = 'client' }) {
   const [newMessage, setNewMessage] = useState('');
@@ -31,8 +32,18 @@ export default function MessageThread({ entityType, entityId, userRole = 'client
 
   const sendMessageMutation = useMutation({
     mutationFn: (data) => base44.entities.Message.create(data),
-    onSuccess: () => {
+    onSuccess: async (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['messages', entityType, entityId] });
+      
+      await logActivity({
+        action: `Message sent on ${entityType} ${entityId}`,
+        actionType: 'message_sent',
+        entityType: entityType === 'rfq' ? 'rfq' : 'shipment',
+        entityId: entityId,
+        details: variables.is_internal ? 'Internal message sent' : 'Message sent to client',
+        metadata: { is_internal: variables.is_internal }
+      });
+      
       setNewMessage('');
       setAttachments([]);
       setIsInternal(false);

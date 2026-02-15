@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { base44 } from '@/api/base44Client';
 import { CheckCircle2, Upload, Ship, Plane, Truck, ArrowRight, ArrowLeft, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logRFQAction } from '@/components/utils/activityLogger';
 
 const incoterms = ['EXW', 'FCA', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP', 'FAS', 'FOB', 'CFR', 'CIF'];
 
@@ -47,7 +48,7 @@ export default function RequestQuote() {
       clientEmail = user.email;
     } catch {}
 
-    await base44.entities.RFQ.create({
+    const newRFQ = await base44.entities.RFQ.create({
       ...form,
       reference_number: ref,
       status: 'submitted',
@@ -57,6 +58,8 @@ export default function RequestQuote() {
       document_urls: files,
       client_email: clientEmail || form.email,
     });
+
+    await logRFQAction(newRFQ, 'rfq_created', `New RFQ submitted: ${ref} for ${form.company_name}`);
 
     await base44.integrations.Core.SendEmail({
       to: form.email,

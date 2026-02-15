@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle2, Ship, Plane, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { logShipmentAction } from '@/components/utils/activityLogger';
 
 export default function CreateShipment() {
   const [rfq, setRfq] = useState(null);
@@ -49,7 +50,7 @@ export default function CreateShipment() {
   const handleCreate = async () => {
     setSaving(true);
     const now = new Date().toISOString();
-    await base44.entities.Shipment.create({
+    const newShipment = await base44.entities.Shipment.create({
       tracking_number: trackingNum,
       rfq_id: rfq?.id || '',
       status: 'booking_confirmed',
@@ -67,6 +68,12 @@ export default function CreateShipment() {
       document_urls: [],
       status_history: [{ status: 'booking_confirmed', timestamp: now, note: 'Shipment created' }],
     });
+
+    await logShipmentAction(
+      newShipment,
+      'shipment_created',
+      `Shipment ${trackingNum} created${rfq ? ` from RFQ ${rfq.reference_number}` : ''}`
+    );
 
     if (form.client_email) {
       await base44.integrations.Core.SendEmail({
