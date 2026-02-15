@@ -60,6 +60,10 @@ import Clients from './pages/Clients';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientRFQs from './pages/ClientRFQs';
 import ClientShipments from './pages/ClientShipments';
+import SalesDashboard from './pages/SalesDashboard';
+import SalesRFQQueue from './pages/SalesRFQQueue';
+import PricingDashboard from './pages/PricingDashboard';
+import PricingQueue from './pages/PricingQueue';
 import __Layout from './Layout.jsx';
 
 
@@ -77,6 +81,10 @@ export const PAGES = {
     "ClientDashboard": ClientDashboard,
     "ClientRFQs": ClientRFQs,
     "ClientShipments": ClientShipments,
+    "SalesDashboard": SalesDashboard,
+    "SalesRFQQueue": SalesRFQQueue,
+    "PricingDashboard": PricingDashboard,
+    "PricingQueue": PricingQueue,
 }
 
 export const pagesConfig = {
