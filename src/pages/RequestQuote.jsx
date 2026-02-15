@@ -21,7 +21,7 @@ export default function RequestQuote() {
   const [form, setForm] = useState({
     company_name: '', contact_person: '', email: '', phone: '',
     mode: '', incoterm: '', origin: '', destination: '',
-    cargo_type: '', weight_kg: '', volume_cbm: '', num_packages: '',
+    cargo_type: '', container_type: '', num_containers: '', weight_kg: '', volume_cbm: '', num_packages: '',
     commodity_description: '', is_hazardous: false, preferred_shipping_date: '',
   });
 
@@ -55,6 +55,7 @@ export default function RequestQuote() {
       weight_kg: Number(form.weight_kg) || 0,
       volume_cbm: Number(form.volume_cbm) || 0,
       num_packages: Number(form.num_packages) || 0,
+      num_containers: Number(form.num_containers) || 0,
       document_urls: files,
       client_email: clientEmail || form.email,
     });
@@ -175,12 +176,43 @@ export default function RequestQuote() {
                   <div className="space-y-2"><Label>Packages</Label><Input type="number" className="h-12" value={form.num_packages} onChange={e => set('num_packages', e.target.value)} /></div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="space-y-2"><Label>Cargo Type</Label><Input className="h-12" value={form.cargo_type} onChange={e => set('cargo_type', e.target.value)} /></div>
+                  <div className="space-y-2">
+                    <Label>Cargo Type</Label>
+                    <Select value={form.cargo_type} onValueChange={v => set('cargo_type', v)}>
+                      <SelectTrigger className="h-12"><SelectValue placeholder="Select" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="FCL">FCL (Full Container Load)</SelectItem>
+                        <SelectItem value="LCL">LCL (Less than Container Load)</SelectItem>
+                        <SelectItem value="Break Bulk">Break Bulk</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <div className="flex items-center gap-4 pt-6">
                     <Switch checked={form.is_hazardous} onCheckedChange={v => set('is_hazardous', v)} />
                     <Label>Hazardous Goods</Label>
                   </div>
                 </div>
+                {form.mode === 'sea' && form.cargo_type === 'FCL' && (
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>Container Type *</Label>
+                      <Select value={form.container_type} onValueChange={v => set('container_type', v)}>
+                        <SelectTrigger className="h-12"><SelectValue placeholder="Select container type" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="20ft">20ft Standard</SelectItem>
+                          <SelectItem value="40ft">40ft Standard</SelectItem>
+                          <SelectItem value="40ft_hc">40ft High Cube</SelectItem>
+                          <SelectItem value="45ft_hc">45ft High Cube</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Number of Containers *</Label>
+                      <Input type="number" min="1" className="h-12" value={form.num_containers} onChange={e => set('num_containers', e.target.value)} placeholder="1" />
+                    </div>
+                  </div>
+                )}
                 <div className="space-y-2"><Label>Commodity Description</Label><Textarea className="min-h-[100px]" value={form.commodity_description} onChange={e => set('commodity_description', e.target.value)} /></div>
                 <div className="flex justify-between">
                   <Button variant="outline" onClick={() => setStep(1)} className="h-12 px-8"><ArrowLeft className="w-4 h-4 mr-2" /> Back</Button>
