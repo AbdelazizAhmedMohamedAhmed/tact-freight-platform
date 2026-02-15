@@ -6,6 +6,7 @@ import GlobalLanesSection from '../components/home/GlobalLanesSection';
 import ClientsCarousel from '../components/home/ClientsCarousel';
 import PartnersSection from '../components/home/PartnersSection';
 import CTASection from '../components/home/CTASection';
+import WhatsAppButton from '../components/shared/WhatsAppButton';
 
 export default function Home() {
   return (
