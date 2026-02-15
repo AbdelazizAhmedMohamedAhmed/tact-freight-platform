@@ -52,46 +52,79 @@ const services = [
 export default function Services() {
   return (
     <div>
-      <section className="relative py-32 bg-[#1A1A1A]">
-        <div className="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80" alt="" className="w-full h-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/60" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <section className="relative py-32 bg-gradient-to-b from-[#1A1A1A] to-[#0F0F0F]">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        >
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80" alt="" className="w-full h-full object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#0F0F0F]/70" />
+        </motion.div>
+        <motion.div 
+          className="relative z-10 max-w-7xl mx-auto px-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">Our Services</span>
           <h1 className="text-4xl md:text-6xl font-black text-white mt-4 max-w-3xl">
-            Complete Logistics Solutions
+            Complete Logistics <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D50000] to-[#FF6B6B]">Solutions</span>
           </h1>
-        </div>
+          <p className="mt-6 text-white/70 max-w-2xl">Comprehensive freight forwarding services tailored to your unique supply chain needs.</p>
+        </motion.div>
       </section>
 
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 space-y-16">
-          {services.map((service, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
-            >
-              <div className="flex-1">
-                <div className="w-14 h-14 rounded-xl bg-[#D50000]/10 flex items-center justify-center mb-5">
+      <section className="py-24 bg-gradient-to-b from-white via-[#F2F2F2] to-white">
+         <div className="max-w-7xl mx-auto px-6 space-y-20">
+           {services.map((service, i) => (
+             <motion.div
+               key={i}
+               initial={{ opacity: 0, y: 30 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center p-8 rounded-2xl bg-white border border-gray-100 hover:border-[#D50000] hover:shadow-xl transition-all duration-300`}
+             >
+              <motion.div 
+                className="flex-1"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <motion.div 
+                  className="w-14 h-14 rounded-xl bg-[#D50000]/10 flex items-center justify-center mb-5"
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                >
                   <service.icon className="w-7 h-7 text-[#D50000]" />
-                </div>
+                </motion.div>
                 <h3 className="text-3xl font-bold text-[#1A1A1A]">{service.title}</h3>
                 <p className="mt-4 text-gray-600 leading-relaxed">{service.desc}</p>
-                <div className="mt-6 grid grid-cols-2 gap-2">
+                <div className="mt-6 grid grid-cols-2 gap-3">
                   {service.features.map((f, j) => (
-                    <div key={j} className="flex items-center gap-2 text-sm text-gray-700">
-                      <Check className="w-4 h-4 text-[#D50000]" />
+                    <motion.div 
+                      key={j} 
+                      className="flex items-center gap-2 text-sm text-gray-700 p-2 rounded hover:bg-[#D50000]/5 transition-colors"
+                      whileHover={{ x: 5 }}
+                    >
+                      <Check className="w-4 h-4 text-[#D50000] flex-shrink-0" />
                       {f}
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
-              <div className="flex-1 w-full">
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#F2F2F2] to-gray-100 rounded-2xl overflow-hidden relative">
+              </motion.div>
+              <motion.div 
+                className="flex-1 w-full"
+                initial={{ opacity: 0, x: i % 2 === 0 ? 30 : -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <motion.div 
+                  className="aspect-[4/3] bg-gradient-to-br from-[#F2F2F2] to-gray-100 rounded-2xl overflow-hidden relative shadow-lg"
+                  whileHover={{ y: -10, shadow: '0 20px 40px rgba(0,0,0,0.3)' }}
+                >
                   <img 
                     src={`https://images.unsplash.com/photo-${
                       service.title === 'Sea Freight' ? '1494412574643-ff11b0a5eb19' :
@@ -104,11 +137,11 @@ export default function Services() {
                       '1454165804606-c3d57bc86b40'
                     }?w=800&q=80`}
                     alt={service.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#D50000]/20 to-transparent" />
-                </div>
-              </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#D50000]/30 to-transparent" />
+                </motion.div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
