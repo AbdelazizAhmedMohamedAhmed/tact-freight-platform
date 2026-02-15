@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
 import Logo from './Logo';
 import { Button } from "@/components/ui/button";
