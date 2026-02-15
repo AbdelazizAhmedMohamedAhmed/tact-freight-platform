@@ -18,8 +18,9 @@ const services = [
 
 export default function ServicesOverview() {
   return (
-    <section className="py-32 bg-gradient-to-b from-white to-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-32 bg-gradient-to-br from-white via-gray-50 to-white relative">
+      <div className="absolute top-1/2 right-0 w-96 h-96 bg-[#D50000]/5 rounded-full blur-3xl" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <SectionHeading
           label="What We Do"
           title="End-to-End Logistics Services"
@@ -41,45 +42,65 @@ export default function ServicesOverview() {
 
             return (
             <Link key={i} to={createPageUrl(pageMap[service.title])}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100/50"
-              >
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={service.image} 
-                  alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/50 to-transparent opacity-60" />
-                <div className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-[#D50000] flex items-center justify-center">
-                  <service.icon className="w-6 h-6 text-white" />
-                </div>
-              </div>
-              <div className="p-7">
-                <h3 className="text-lg font-bold text-[#1A1A1A] mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed font-light">
-                  {service.desc}
-                </p>
-              </div>
+               <motion.div
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.05 }}
+                 className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-200 hover:border-[#D50000]"
+                 whileHover={{ y: -8 }}
+               >
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                 <img 
+                   src={service.image} 
+                   alt={service.title}
+                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                 />
+                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/70 via-[#1A1A1A]/40 to-transparent opacity-70" />
+                 <motion.div 
+                   className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-[#D50000] flex items-center justify-center shadow-lg"
+                   whileHover={{ scale: 1.15, rotate: 10 }}
+                 >
+                   <service.icon className="w-6 h-6 text-white" />
+                 </motion.div>
+               </div>
+               <div className="p-7">
+                 <h3 className="text-lg font-bold text-[#1A1A1A] mb-3 group-hover:text-[#D50000] transition-colors">
+                   {service.title}
+                 </h3>
+                 <p className="text-sm text-gray-600 leading-relaxed">
+                   {service.desc}
+                 </p>
+                 <motion.div 
+                   className="mt-4 flex items-center gap-2 text-[#D50000] text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
+                   initial={{ x: -10 }}
+                   whileHover={{ x: 5 }}
+                 >
+                   Learn More <ArrowRight className="w-4 h-4" />
+                 </motion.div>
+               </div>
               </motion.div>
             </Link>
             );
           })}
         </div>
 
-        <div className="text-center mt-12">
+        <motion.div 
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           <Link to={createPageUrl('Services')}>
-            <button className="inline-flex items-center gap-2 text-[#D50000] font-semibold hover:gap-3 transition-all">
+            <motion.button 
+              className="inline-flex items-center gap-2 text-[#D50000] font-semibold hover:gap-3 transition-all px-6 py-3 rounded-xl hover:bg-[#D50000]/10"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               View All Services <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
