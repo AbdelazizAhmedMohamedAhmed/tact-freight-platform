@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function CTASection() {
   return (
