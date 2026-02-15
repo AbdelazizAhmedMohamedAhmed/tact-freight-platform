@@ -18,15 +18,15 @@ const services = [
 
 export default function ServicesOverview() {
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-32 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <SectionHeading
           label="What We Do"
           title="End-to-End Logistics Services"
           description="Comprehensive freight solutions designed to move your cargo efficiently across borders and continents."
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
           {services.map((service, i) => (
             <motion.div
               key={i}
@@ -34,7 +34,7 @@ export default function ServicesOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+              className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100/50"
             >
               <div className="relative h-48 overflow-hidden">
                 <img 
@@ -47,11 +47,11 @@ export default function ServicesOverview() {
                   <service.icon className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">
+              <div className="p-7">
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-3">
                   {service.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 leading-relaxed font-light">
                   {service.desc}
                 </p>
               </div>
