@@ -14,30 +14,41 @@ export default function About() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative py-32 bg-[#1A1A1A] overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative py-32 bg-gradient-to-b from-[#1A1A1A] to-[#0F0F0F] overflow-hidden">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        >
           <img
             src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80"
             alt="Logistics"
-            className="w-full h-full object-cover opacity-25"
+            className="w-full h-full object-cover opacity-20"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/70" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#0F0F0F]/70" />
+        </motion.div>
+        <motion.div 
+          className="relative z-10 max-w-7xl mx-auto px-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">About Us</span>
           <h1 className="text-4xl md:text-6xl font-black text-white mt-4 max-w-3xl leading-tight">
-            A Reputation-Driven Logistics Company
+            Building Trust Through <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D50000] to-[#FF6B6B]">Excellence</span>
           </h1>
-          <p className="mt-6 text-white/60 text-lg max-w-2xl leading-relaxed">
+          <p className="mt-6 text-white/70 text-lg max-w-2xl leading-relaxed">
             Tact Freight is a reputation-driven logistics & freight forwarding company headquartered in Cairo, Egypt. 
             We offer comprehensive supply chain solutions across all modes of transport, serving clients in six continents.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-24 bg-white relative">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#D50000]/5 rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -82,8 +93,9 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-[#F2F2F2]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-24 bg-gradient-to-b from-[#F2F2F2] to-white relative">
+        <div className="absolute left-0 top-1/2 w-96 h-96 bg-[#D50000]/3 rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <SectionHeading
             label="Our Values"
             title="What Drives Us Forward"
@@ -97,11 +109,15 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-shadow"
+                className="bg-white rounded-2xl p-8 text-center border border-gray-200 hover:border-[#D50000] hover:shadow-2xl transition-all duration-300"
+                whileHover={{ y: -8 }}
               >
-                <div className="w-14 h-14 rounded-full bg-[#D50000]/10 flex items-center justify-center mx-auto mb-5">
+                <motion.div 
+                  className="w-14 h-14 rounded-full bg-[#D50000]/10 flex items-center justify-center mx-auto mb-5"
+                  whileHover={{ scale: 1.15, rotate: 10 }}
+                >
                   <v.icon className="w-7 h-7 text-[#D50000]" />
-                </div>
+                </motion.div>
                 <h4 className="font-bold text-lg text-[#1A1A1A]">{v.title}</h4>
                 <p className="mt-3 text-sm text-gray-500 leading-relaxed">{v.desc}</p>
               </motion.div>
