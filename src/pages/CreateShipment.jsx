@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CheckCircle2, Ship, Plane, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { logShipmentAction } from '@/components/utils/activityLogger';
+import { sendStatusNotification } from '@/components/utils/notificationService';
 
 export default function CreateShipment() {
   const [rfq, setRfq] = useState(null);
@@ -80,6 +81,17 @@ export default function CreateShipment() {
         to: form.client_email,
         subject: `Shipment Created - ${trackingNum}`,
         body: `Dear Customer,\n\nYour shipment has been created.\n\nTracking Number: ${trackingNum}\nMode: ${form.mode}\nOrigin: ${form.origin}\nDestination: ${form.destination}\n\nTrack your shipment at any time using your tracking number.\n\nBest regards,\nTact Freight Operations`,
+      });
+
+      await base44.entities.Notification.create({
+        type: 'shipment_update',
+        title: 'Shipment Created',
+        message: `Your shipment ${trackingNum} has been created`,
+        recipient_email: form.client_email,
+        entity_type: 'shipment',
+        entity_id: newShipment.id,
+        entity_reference: trackingNum,
+        action_url: '/ClientShipments',
       });
     }
 
