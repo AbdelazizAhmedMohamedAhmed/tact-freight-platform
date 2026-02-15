@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { 
   LayoutDashboard, FileText, Truck, Users, Settings, LogOut, 
   Menu, X, ChevronRight, BarChart3, Bell, Package, DollarSign, 
-  ClipboardList, Ship, Activity
+  ClipboardList, Ship, Activity, Home
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
@@ -94,7 +94,14 @@ export default function PortalSidebar({ department, currentPage }) {
         })}
       </nav>
 
-      <div className="p-3 border-t border-white/10">
+      <div className="p-3 border-t border-white/10 space-y-1">
+        <Link
+          to={createPageUrl('Home')}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 w-full transition-colors"
+        >
+          <Home className="w-5 h-5" />
+          {!collapsed && <span>Back to Website</span>}
+        </Link>
         <button 
           onClick={() => base44.auth.logout(createPageUrl('Home'))}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 w-full transition-colors"
