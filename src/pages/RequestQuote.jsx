@@ -82,6 +82,7 @@ export default function RequestQuote() {
             <span className="text-2xl font-mono font-bold text-[#D50000]">{refNumber}</span>
           </div>
           <p className="mt-6 text-gray-500 text-sm">A confirmation email has been sent. Our team will contact you within 24 hours.</p>
+          <p className="mt-4 text-gray-400 text-xs">Please do not refresh this page.</p>
         </motion.div>
       </section>
     );
@@ -90,6 +91,14 @@ export default function RequestQuote() {
   return (
     <div>
       <section className="relative py-24 bg-[#1A1A1A]">
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1494412574643-ff11b0a5eb19?w=1920&q=80"
+            alt=""
+            className="w-full h-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/95 to-[#1A1A1A]/70" />
+        </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">Request for Quotation</span>
           <h1 className="text-4xl md:text-5xl font-black text-white mt-4">Get a Quote</h1>

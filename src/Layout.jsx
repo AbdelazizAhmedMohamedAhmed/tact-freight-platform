@@ -4,7 +4,7 @@ import Footer from './components/shared/Footer';
 import PortalSidebar from './components/shared/PortalSidebar';
 import { base44 } from '@/api/base44Client';
 
-const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Clients', 'Contact', 'RequestQuote', 'TrackShipment'];
+const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Clients', 'Contact', 'RequestQuote', 'TrackShipment', 'Portal'];
 const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments'];
 const salesPages = ['SalesDashboard', 'SalesRFQQueue'];
 const pricingPages = ['PricingDashboard', 'PricingQueue'];

@@ -73,6 +73,7 @@ import AdminRFQs from './pages/AdminRFQs';
 import AdminShipments from './pages/AdminShipments';
 import AdminActivity from './pages/AdminActivity';
 import AdminAnalytics from './pages/AdminAnalytics';
+import Portal from './pages/Portal';
 import __Layout from './Layout.jsx';
 
 
@@ -103,6 +104,7 @@ export const PAGES = {
     "AdminShipments": AdminShipments,
     "AdminActivity": AdminActivity,
     "AdminAnalytics": AdminAnalytics,
+    "Portal": Portal,
 }
 
 export const pagesConfig = {

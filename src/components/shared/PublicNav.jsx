@@ -59,7 +59,7 @@ export default function PublicNav() {
                   Request Quote
                 </Button>
               </Link>
-              <Link to={createPageUrl('ClientDashboard')}>
+              <Link to={createPageUrl('Portal')}>
                 <Button variant="ghost" size="sm" className="text-gray-600">
                   <User className="w-4 h-4 mr-1.5" />
                   Portal
