@@ -13,6 +13,7 @@ import MarkRFQOutcomeModal from './MarkRFQOutcomeModal';
 import { base44 } from '@/api/base44Client';
 import { hasPermission } from '@/components/utils/permissions';
 import { logRFQAction, logFileAction } from '@/components/utils/activityLogger';
+import { sendStatusNotification, sendQuotationNotification } from '@/components/utils/notificationService';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -49,6 +50,9 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
       { old_value: rfq.status, new_value: newStatus }
     );
     
+    // Send notification to client
+    await sendStatusNotification('rfq', { ...rfq, ...updateData }, rfq.status, newStatus);
+    
     setUpdating(false);
     setNotes('');
     onUpdate?.();
@@ -59,9 +63,10 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     const file = e.target.files[0];
     if (!file) return;
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    await base44.entities.RFQ.update(rfq.id, { quotation_url: file_url });
+    const updatedRFQ = await base44.entities.RFQ.update(rfq.id, { quotation_url: file_url });
     
     await logFileAction('quotation_uploaded', file.name, 'rfq', rfq.id, `Quotation uploaded for RFQ ${rfq.reference_number}`);
+    await sendQuotationNotification(updatedRFQ);
     
     onUpdate?.();
   };

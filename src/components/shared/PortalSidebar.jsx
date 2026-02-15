@@ -17,6 +17,7 @@ const portalMenus = {
     { label: 'My RFQs', icon: ClipboardList, page: 'ClientRFQs' },
     { label: 'Shipments', icon: Ship, page: 'ClientShipments' },
     { label: 'Track', icon: Truck, page: 'TrackShipment' },
+    { label: 'Preferences', icon: Settings, page: 'ClientPreferences' },
   ],
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
