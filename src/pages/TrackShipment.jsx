@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import StatusBadge from '../components/shared/StatusBadge';
-import { Search, Ship, Plane, Truck, MapPin, Calendar, Clock, FileText, Package, Check, AlertCircle } from 'lucide-react';
+import ShipmentMap from '../components/tracking/ShipmentMap';
+import { Search, Ship, Plane, Truck, MapPin, Calendar, Clock, FileText, Package, Check, AlertCircle, Radio } from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
@@ -31,6 +32,7 @@ export default function TrackShipment() {
   const [shipment, setShipment] = useState(null);
   const [searching, setSearching] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [liveUpdates, setLiveUpdates] = useState(true);
 
   const handleTrack = async (e) => {
     e?.preventDefault();
@@ -47,6 +49,19 @@ export default function TrackShipment() {
     }
     setSearching(false);
   };
+
+  // Real-time updates subscription
+  useEffect(() => {
+    if (!shipment || !liveUpdates) return;
+
+    const unsubscribe = base44.entities.Shipment.subscribe((event) => {
+      if (event.data.id === shipment.id && event.type === 'update') {
+        setShipment(event.data);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [shipment?.id, liveUpdates]);
 
   const currentStatusIdx = shipment ? statusOrder.indexOf(shipment.status) : -1;
   const ModeIcon = shipment ? (modeIcons[shipment.mode] || Package) : Package;
@@ -87,7 +102,13 @@ export default function TrackShipment() {
           {shipment && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
               {/* Header card */}
-              <div className="bg-[#F2F2F2] rounded-2xl p-8">
+              <div className="bg-[#F2F2F2] rounded-2xl p-8 relative">
+                {liveUpdates && (
+                  <div className="absolute top-4 right-4 flex items-center gap-2 text-xs text-green-600">
+                    <Radio className="w-4 h-4 animate-pulse" />
+                    <span className="font-medium">Live Updates Active</span>
+                  </div>
+                )}
                 <div className="flex flex-wrap items-start justify-between gap-6">
                   <div>
                     <p className="text-sm text-gray-500">Tracking Number</p>
@@ -127,9 +148,15 @@ export default function TrackShipment() {
                 )}
               </div>
 
+              {/* Live Map */}
+              <div className="bg-white border rounded-2xl p-8">
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-4">Live Shipment Location</h3>
+                <ShipmentMap shipment={shipment} />
+              </div>
+
               {/* Timeline */}
               <div className="bg-white border rounded-2xl p-8">
-                <h3 className="text-lg font-bold text-[#1A1A1A] mb-8">Shipment Timeline</h3>
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-8">Detailed Shipment Milestones</h3>
                 <div className="space-y-0">
                   {statusOrder.map((st, idx) => {
                     const isCompleted = idx <= currentStatusIdx;
@@ -150,14 +177,26 @@ export default function TrackShipment() {
                           )}
                         </div>
                         <div className="pb-12">
-                          <p className={`font-semibold text-sm ${isCompleted ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
+                          <p className={`font-semibold ${isCompleted ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
                             {statusLabels[st]}
                           </p>
-                          {historyEntry && (
-                            <p className="text-xs text-gray-400 mt-0.5">
-                              {historyEntry.timestamp && format(new Date(historyEntry.timestamp), 'MMM d, yyyy HH:mm')}
-                              {historyEntry.note && ` — ${historyEntry.note}`}
-                            </p>
+                          {historyEntry ? (
+                            <div className="mt-1 space-y-1">
+                              {historyEntry.timestamp && (
+                                <p className="text-xs text-gray-500 flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {format(new Date(historyEntry.timestamp), 'MMM d, yyyy HH:mm')}
+                                </p>
+                              )}
+                              {historyEntry.note && (
+                                <p className="text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">{historyEntry.note}</p>
+                              )}
+                              {historyEntry.updated_by && (
+                                <p className="text-xs text-gray-400">Updated by: {historyEntry.updated_by}</p>
+                              )}
+                            </div>
+                          ) : (
+                            isCompleted && <p className="text-xs text-gray-400 mt-1">Completed</p>
                           )}
                         </div>
                       </div>

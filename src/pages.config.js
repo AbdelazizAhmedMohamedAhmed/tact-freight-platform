@@ -47,64 +47,64 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
 import About from './pages/About';
-import Services from './pages/Services';
-import Industries from './pages/Industries';
-import WhyChooseUs from './pages/WhyChooseUs';
-import GlobalNetwork from './pages/GlobalNetwork';
-import Contact from './pages/Contact';
-import RequestQuote from './pages/RequestQuote';
-import TrackShipment from './pages/TrackShipment';
-import Clients from './pages/Clients';
+import AdminActivity from './pages/AdminActivity';
+import AdminAnalytics from './pages/AdminAnalytics';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminRFQs from './pages/AdminRFQs';
+import AdminShipments from './pages/AdminShipments';
+import AdminUsers from './pages/AdminUsers';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientRFQs from './pages/ClientRFQs';
 import ClientShipments from './pages/ClientShipments';
-import SalesDashboard from './pages/SalesDashboard';
-import SalesRFQQueue from './pages/SalesRFQQueue';
+import Clients from './pages/Clients';
+import Contact from './pages/Contact';
+import CreateShipment from './pages/CreateShipment';
+import GlobalNetwork from './pages/GlobalNetwork';
+import Home from './pages/Home';
+import Industries from './pages/Industries';
+import OperationsDashboard from './pages/OperationsDashboard';
+import OperationsShipments from './pages/OperationsShipments';
+import Portal from './pages/Portal';
 import PricingDashboard from './pages/PricingDashboard';
 import PricingQueue from './pages/PricingQueue';
-import OperationsDashboard from './pages/OperationsDashboard';
-import CreateShipment from './pages/CreateShipment';
-import OperationsShipments from './pages/OperationsShipments';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminUsers from './pages/AdminUsers';
-import AdminRFQs from './pages/AdminRFQs';
-import AdminShipments from './pages/AdminShipments';
-import AdminActivity from './pages/AdminActivity';
-import AdminAnalytics from './pages/AdminAnalytics';
-import Portal from './pages/Portal';
+import RequestQuote from './pages/RequestQuote';
+import SalesDashboard from './pages/SalesDashboard';
+import SalesRFQQueue from './pages/SalesRFQQueue';
+import Services from './pages/Services';
+import TrackShipment from './pages/TrackShipment';
+import WhyChooseUs from './pages/WhyChooseUs';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
     "About": About,
-    "Services": Services,
-    "Industries": Industries,
-    "WhyChooseUs": WhyChooseUs,
-    "GlobalNetwork": GlobalNetwork,
-    "Contact": Contact,
-    "RequestQuote": RequestQuote,
-    "TrackShipment": TrackShipment,
-    "Clients": Clients,
+    "AdminActivity": AdminActivity,
+    "AdminAnalytics": AdminAnalytics,
+    "AdminDashboard": AdminDashboard,
+    "AdminRFQs": AdminRFQs,
+    "AdminShipments": AdminShipments,
+    "AdminUsers": AdminUsers,
     "ClientDashboard": ClientDashboard,
     "ClientRFQs": ClientRFQs,
     "ClientShipments": ClientShipments,
-    "SalesDashboard": SalesDashboard,
-    "SalesRFQQueue": SalesRFQQueue,
+    "Clients": Clients,
+    "Contact": Contact,
+    "CreateShipment": CreateShipment,
+    "GlobalNetwork": GlobalNetwork,
+    "Home": Home,
+    "Industries": Industries,
+    "OperationsDashboard": OperationsDashboard,
+    "OperationsShipments": OperationsShipments,
+    "Portal": Portal,
     "PricingDashboard": PricingDashboard,
     "PricingQueue": PricingQueue,
-    "OperationsDashboard": OperationsDashboard,
-    "CreateShipment": CreateShipment,
-    "OperationsShipments": OperationsShipments,
-    "AdminDashboard": AdminDashboard,
-    "AdminUsers": AdminUsers,
-    "AdminRFQs": AdminRFQs,
-    "AdminShipments": AdminShipments,
-    "AdminActivity": AdminActivity,
-    "AdminAnalytics": AdminAnalytics,
-    "Portal": Portal,
+    "RequestQuote": RequestQuote,
+    "SalesDashboard": SalesDashboard,
+    "SalesRFQQueue": SalesRFQQueue,
+    "Services": Services,
+    "TrackShipment": TrackShipment,
+    "WhyChooseUs": WhyChooseUs,
 }
 
 export const pagesConfig = {
