@@ -57,6 +57,9 @@ import Contact from './pages/Contact';
 import RequestQuote from './pages/RequestQuote';
 import TrackShipment from './pages/TrackShipment';
 import Clients from './pages/Clients';
+import ClientDashboard from './pages/ClientDashboard';
+import ClientRFQs from './pages/ClientRFQs';
+import ClientShipments from './pages/ClientShipments';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +74,9 @@ export const PAGES = {
     "RequestQuote": RequestQuote,
     "TrackShipment": TrackShipment,
     "Clients": Clients,
+    "ClientDashboard": ClientDashboard,
+    "ClientRFQs": ClientRFQs,
+    "ClientShipments": ClientShipments,
 }
 
 export const pagesConfig = {
