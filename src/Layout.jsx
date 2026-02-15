@@ -5,11 +5,11 @@ import PortalSidebar from './components/shared/PortalSidebar';
 import { base44 } from '@/api/base44Client';
 
 const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Clients', 'Contact', 'RequestQuote', 'TrackShipment', 'Portal'];
-const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'ClientPreferences'];
+const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'ClientPreferences', 'ClientSupport'];
 const salesPages = ['SalesDashboard', 'SalesRFQQueue'];
 const pricingPages = ['PricingDashboard', 'PricingQueue'];
-const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment'];
-const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics'];
+const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment', 'OperationsFlow'];
+const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting'];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
