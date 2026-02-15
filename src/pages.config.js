@@ -67,6 +67,12 @@ import PricingQueue from './pages/PricingQueue';
 import OperationsDashboard from './pages/OperationsDashboard';
 import CreateShipment from './pages/CreateShipment';
 import OperationsShipments from './pages/OperationsShipments';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
+import AdminRFQs from './pages/AdminRFQs';
+import AdminShipments from './pages/AdminShipments';
+import AdminActivity from './pages/AdminActivity';
+import AdminAnalytics from './pages/AdminAnalytics';
 import __Layout from './Layout.jsx';
 
 
@@ -91,6 +97,12 @@ export const PAGES = {
     "OperationsDashboard": OperationsDashboard,
     "CreateShipment": CreateShipment,
     "OperationsShipments": OperationsShipments,
+    "AdminDashboard": AdminDashboard,
+    "AdminUsers": AdminUsers,
+    "AdminRFQs": AdminRFQs,
+    "AdminShipments": AdminShipments,
+    "AdminActivity": AdminActivity,
+    "AdminAnalytics": AdminAnalytics,
 }
 
 export const pagesConfig = {
