@@ -85,6 +85,9 @@ import RoRoServices from './pages/RoRoServices';
 import Consultancy from './pages/Consultancy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import ClientSupport from './pages/ClientSupport';
+import OperationsFlow from './pages/OperationsFlow';
+import AdminReporting from './pages/AdminReporting';
 import __Layout from './Layout.jsx';
 
 
@@ -127,6 +130,9 @@ export const PAGES = {
     "Consultancy": Consultancy,
     "PrivacyPolicy": PrivacyPolicy,
     "TermsOfService": TermsOfService,
+    "ClientSupport": ClientSupport,
+    "OperationsFlow": OperationsFlow,
+    "AdminReporting": AdminReporting,
 }
 
 export const pagesConfig = {
