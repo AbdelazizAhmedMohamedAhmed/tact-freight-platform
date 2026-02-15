@@ -9,6 +9,7 @@ import StatusBadge from '../shared/StatusBadge';
 import MessageThread from '../messaging/MessageThread';
 import { base44 } from '@/api/base44Client';
 import { hasPermission } from '@/components/utils/permissions';
+import { logRFQAction, logFileAction } from '@/components/utils/activityLogger';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -34,6 +35,14 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     if (role === 'sales' && notes) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if (role === 'pricing' && notes) updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
+    
+    await logRFQAction(
+      { ...rfq, ...updateData }, 
+      'rfq_status_changed', 
+      `RFQ ${rfq.reference_number} status changed from ${rfq.status} to ${newStatus}`,
+      { old_value: rfq.status, new_value: newStatus }
+    );
+    
     setUpdating(false);
     setNotes('');
     onUpdate?.();
@@ -45,6 +54,9 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     if (!file) return;
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     await base44.entities.RFQ.update(rfq.id, { quotation_url: file_url });
+    
+    await logFileAction('quotation_uploaded', file.name, 'rfq', rfq.id, `Quotation uploaded for RFQ ${rfq.reference_number}`);
+    
     onUpdate?.();
   };
 

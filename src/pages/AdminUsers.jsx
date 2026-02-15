@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { UserPlus, Search, Edit2 } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from 'date-fns';
+import { logUserAction } from '@/components/utils/activityLogger';
 
 const deptColors = {
   client: 'bg-blue-100 text-blue-800', sales: 'bg-green-100 text-green-800',
@@ -40,6 +41,13 @@ export default function AdminUsers() {
   const handleInvite = async () => {
     setInviting(true);
     await base44.users.inviteUser(inviteEmail, inviteRole);
+    
+    await logUserAction(
+      { email: inviteEmail, role: inviteRole },
+      'user_invited',
+      `User ${inviteEmail} invited with role ${inviteRole}`
+    );
+    
     setInviting(false);
     setInviteOpen(false);
     setInviteEmail('');
@@ -49,6 +57,14 @@ export default function AdminUsers() {
   const handleUpdateDept = async (dept) => {
     if (!editUser) return;
     await base44.entities.User.update(editUser.id, { department: dept });
+    
+    await logUserAction(
+      editUser,
+      'user_dept_changed',
+      `User ${editUser.email} department changed from ${editUser.department || 'none'} to ${dept}`,
+      { old_value: editUser.department || 'none', new_value: dept }
+    );
+    
     setEditUser(null);
     refetch();
   };
