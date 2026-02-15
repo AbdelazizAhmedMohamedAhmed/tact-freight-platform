@@ -88,6 +88,7 @@ import TermsOfService from './pages/TermsOfService';
 import ClientSupport from './pages/ClientSupport';
 import OperationsFlow from './pages/OperationsFlow';
 import AdminReporting from './pages/AdminReporting';
+import Profile from './pages/Profile';
 import __Layout from './Layout.jsx';
 
 
@@ -133,6 +134,7 @@ export const PAGES = {
     "ClientSupport": ClientSupport,
     "OperationsFlow": OperationsFlow,
     "AdminReporting": AdminReporting,
+    "Profile": Profile,
 }
 
 export const pagesConfig = {

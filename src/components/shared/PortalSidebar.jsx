@@ -19,6 +19,7 @@ const portalMenus = {
     { label: 'Track', icon: Truck, page: 'TrackShipment' },
     { label: 'Support', icon: Bell, page: 'ClientSupport' },
     { label: 'Preferences', icon: Settings, page: 'ClientPreferences' },
+    { label: 'Profile', icon: User, page: 'Profile' },
   ],
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
@@ -28,12 +29,14 @@ const portalMenus = {
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
     { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
+    { label: 'Profile', icon: User, page: 'Profile' },
   ],
   operations: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'OperationsDashboard' },
     { label: 'Shipments', icon: Ship, page: 'OperationsShipments' },
     { label: 'Workflow', icon: Activity, page: 'OperationsFlow' },
     { label: 'Create Shipment', icon: Package, page: 'CreateShipment' },
+    { label: 'Profile', icon: User, page: 'Profile' },
   ],
   admin: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'AdminDashboard' },
@@ -43,6 +46,7 @@ const portalMenus = {
     { label: 'Activity Log', icon: Activity, page: 'AdminActivity' },
     { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
     { label: 'Reporting', icon: BarChart3, page: 'AdminReporting' },
+    { label: 'Profile', icon: User, page: 'Profile' },
   ],
 };
 
