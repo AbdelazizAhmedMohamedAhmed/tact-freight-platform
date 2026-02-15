@@ -135,7 +135,7 @@ export default function OperationsDashboard() {
 
       {/* Active Shipments */}
       <div>
-        <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Active Shipments</h2>
+        <h2 className="text-lg font-bold text-[#1A1A1A] mb-4">Active Shipments Management</h2>
         {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : (
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
             <Table>
@@ -147,22 +147,41 @@ export default function OperationsDashboard() {
                   <TableHead>Mode</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>ETA</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {active.length === 0 && (
-                  <TableRow><TableCell colSpan={6} className="text-center py-12 text-gray-400">No active shipments</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="text-center py-12 text-gray-400">No active shipments</TableCell></TableRow>
                 )}
                 {active.map(s => {
                   const MIcon = modeIcons[s.mode] || Ship;
                   return (
-                    <TableRow key={s.id} className="hover:bg-gray-50 cursor-pointer">
+                    <TableRow key={s.id} className="hover:bg-gray-50">
                       <TableCell className="font-mono font-semibold text-[#D50000]">{s.tracking_number}</TableCell>
                       <TableCell>{s.company_name}</TableCell>
                       <TableCell className="text-sm">{s.origin} → {s.destination}</TableCell>
                       <TableCell><div className="flex items-center gap-2 capitalize"><MIcon className="w-4 h-4 text-gray-400" />{s.mode}</div></TableCell>
                       <TableCell><StatusBadge status={s.status} /></TableCell>
                       <TableCell className="text-sm text-gray-500">{s.eta ? format(new Date(s.eta), 'MMM d') : '-'}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => { setSelectedShipment(s); setDetailsOpen(true); setNewStatus(s.status); }}
+                          >
+                            Update
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => { setSelectedShipment(s); setTaskOpen(true); }}
+                          >
+                            Assign
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -171,6 +190,50 @@ export default function OperationsDashboard() {
           </div>
         )}
       </div>
+
+      {/* Status Update Modal */}
+      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="font-mono text-[#D50000]">{selectedShipment?.tracking_number}</DialogTitle>
+          </DialogHeader>
+          {selectedShipment && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-500">Current Status:</span>
+                <StatusBadge status={selectedShipment.status} />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Update Status</Label>
+                <Select value={newStatus} onValueChange={setNewStatus}>
+                  <SelectTrigger><SelectValue placeholder="Select new status" /></SelectTrigger>
+                  <SelectContent>
+                    {statusOrder.map(s => (
+                      <SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Status Update Note</Label>
+                <Textarea value={statusNote} onChange={e => setStatusNote(e.target.value)} placeholder="e.g., In customs for inspection..." className="min-h-20" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" onClick={() => setDetailsOpen(false)}>Cancel</Button>
+                <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000]">
+                  {updating ? 'Updating...' : 'Update Status'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Task Assignment Modal */}
+      <AssignTaskModal shipment={selectedShipment} open={taskOpen} onClose={() => setTaskOpen(false)} onUpdate={refetch} />
     </div>
   );
 }
