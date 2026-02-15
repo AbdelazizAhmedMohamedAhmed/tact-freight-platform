@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatusBadge from '../shared/StatusBadge';
 import MessageThread from '../messaging/MessageThread';
 import { base44 } from '@/api/base44Client';
+import { hasPermission } from '../utils/permissions';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -20,6 +21,12 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
 
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
+
+  // Permission checks
+  const canUpdateStatus = hasPermission(role, 'rfqs', 'updateStatus');
+  const canUploadQuotation = hasPermission(role, 'rfqs', 'uploadQuotation');
+  const canSendToClient = hasPermission(role, 'rfqs', 'sendToClient');
+  const canAcceptReject = hasPermission(role, 'rfqs', 'acceptReject');
 
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
@@ -118,7 +125,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
             )}
 
             {/* Actions by role */}
-            {role === 'sales' && ['submitted', 'sales_review'].includes(rfq.status) && (
+            {canUpdateStatus && role === 'sales' && ['submitted', 'sales_review'].includes(rfq.status) && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="space-y-2"><Label>Notes</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Add notes for pricing team..." /></div>
                 <div className="flex gap-3">
@@ -128,13 +135,13 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {role === 'sales' && rfq.status === 'quoted' && (
+            {canSendToClient && role === 'sales' && rfq.status === 'quoted' && (
               <div className="space-y-4 pt-4 border-t">
                 <Button onClick={() => handleAction('sent_to_client')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Send Quotation to Client</Button>
               </div>
             )}
 
-            {role === 'pricing' && rfq.status === 'pricing_review' && (
+            {canUploadQuotation && role === 'pricing' && rfq.status === 'pricing_review' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -151,7 +158,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {role === 'client' && rfq.status === 'sent_to_client' && (
+            {canAcceptReject && role === 'client' && rfq.status === 'sent_to_client' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="flex gap-3">
                   <Button onClick={() => handleAction('accepted')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
