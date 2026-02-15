@@ -83,6 +83,8 @@ import Warehousing from './pages/Warehousing';
 import ProjectLogistics from './pages/ProjectLogistics';
 import RoRoServices from './pages/RoRoServices';
 import Consultancy from './pages/Consultancy';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -123,6 +125,8 @@ export const PAGES = {
     "ProjectLogistics": ProjectLogistics,
     "RoRoServices": RoRoServices,
     "Consultancy": Consultancy,
+    "PrivacyPolicy": PrivacyPolicy,
+    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {

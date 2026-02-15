@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
 import Logo from './Logo';
-import { Phone, Mail, MapPin, Globe, Linkedin, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, Linkedin, Facebook, Twitter } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -16,14 +16,14 @@ export default function Footer() {
               Delivering reliable global shipping solutions since inception.
             </p>
             <div className="flex gap-3 mt-6">
-              <a href="#" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors" title="LinkedIn">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors" title="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors">
-                <Globe className="w-4 h-4" />
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D50000] transition-colors" title="Twitter">
+                <Twitter className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -75,8 +75,8 @@ export default function Footer() {
             © {new Date().getFullYear()} Tact Freight. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-white/40">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <Link to={createPageUrl('PrivacyPolicy')} className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to={createPageUrl('TermsOfService')} className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
