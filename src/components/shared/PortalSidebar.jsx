@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { 
   LayoutDashboard, FileText, Truck, Users, Settings, LogOut, 
   Menu, X, ChevronRight, BarChart3, Bell, Package, DollarSign, 
-  ClipboardList, Ship, Activity, Home
+  ClipboardList, Ship, Activity, Home, User
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
@@ -24,7 +24,7 @@ const portalMenus = {
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
     { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQQueue' },
-    { label: 'All RFQs', icon: FileText, page: 'SalesRFQQueue' },
+    { label: 'Profile', icon: User, page: 'Profile' },
   ],
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
