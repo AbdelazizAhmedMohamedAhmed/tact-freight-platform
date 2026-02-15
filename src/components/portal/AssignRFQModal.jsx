@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -65,12 +65,12 @@ export default function AssignRFQModal({ rfq, open, onClose, onUpdate, assignmen
             <UserPlus className="w-5 h-5" />
             Assign to {assignmentType === 'sales' ? 'Sales' : 'Pricing'} Team
           </DialogTitle>
+          <DialogDescription>
+            Assign <strong className="font-mono">{rfq.reference_number}</strong> to a team member
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          <p className="text-sm text-gray-600">
-            Assign <strong className="font-mono">{rfq.reference_number}</strong> to a team member
-          </p>
 
           <div className="space-y-2">
             <Label>Select Team Member</Label>

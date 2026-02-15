@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -55,12 +55,12 @@ export default function MarkRFQOutcomeModal({ rfq, open, onClose, onUpdate }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Mark RFQ Outcome</DialogTitle>
+          <DialogDescription>
+            Set the final outcome for <strong className="font-mono">{rfq.reference_number}</strong>
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          <p className="text-sm text-gray-600">
-            Set the final outcome for <strong className="font-mono">{rfq.reference_number}</strong>
-          </p>
 
           <div className="grid grid-cols-2 gap-3">
             <button

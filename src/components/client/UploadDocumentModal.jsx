@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -69,12 +69,12 @@ export default function UploadDocumentModal({ entity, entityType, open, onClose,
             <Upload className="w-5 h-5" />
             Upload Documents
           </DialogTitle>
+          <DialogDescription>
+            Upload additional documents for <strong className="font-mono">{reference}</strong>
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
-          <p className="text-sm text-gray-600">
-            Upload additional documents for <strong className="font-mono">{reference}</strong>
-          </p>
 
           <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
             <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
