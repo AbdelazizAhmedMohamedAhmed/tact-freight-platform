@@ -7,12 +7,13 @@ import { ArrowRight, Phone } from 'lucide-react';
 export default function CTASection() {
   return (
     <section className="py-24 bg-[#D50000] relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80"
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-20"
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#D50000] via-[#D50000]/95 to-[#D50000]" />
       </div>
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">

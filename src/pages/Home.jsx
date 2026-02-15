@@ -1,6 +1,7 @@
 import React from 'react';
 import HeroSection from '../components/home/HeroSection';
 import ServicesOverview from '../components/home/ServicesOverview';
+import StatsSection from '../components/home/StatsSection';
 import GlobalLanesSection from '../components/home/GlobalLanesSection';
 import ClientsCarousel from '../components/home/ClientsCarousel';
 import PartnersSection from '../components/home/PartnersSection';
@@ -11,6 +12,7 @@ export default function Home() {
     <div>
       <HeroSection />
       <ServicesOverview />
+      <StatsSection />
       <GlobalLanesSection />
       <PartnersSection />
       <ClientsCarousel />

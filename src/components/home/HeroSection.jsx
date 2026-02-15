@@ -8,15 +8,20 @@ import { motion } from 'framer-motion';
 export default function HeroSection() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#1A1A1A]">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+      {/* Background Image with parallax */}
+      <motion.div 
+        className="absolute inset-0"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1.5 }}
+      >
         <img
-          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5eb19?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=1920&q=80"
           alt="Global Shipping"
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/80 to-transparent" />
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/60" />
+      </motion.div>
 
       {/* Animated red accent */}
       <div className="absolute top-0 left-0 w-2 h-full bg-[#D50000]" />
