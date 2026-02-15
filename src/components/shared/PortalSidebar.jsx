@@ -17,6 +17,7 @@ const portalMenus = {
     { label: 'My RFQs', icon: ClipboardList, page: 'ClientRFQs' },
     { label: 'Shipments', icon: Ship, page: 'ClientShipments' },
     { label: 'Track', icon: Truck, page: 'TrackShipment' },
+    { label: 'Support', icon: Bell, page: 'ClientSupport' },
     { label: 'Preferences', icon: Settings, page: 'ClientPreferences' },
   ],
   sales: [
@@ -31,6 +32,7 @@ const portalMenus = {
   operations: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'OperationsDashboard' },
     { label: 'Shipments', icon: Ship, page: 'OperationsShipments' },
+    { label: 'Workflow', icon: Activity, page: 'OperationsFlow' },
     { label: 'Create Shipment', icon: Package, page: 'CreateShipment' },
   ],
   admin: [
@@ -40,6 +42,7 @@ const portalMenus = {
     { label: 'All Shipments', icon: Ship, page: 'AdminShipments' },
     { label: 'Activity Log', icon: Activity, page: 'AdminActivity' },
     { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
+    { label: 'Reporting', icon: BarChart3, page: 'AdminReporting' },
   ],
 };
 
