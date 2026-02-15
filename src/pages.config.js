@@ -74,6 +74,7 @@ import SalesRFQQueue from './pages/SalesRFQQueue';
 import Services from './pages/Services';
 import TrackShipment from './pages/TrackShipment';
 import WhyChooseUs from './pages/WhyChooseUs';
+import ClientPreferences from './pages/ClientPreferences';
 import __Layout from './Layout.jsx';
 
 
@@ -105,6 +106,7 @@ export const PAGES = {
     "Services": Services,
     "TrackShipment": TrackShipment,
     "WhyChooseUs": WhyChooseUs,
+    "ClientPreferences": ClientPreferences,
 }
 
 export const pagesConfig = {
