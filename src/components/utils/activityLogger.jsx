@@ -47,6 +47,18 @@ export const logRFQAction = async (rfq, actionType, details, metadata = {}) => {
   });
 };
 
+export const logAssignment = async (rfq, assignmentType, assignedTo, assignedToName) => {
+  await logActivity({
+    action: `RFQ ${rfq.reference_number} assigned to ${assignedToName}`,
+    actionType: 'rfq_assigned',
+    entityType: 'rfq',
+    entityId: rfq.id,
+    entityReference: rfq.reference_number,
+    details: `Assigned to ${assignmentType} team member: ${assignedToName} (${assignedTo})`,
+    metadata: { assignment_type: assignmentType, assigned_to: assignedTo }
+  });
+};
+
 export const logShipmentAction = async (shipment, actionType, details, metadata = {}) => {
   await logActivity({
     action: details || `Shipment ${actionType.replace('shipment_', '').replace('_', ' ')}`,
