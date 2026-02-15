@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Send, Paperclip, FileText, User, Clock, Lock } from 'lucide-react';
 import { format } from 'date-fns';
+import { hasPermission, filterMessages } from '@/lib/permissions';
 
 export default function MessageThread({ entityType, entityId, userRole = 'client' }) {
   const [newMessage, setNewMessage] = useState('');
@@ -67,12 +68,9 @@ export default function MessageThread({ entityType, entityId, userRole = 'client
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const visibleMessages = messages.filter(m => {
-    if (userRole === 'client') return !m.is_internal;
-    return true; // Staff can see all messages
-  });
+  const visibleMessages = filterMessages(messages, userRole);
 
-  const isStaff = ['sales', 'pricing', 'operations', 'admin'].includes(userRole);
+  const canCreateInternal = hasPermission(userRole, 'messages', 'createInternal');
 
   return (
     <div className="flex flex-col h-full">
@@ -150,7 +148,7 @@ export default function MessageThread({ entityType, entityId, userRole = 'client
                 <span><Paperclip className="w-4 h-4 mr-2" />{uploading ? 'Uploading...' : 'Attach'}</span>
               </Button>
             </label>
-            {isStaff && (
+            {canCreateInternal && (
               <div className="flex items-center gap-2">
                 <Switch id={`internal-${entityId}`} checked={isInternal} onCheckedChange={setIsInternal} />
                 <Label htmlFor={`internal-${entityId}`} className="text-xs cursor-pointer flex items-center gap-1">
