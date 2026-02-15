@@ -159,7 +159,14 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             </div>
           )}
-        </div>
+          </TabsContent>
+
+          <TabsContent value="messages" className="mt-4">
+            <div className="bg-white rounded-xl border">
+              <MessageThread entityType="rfq" entityId={rfq.id} userRole={role} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
