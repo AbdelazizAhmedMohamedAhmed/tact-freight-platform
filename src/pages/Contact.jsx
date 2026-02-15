@@ -70,80 +70,105 @@ export default function Contact() {
 
   return (
     <div>
-      <section className="relative py-32 bg-[#1A1A1A]">
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <section className="relative py-32 bg-gradient-to-b from-[#1A1A1A] to-[#0F0F0F]">
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        >
+          <img 
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80"
+            alt=""
+            className="w-full h-full object-cover opacity-15"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#0F0F0F]/70" />
+        </motion.div>
+        <motion.div 
+          className="relative z-10 max-w-7xl mx-auto px-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           <span className="text-[#D50000] text-sm font-semibold uppercase tracking-widest">Contact</span>
-          <h1 className="text-4xl md:text-6xl font-black text-white mt-4">Get In Touch</h1>
-        </div>
+          <h1 className="text-4xl md:text-6xl font-black text-white mt-4">Get In <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D50000] to-[#FF6B6B]">Touch</span></h1>
+          <p className="mt-6 text-white/70 max-w-2xl">Have a question? Our team is here to help 24/7.</p>
+        </motion.div>
       </section>
 
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-gradient-to-b from-white to-[#F2F2F2]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-5 gap-12">
             {/* Info */}
-            <div className="lg:col-span-2 space-y-8">
+            <motion.div 
+             className="lg:col-span-2 space-y-8"
+             initial={{ opacity: 0, x: -30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true }}
+           >
               <div>
                 <h3 className="text-2xl font-bold text-[#1A1A1A]">Tact Freight</h3>
-                <p className="mt-3 text-gray-500 leading-relaxed">
-                  Reach out to our team for any inquiry about our services, pricing, or partnership opportunities.
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  Reach out to our team for any inquiry about our services, pricing, or partnership opportunities. We're here to help.
                 </p>
               </div>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-[#D50000]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">Address</p>
-                    <p className="text-gray-500 text-sm mt-1">29 Ahmad Kassem Gouda St., Nasr City, Cairo 11371, Egypt</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-[#D50000]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">Phone</p>
-                    <p className="text-gray-500 text-sm mt-1">(202) 4042643</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-[#D50000]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">Email</p>
-                    <p className="text-gray-500 text-sm mt-1">operation@tactfreight.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-5 h-5 text-[#D50000]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">Working Hours</p>
-                    <p className="text-gray-500 text-sm mt-1">Sun – Thu: 9:00 AM – 5:00 PM</p>
-                  </div>
-                </div>
+              <div className="space-y-4">
+                {[
+                  { icon: MapPin, title: 'Address', text: '29 Ahmad Kassem Gouda St., Nasr City, Cairo 11371, Egypt' },
+                  { icon: Phone, title: 'Phone', text: '(202) 4042643' },
+                  { icon: Mail, title: 'Email', text: 'operation@tactfreight.com' },
+                  { icon: Clock, title: 'Working Hours', text: 'Sun – Thu: 9:00 AM – 5:00 PM' },
+                ].map((item, i) => (
+                  <motion.div 
+                    key={i}
+                    className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    whileHover={{ x: 5 }}
+                  >
+                    <motion.div 
+                      className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center flex-shrink-0"
+                      whileHover={{ scale: 1.15 }}
+                    >
+                      <item.icon className="w-5 h-5 text-[#D50000]" />
+                    </motion.div>
+                    <div>
+                      <p className="font-semibold text-[#1A1A1A]">{item.title}</p>
+                      <p className="text-gray-600 text-sm mt-1">{item.text}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Form */}
-            <div className="lg:col-span-3">
-              {sent ? (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }} 
-                  animate={{ opacity: 1, scale: 1 }} 
-                  exit={{ opacity: 0 }}
-                  className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center py-20"
-                >
-                  <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto" />
-                  <h3 className="text-2xl font-bold text-[#1A1A1A] mt-6">Message Sent Successfully!</h3>
-                  <p className="text-gray-600 mt-2">Thank you for contacting us. Our team will get back to you within 24 hours.</p>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="bg-[#F2F2F2] rounded-2xl p-8 space-y-6">
+             <motion.div 
+               className="lg:col-span-3"
+               initial={{ opacity: 0, x: 30 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true }}
+             >
+               {sent ? (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.9 }} 
+                   animate={{ opacity: 1, scale: 1 }} 
+                   exit={{ opacity: 0 }}
+                   className="bg-gradient-to-br from-green-50 to-green-100 border border-green-300 rounded-2xl p-8 text-center py-20 shadow-lg"
+                 >
+                   <motion.div
+                     animate={{ scale: [1, 1.1, 1] }}
+                     transition={{ duration: 0.5 }}
+                   >
+                     <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto" />
+                   </motion.div>
+                   <h3 className="text-2xl font-bold text-[#1A1A1A] mt-6">Message Sent Successfully!</h3>
+                   <p className="text-gray-700 mt-2">Thank you for contacting us. Our team will get back to you within 24 hours.</p>
+                 </motion.div>
+               ) : (
+                 <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 space-y-6 border border-gray-200 shadow-lg hover:shadow-xl transition-shadow">
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label className="text-sm font-semibold">Full Name *</Label>
@@ -209,13 +234,18 @@ export default function Contact() {
                     />
                     {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                   </div>
-                  <Button type="submit" disabled={sending} className="w-full bg-[#D50000] hover:bg-[#B00000] text-white h-12 font-semibold">
-                    {sending ? 'Sending...' : 'Send Message'}
-                    <Send className="w-4 h-4 ml-2" />
-                  </Button>
-                </form>
-              )}
-            </div>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button type="submit" disabled={sending} className="w-full bg-[#D50000] hover:bg-[#B00000] text-white h-12 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all">
+                      {sending ? 'Sending...' : 'Send Message'}
+                      <Send className="w-4 h-4 ml-2" />
+                    </Button>
+                  </motion.div>
+                  </form>
+                  )}
+                  </motion.div>
           </div>
         </div>
       </section>
