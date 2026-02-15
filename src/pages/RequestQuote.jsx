@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { base44 } from '@/api/base44Client';
-import { CheckCircle2, Upload, Ship, Plane, Truck, ArrowRight, ArrowLeft, FileText } from 'lucide-react';
+import { CheckCircle2, Upload, Ship, Plane, Truck, ArrowRight, ArrowLeft, FileText, Plus, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { logRFQAction } from '@/components/utils/activityLogger';
 
@@ -21,9 +21,11 @@ export default function RequestQuote() {
   const [form, setForm] = useState({
     company_name: '', contact_person: '', email: '', phone: '',
     mode: '', incoterm: '', origin: '', destination: '',
-    cargo_type: '', container_type: '', num_containers: '', weight_kg: '', volume_cbm: '', num_packages: '',
+    cargo_type: '', weight_kg: '', volume_cbm: '', num_packages: '',
     commodity_description: '', is_hazardous: false, preferred_shipping_date: '',
   });
+  const [containers, setContainers] = useState([]);
+  const [currentContainer, setCurrentContainer] = useState({ type: '', quantity: '' });
 
   const set = (key, val) => setForm(prev => ({ ...prev, [key]: val }));
 
@@ -55,7 +57,7 @@ export default function RequestQuote() {
       weight_kg: Number(form.weight_kg) || 0,
       volume_cbm: Number(form.volume_cbm) || 0,
       num_packages: Number(form.num_packages) || 0,
-      num_containers: Number(form.num_containers) || 0,
+      containers: containers.length > 0 ? containers : undefined,
       document_urls: files,
       client_email: clientEmail || form.email,
     });
@@ -194,29 +196,62 @@ export default function RequestQuote() {
                   </div>
                 </div>
                 {form.mode === 'sea' && form.cargo_type === 'FCL' && (
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label>Container Type *</Label>
-                      <Select value={form.container_type} onValueChange={v => set('container_type', v)}>
-                        <SelectTrigger className="h-12"><SelectValue placeholder="Select container type" /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="20ft">20ft Standard</SelectItem>
-                          <SelectItem value="40ft">40ft Standard</SelectItem>
-                          <SelectItem value="40ft_hc">40ft High Cube</SelectItem>
-                          <SelectItem value="45ft_hc">45ft High Cube</SelectItem>
-                        </SelectContent>
-                      </Select>
+                  <div className="space-y-4">
+                    <Label>Container Details *</Label>
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Select value={currentContainer.type} onValueChange={v => setCurrentContainer(prev => ({ ...prev, type: v }))}>
+                          <SelectTrigger className="h-12"><SelectValue placeholder="Container type" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="20ft">20ft Standard</SelectItem>
+                            <SelectItem value="40ft">40ft Standard</SelectItem>
+                            <SelectItem value="40ft_hc">40ft High Cube</SelectItem>
+                            <SelectItem value="45ft_hc">45ft High Cube</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Input type="number" min="1" className="h-12" value={currentContainer.quantity} onChange={e => setCurrentContainer(prev => ({ ...prev, quantity: e.target.value }))} placeholder="Quantity" />
+                      </div>
+                      <Button 
+                        type="button" 
+                        onClick={() => {
+                          if (currentContainer.type && currentContainer.quantity) {
+                            setContainers(prev => [...prev, { type: currentContainer.type, quantity: Number(currentContainer.quantity) }]);
+                            setCurrentContainer({ type: '', quantity: '' });
+                          }
+                        }}
+                        disabled={!currentContainer.type || !currentContainer.quantity}
+                        className="h-12"
+                      >
+                        <Plus className="w-4 h-4 mr-2" /> Add
+                      </Button>
                     </div>
-                    <div className="space-y-2">
-                      <Label>Number of Containers *</Label>
-                      <Input type="number" min="1" className="h-12" value={form.num_containers} onChange={e => set('num_containers', e.target.value)} placeholder="1" />
-                    </div>
+                    {containers.length > 0 && (
+                      <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                        {containers.map((c, i) => (
+                          <div key={i} className="flex items-center justify-between bg-white rounded p-3">
+                            <span className="font-medium">{c.quantity}x {c.type.replace('_', ' ').toUpperCase()}</span>
+                            <button 
+                              onClick={() => setContainers(prev => prev.filter((_, idx) => idx !== i))}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
                 <div className="space-y-2"><Label>Commodity Description</Label><Textarea className="min-h-[100px]" value={form.commodity_description} onChange={e => set('commodity_description', e.target.value)} /></div>
                 <div className="flex justify-between">
                   <Button variant="outline" onClick={() => setStep(1)} className="h-12 px-8"><ArrowLeft className="w-4 h-4 mr-2" /> Back</Button>
-                  <Button onClick={() => setStep(3)} disabled={!form.mode || !form.origin || !form.destination} className="bg-[#D50000] hover:bg-[#B00000] h-12 px-8">
+                  <Button 
+                    onClick={() => setStep(3)} 
+                    disabled={!form.mode || !form.origin || !form.destination || (form.mode === 'sea' && form.cargo_type === 'FCL' && containers.length === 0)} 
+                    className="bg-[#D50000] hover:bg-[#B00000] h-12 px-8"
+                  >
                     Next <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
@@ -254,6 +289,16 @@ export default function RequestQuote() {
                     <div><span className="text-gray-500">Destination:</span> <span className="font-medium">{form.destination}</span></div>
                     <div><span className="text-gray-500">Weight:</span> <span className="font-medium">{form.weight_kg || 'N/A'} KG</span></div>
                     <div><span className="text-gray-500">Volume:</span> <span className="font-medium">{form.volume_cbm || 'N/A'} CBM</span></div>
+                    {containers.length > 0 && (
+                      <div className="sm:col-span-2">
+                        <span className="text-gray-500">Containers:</span> 
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {containers.map((c, i) => (
+                            <span key={i} className="font-medium bg-white px-3 py-1 rounded-full text-sm">{c.quantity}x {c.type.replace('_', ' ').toUpperCase()}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
