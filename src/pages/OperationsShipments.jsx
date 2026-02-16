@@ -44,13 +44,29 @@ export default function OperationsShipments() {
     setUpdating(true);
     const now = new Date().toISOString();
     const history = [...(selected.status_history || []), { status: newStatus, timestamp: now, note }];
-    const updatedShipment = await base44.entities.Shipment.update(selected.id, { status: newStatus, status_history: history });
+    
+    const updatedShipment = await base44.entities.Shipment.update(selected.id, { 
+      status: newStatus, 
+      status_history: history,
+      shipper_name: selected.shipper_name,
+      shipper_address: selected.shipper_address,
+      shipper_contact: selected.shipper_contact,
+      shipper_phone: selected.shipper_phone,
+      shipper_email: selected.shipper_email,
+      consignee_name: selected.consignee_name,
+      consignee_address: selected.consignee_address,
+      consignee_contact: selected.consignee_contact,
+      consignee_phone: selected.consignee_phone,
+      consignee_email: selected.consignee_email,
+      lead_time_days: selected.lead_time_days,
+      first_available_vessel: selected.first_available_vessel,
+    });
     
     // Log activity
     await logShipmentAction(
       updatedShipment,
       'shipment_status_changed',
-      `Shipment ${selected.tracking_number} status changed from ${selected.status} to ${newStatus}${note ? ': ' + note : ''}`,
+      `Shipment ${selected.tracking_number} updated - status changed from ${selected.status} to ${newStatus}${note ? ': ' + note : ''}`,
       { old_value: selected.status, new_value: newStatus }
     );
     
@@ -121,7 +137,7 @@ export default function OperationsShipments() {
 
       {/* Update Modal */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-mono text-[#D50000]">{selected?.tracking_number}</DialogTitle>
           </DialogHeader>
@@ -130,6 +146,126 @@ export default function OperationsShipments() {
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-500">Current Status:</span>
                 <StatusBadge status={selected.status} />
+              </div>
+
+              {/* Shipper Details */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <h3 className="font-semibold text-[#1A1A1A]">Shipper Details</h3>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label>Company Name</Label>
+                    <Input 
+                      value={selected.shipper_name || ''} 
+                      onChange={e => setSelected({...selected, shipper_name: e.target.value})}
+                      placeholder="Shipper company name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Contact Person</Label>
+                    <Input 
+                      value={selected.shipper_contact || ''} 
+                      onChange={e => setSelected({...selected, shipper_contact: e.target.value})}
+                      placeholder="Contact person"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Phone</Label>
+                    <Input 
+                      value={selected.shipper_phone || ''} 
+                      onChange={e => setSelected({...selected, shipper_phone: e.target.value})}
+                      placeholder="+1234567890"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input 
+                      value={selected.shipper_email || ''} 
+                      onChange={e => setSelected({...selected, shipper_email: e.target.value})}
+                      placeholder="shipper@company.com"
+                      type="email"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label>Address</Label>
+                    <Textarea 
+                      value={selected.shipper_address || ''} 
+                      onChange={e => setSelected({...selected, shipper_address: e.target.value})}
+                      placeholder="Full shipper address"
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Consignee Details */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <h3 className="font-semibold text-[#1A1A1A]">Consignee Details</h3>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label>Company Name</Label>
+                    <Input 
+                      value={selected.consignee_name || ''} 
+                      onChange={e => setSelected({...selected, consignee_name: e.target.value})}
+                      placeholder="Consignee company name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Contact Person</Label>
+                    <Input 
+                      value={selected.consignee_contact || ''} 
+                      onChange={e => setSelected({...selected, consignee_contact: e.target.value})}
+                      placeholder="Contact person"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Phone</Label>
+                    <Input 
+                      value={selected.consignee_phone || ''} 
+                      onChange={e => setSelected({...selected, consignee_phone: e.target.value})}
+                      placeholder="+1234567890"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input 
+                      value={selected.consignee_email || ''} 
+                      onChange={e => setSelected({...selected, consignee_email: e.target.value})}
+                      placeholder="consignee@company.com"
+                      type="email"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label>Address</Label>
+                    <Textarea 
+                      value={selected.consignee_address || ''} 
+                      onChange={e => setSelected({...selected, consignee_address: e.target.value})}
+                      placeholder="Full consignee address"
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Lead Time & Vessel Info */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Lead Time (Days)</Label>
+                  <Input 
+                    type="number"
+                    value={selected.lead_time_days || ''} 
+                    onChange={e => setSelected({...selected, lead_time_days: parseInt(e.target.value) || null})}
+                    placeholder="e.g. 14"
+                    min="1"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>First Available Vessel</Label>
+                  <Input 
+                    type="date"
+                    value={selected.first_available_vessel || ''} 
+                    onChange={e => setSelected({...selected, first_available_vessel: e.target.value})}
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -155,7 +291,7 @@ export default function OperationsShipments() {
               </div>
 
               <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000] w-full h-12">
-                {updating ? 'Updating...' : 'Update Status'}
+                {updating ? 'Updating...' : 'Update Shipment'}
               </Button>
             </div>
           )}
