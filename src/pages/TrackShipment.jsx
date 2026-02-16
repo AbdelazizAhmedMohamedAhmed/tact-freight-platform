@@ -160,9 +160,9 @@ export default function TrackShipment() {
                 <ShipmentMap shipment={shipment} />
               </div>
 
-              {/* Timeline */}
+              {/* Status History - All Updates */}
               <div className="bg-white border rounded-2xl p-8">
-                <h3 className="text-lg font-bold text-[#1A1A1A] mb-8">Detailed Shipment Milestones</h3>
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-6">All Status Updates</h3>
                 <div className="space-y-0">
                   {statusOrder.map((st, idx) => {
                     const isCompleted = idx <= currentStatusIdx;
@@ -171,38 +171,42 @@ export default function TrackShipment() {
                     return (
                       <div key={st} className="flex gap-4">
                         <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 border-2 transition-all ${
-                            isCurrent ? 'bg-[#D50000] border-[#D50000] text-white' :
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border-2 transition-all ${
+                            isCurrent ? 'bg-[#D50000] border-[#D50000] text-white shadow-lg' :
                             isCompleted ? 'bg-green-500 border-green-500 text-white' :
-                            'bg-white border-gray-200 text-gray-300'
+                            'bg-white border-gray-300 text-gray-400'
                           }`}>
-                            {isCompleted ? <Check className="w-4 h-4" /> : <span className="text-xs">{idx + 1}</span>}
+                            {isCompleted ? <Check className="w-5 h-5" /> : <span className="text-sm font-semibold">{idx + 1}</span>}
                           </div>
                           {idx < statusOrder.length - 1 && (
-                            <div className={`w-0.5 h-12 ${isCompleted ? 'bg-green-300' : 'bg-gray-200'}`} />
+                            <div className={`w-0.5 h-14 ${isCompleted ? 'bg-green-300' : 'bg-gray-200'}`} />
                           )}
                         </div>
-                        <div className="pb-12">
-                          <p className={`font-semibold ${isCompleted ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
+                        <div className="pb-14 flex-1">
+                          <p className={`font-bold text-base ${isCompleted ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
                             {statusLabels[st]}
                           </p>
                           {historyEntry ? (
-                            <div className="mt-1 space-y-1">
+                            <div className="mt-2 space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100">
                               {historyEntry.timestamp && (
-                                <p className="text-xs text-gray-500 flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  {format(new Date(historyEntry.timestamp), 'MMM d, yyyy HH:mm')}
+                                <p className="text-sm text-gray-700 flex items-center gap-2 font-medium">
+                                  <Clock className="w-4 h-4 text-[#D50000]" />
+                                  {format(new Date(historyEntry.timestamp), 'MMM dd, yyyy • HH:mm')}
                                 </p>
                               )}
                               {historyEntry.note && (
-                                <p className="text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">{historyEntry.note}</p>
+                                <p className="text-sm text-gray-700 bg-white px-3 py-2 rounded border border-gray-200">
+                                  {historyEntry.note}
+                                </p>
                               )}
                               {historyEntry.updated_by && (
-                                <p className="text-xs text-gray-400">Updated by: {historyEntry.updated_by}</p>
+                                <p className="text-xs text-gray-500 flex items-center gap-1">
+                                  Updated by: <span className="font-medium text-gray-700">{historyEntry.updated_by}</span>
+                                </p>
                               )}
                             </div>
                           ) : (
-                            isCompleted && <p className="text-xs text-gray-400 mt-1">Completed</p>
+                            isCompleted && <p className="text-sm text-gray-400 mt-2">Completed</p>
                           )}
                         </div>
                       </div>
@@ -211,23 +215,43 @@ export default function TrackShipment() {
                 </div>
               </div>
 
-              {/* Documents */}
-              {shipment.document_urls?.length > 0 && (
-                <div className="bg-white border rounded-2xl p-8">
-                  <h3 className="text-lg font-bold text-[#1A1A1A] mb-4">Documents</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
+              {/* Documents - Always Show Section */}
+              <div className="bg-white border rounded-2xl p-8">
+                <h3 className="text-lg font-bold text-[#1A1A1A] mb-6 flex items-center gap-2">
+                  <FileText className="w-6 h-6 text-[#D50000]" />
+                  Shipment Documents
+                </h3>
+                {shipment.document_urls && shipment.document_urls.length > 0 ? (
+                  <div className="grid sm:grid-cols-2 gap-4">
                     {shipment.document_urls.map((doc, i) => (
-                      <a key={i} href={doc.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-[#F2F2F2] rounded-xl hover:bg-gray-200 transition-colors">
-                        <FileText className="w-5 h-5 text-[#D50000]" />
-                        <div>
-                          <p className="font-medium text-sm">{doc.name || `Document ${i + 1}`}</p>
-                          <p className="text-xs text-gray-500">{doc.type || 'Document'}</p>
+                      <a 
+                        key={i} 
+                        href={doc.url || doc} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex items-center gap-4 p-5 bg-[#F2F2F2] rounded-xl hover:bg-gray-200 hover:shadow-md transition-all border border-gray-200 group"
+                      >
+                        <div className="w-12 h-12 rounded-lg bg-[#D50000]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D50000]/20 transition-colors">
+                          <FileText className="w-6 h-6 text-[#D50000]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-sm text-[#1A1A1A] truncate">{doc.name || `Document ${i + 1}`}</p>
+                          <p className="text-xs text-gray-500 mt-0.5">{doc.type || 'Shipping Document'}</p>
+                          {doc.uploaded_by && (
+                            <p className="text-xs text-gray-400 mt-1">Uploaded by: {doc.uploaded_by}</p>
+                          )}
                         </div>
                       </a>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="text-center py-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+                    <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-500 text-sm font-medium">No documents uploaded yet</p>
+                    <p className="text-gray-400 text-xs mt-1">Documents will appear here when added</p>
+                  </div>
+                )}
+              </div>
 
               {/* Operations Notes */}
               {shipment.operations_notes && (
