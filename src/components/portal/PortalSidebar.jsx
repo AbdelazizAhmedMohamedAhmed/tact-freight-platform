@@ -32,12 +32,14 @@ const menuByRole = {
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SupervisorDashboard' },
     { label: 'RFQs', icon: FileText, page: 'SupervisorRFQs' },
     { label: 'Shipments', icon: Ship, page: 'SupervisorShipments' },
+    { label: 'Activity Log', icon: BarChart3, page: 'AdminActivity' },
   ],
   admin: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'AdminDashboard' },
     { label: 'RFQs', icon: FileText, page: 'AdminRFQs' },
     { label: 'Shipments', icon: Ship, page: 'AdminShipments' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
+    { label: 'Activity Log', icon: BarChart3, page: 'AdminActivity' },
     { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
   ],
 };
