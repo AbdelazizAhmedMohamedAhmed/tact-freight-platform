@@ -7,6 +7,7 @@ import {
   Ship, ClipboardList, DollarSign, Package, BarChart3
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { logAuthAction } from '../utils/activityLogger';
 
 const menuByRole = {
   user: [
@@ -99,7 +100,10 @@ export default function PortalSidebar({ userRole, currentPage }) {
 
       <div className="p-3 border-t border-white/10">
         <button 
-          onClick={() => base44.auth.logout()}
+          onClick={async () => {
+            await logAuthAction('logout', 'User logged out');
+            base44.auth.logout();
+          }}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 w-full transition-colors"
         >
           <LogOut className="w-5 h-5" />
