@@ -60,9 +60,9 @@ export default function CommentThread({ entityType, entityId, userRole }) {
     });
   };
 
-  const isInternal = userRole !== 'user';
+  const canSeeInternal = userRole !== 'user';
   const filteredComments = comments.filter(c => 
-    !c.is_internal || isInternal
+    !c.is_internal || canSeeInternal
   );
 
   return (
@@ -119,7 +119,7 @@ export default function CommentThread({ entityType, entityId, userRole }) {
             {attachments.length > 0 && (
               <span className="text-xs text-gray-500">{attachments.length} file(s)</span>
             )}
-            {isInternal && (
+            {canSeeInternal && (
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" checked={isInternal} onChange={(e) => setIsInternal(e.target.checked)} />
                 Internal only
