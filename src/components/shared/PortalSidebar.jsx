@@ -40,6 +40,7 @@ const portalMenus = {
   ],
   admin: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'AdminDashboard' },
+    { label: 'Clients', icon: Users, page: 'Clients' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
     { label: 'All RFQs', icon: FileText, page: 'AdminRFQs' },
     { label: 'All Shipments', icon: Ship, page: 'AdminShipments' },

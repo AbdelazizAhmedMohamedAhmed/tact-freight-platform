@@ -9,7 +9,7 @@ const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'Client
 const salesPages = ['SalesDashboard', 'SalesRFQQueue'];
 const pricingPages = ['PricingDashboard', 'PricingQueue'];
 const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment', 'OperationsFlow'];
-const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting'];
+const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting', 'Clients'];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
