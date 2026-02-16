@@ -93,6 +93,7 @@ import WhyChooseUs from './pages/WhyChooseUs';
 import SupervisorDashboard from './pages/SupervisorDashboard';
 import SalesManagePricing from './pages/SalesManagePricing';
 import PricingContactSales from './pages/PricingContactSales';
+import PricingCreateQuotation from './pages/PricingCreateQuotation';
 import __Layout from './Layout.jsx';
 
 
@@ -143,6 +144,7 @@ export const PAGES = {
     "SupervisorDashboard": SupervisorDashboard,
     "SalesManagePricing": SalesManagePricing,
     "PricingContactSales": PricingContactSales,
+    "PricingCreateQuotation": PricingCreateQuotation,
 }
 
 export const pagesConfig = {

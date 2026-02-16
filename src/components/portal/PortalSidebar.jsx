@@ -24,6 +24,7 @@ const menuByRole = {
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
     { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
+    { label: 'Create Quotation', icon: FileText, page: 'PricingCreateQuotation' },
     { label: 'Contact Sales', icon: MessageSquare, page: 'PricingContactSales' },
   ],
   operations: [
