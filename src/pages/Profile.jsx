@@ -10,6 +10,8 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,15 +25,21 @@ export default function Profile() {
       .then(userData => {
         setUser(userData);
         setFullName(userData.full_name || '');
+        setEmail(userData.email || '');
+        setPhone(userData.phone || '');
         setLoading(false);
       })
       .catch(() => base44.auth.redirectToLogin());
   }, []);
 
-  const handleNameUpdate = async (e) => {
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
     if (!fullName.trim()) {
       setErrorMessage('Name cannot be empty');
+      return;
+    }
+    if (!email.trim()) {
+      setErrorMessage('Email cannot be empty');
       return;
     }
 
@@ -40,11 +48,20 @@ export default function Profile() {
     setSuccessMessage('');
 
     try {
-      await base44.auth.updateMe({ full_name: fullName });
-      setSuccessMessage('Name updated successfully!');
+      await base44.auth.updateMe({ 
+        full_name: fullName,
+        email: email,
+        phone: phone 
+      });
+      
+      // Refresh user data
+      const updatedUser = await base44.auth.me();
+      setUser(updatedUser);
+      
+      setSuccessMessage('Profile updated successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
-      setErrorMessage('Failed to update name');
+      setErrorMessage('Failed to update profile');
     } finally {
       setUpdating(false);
     }
@@ -125,14 +142,14 @@ export default function Profile() {
             <User className="w-8 h-8 text-white" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Email</p>
-            <p className="font-semibold text-[#1A1A1A]">{user?.email}</p>
+            <p className="text-lg font-bold text-[#1A1A1A]">Profile Information</p>
+            <p className="text-sm text-gray-500 mt-1">Update your personal details</p>
           </div>
         </div>
 
-        <form onSubmit={handleNameUpdate} className="space-y-4">
+        <form onSubmit={handleProfileUpdate} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="fullName">Full Name *</Label>
             <Input
               id="fullName"
               value={fullName}
@@ -141,12 +158,37 @@ export default function Profile() {
               placeholder="Your full name"
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email Address *</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12"
+              placeholder="your.email@example.com"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="h-12"
+              placeholder="+1 (555) 123-4567"
+            />
+          </div>
+
           <Button
             type="submit"
-            disabled={updating || fullName === user?.full_name}
-            className="bg-[#D50000] hover:bg-[#B00000] h-12"
+            disabled={updating || (fullName === user?.full_name && email === user?.email && phone === user?.phone)}
+            className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full"
           >
-            {updating ? 'Updating...' : 'Update Name'}
+            {updating ? 'Updating...' : 'Update Profile'}
           </Button>
         </form>
       </div>
