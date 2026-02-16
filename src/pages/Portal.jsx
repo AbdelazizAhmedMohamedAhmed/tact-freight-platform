@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LogIn } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from 'framer-motion';
 
 export default function Portal() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -96,15 +97,19 @@ export default function Portal() {
   }
 
   // Redirect based on user role/department
-  const dept = user.department || 'client';
-  const redirectPage = 
-    dept === 'admin' ? 'AdminDashboard' :
-    dept === 'sales' ? 'SalesDashboard' :
-    dept === 'pricing' ? 'PricingDashboard' :
-    dept === 'operations' ? 'OperationsDashboard' :
-    'ClientDashboard';
-
-  window.location.href = createPageUrl(redirectPage);
+  useEffect(() => {
+    if (user) {
+      const dept = user.department || 'client';
+      const redirectPage = 
+        dept === 'admin' ? 'AdminDashboard' :
+        dept === 'sales' ? 'SalesDashboard' :
+        dept === 'pricing' ? 'PricingDashboard' :
+        dept === 'operations' ? 'OperationsDashboard' :
+        'ClientDashboard';
+      
+      navigate(createPageUrl(redirectPage));
+    }
+  }, [user, navigate]);
   
   return null;
 }
