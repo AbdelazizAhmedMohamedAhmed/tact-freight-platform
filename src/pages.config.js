@@ -91,6 +91,8 @@ import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
 import SupervisorDashboard from './pages/SupervisorDashboard';
+import SalesManagePricing from './pages/SalesManagePricing';
+import PricingContactSales from './pages/PricingContactSales';
 import __Layout from './Layout.jsx';
 
 
@@ -139,6 +141,8 @@ export const PAGES = {
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
     "SupervisorDashboard": SupervisorDashboard,
+    "SalesManagePricing": SalesManagePricing,
+    "PricingContactSales": PricingContactSales,
 }
 
 export const pagesConfig = {
