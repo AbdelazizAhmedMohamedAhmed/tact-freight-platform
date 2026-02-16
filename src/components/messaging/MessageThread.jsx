@@ -10,7 +10,6 @@ import { Send, Paperclip, FileText, User, Clock, Lock } from 'lucide-react';
 import { format } from 'date-fns';
 import { logActivity } from '../utils/activityLogger';
 import { hasPermission, filterMessages } from '@/components/utils/permissions';
-import { logActivity } from '@/components/utils/activityLogger';
 
 export default function MessageThread({ entityType, entityId, userRole = 'client' }) {
   const [newMessage, setNewMessage] = useState('');
