@@ -1,62 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
-import { createPageUrl } from '../utils';
-import StatsCard from '../components/portal/StatsCard';
-import ClientRFQCard from '../components/client/ClientRFQCard';
-import ClientShipmentCard from '../components/client/ClientShipmentCard';
-import RFQDetailModal from '../components/portal/RFQDetailModal';
-import UploadDocumentModal from '../components/client/UploadDocumentModal';
 import { Button } from "@/components/ui/button";
-import { FileText, Ship, Truck, Plus, ArrowRight, Clock, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '../utils';
+import { FileText, Ship, Plus, Package, Clock, CheckCircle } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ClientDashboard() {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [selectedRFQ, setSelectedRFQ] = useState(null);
-  const [uploadEntity, setUploadEntity] = useState(null);
-  const [uploadType, setUploadType] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
+    base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: rfqs = [], isLoading: rfqLoading, refetch: refetchRFQs } = useQuery({
-    queryKey: ['client-rfqs', user?.email],
-    queryFn: () => base44.entities.RFQ.filter({ client_email: user.email }, '-created_date', 50),
+  const { data: rfqs = [], isLoading: rfqsLoading } = useQuery({
+    queryKey: ['my-rfqs'],
+    queryFn: () => base44.entities.RFQ.filter({ client_email: user?.email }, '-created_date', 10),
     enabled: !!user?.email,
   });
 
-  const { data: shipments = [], isLoading: shipLoading, refetch: refetchShipments } = useQuery({
-    queryKey: ['client-shipments', user?.email],
-    queryFn: () => base44.entities.Shipment.filter({ client_email: user.email }, '-created_date', 50),
+  const { data: shipments = [], isLoading: shipmentsLoading } = useQuery({
+    queryKey: ['my-shipments'],
+    queryFn: () => base44.entities.Shipment.filter({ client_email: user?.email }, '-created_date', 10),
     enabled: !!user?.email,
   });
 
-  // Redirect to first active shipment if any exist
-  useEffect(() => {
-    if (shipments.length > 0 && !shipLoading) {
-      const activeShipment = shipments.find(s => s.status !== 'delivered');
-      if (activeShipment) {
-        navigate(createPageUrl(`ClientShipments?ship=${activeShipment.id}`));
-      }
-    }
-  }, [shipments, shipLoading, navigate]);
+  const stats = {
+    totalRFQs: rfqs.length,
+    pendingRFQs: rfqs.filter(r => !['client_confirmed', 'rejected'].includes(r.status)).length,
+    activeShipments: shipments.filter(s => s.status !== 'delivered').length,
+    completedShipments: shipments.filter(s => s.status === 'delivered').length,
+  };
 
-  if (!user) return <div className="flex items-center justify-center h-96"><Skeleton className="w-64 h-8" /></div>;
-
-  const activeRFQs = rfqs.filter(r => !['accepted', 'rejected', 'cancelled', 'won', 'lost'].includes(r.status));
-  const activeShipments = shipments.filter(s => s.status !== 'delivered');
-  const pendingResponse = rfqs.filter(r => r.status === 'sent_to_client').length;
+  if (rfqsLoading || shipmentsLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A]">Welcome, {user.full_name || 'Client'}</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your shipments and quotation requests</p>
+          <h1 className="text-3xl font-bold text-[#1A1A1A]">Welcome, {user?.full_name}</h1>
+          <p className="text-gray-500 mt-1">Manage your shipments and requests</p>
         </div>
         <Link to={createPageUrl('RequestQuote')}>
           <Button className="bg-[#D50000] hover:bg-[#B00000]">
@@ -65,94 +56,108 @@ export default function ClientDashboard() {
         </Link>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard title="Total RFQs" value={rfqs.length} icon={FileText} iconColor="text-blue-600" />
-        <StatsCard title="Pending Response" value={pendingResponse} icon={Clock} iconColor="text-orange-600" />
-        <StatsCard title="Active Shipments" value={activeShipments.length} icon={Truck} iconColor="text-purple-600" />
-        <StatsCard title="Delivered" value={shipments.filter(s => s.status === 'delivered').length} icon={CheckCircle} iconColor="text-green-600" />
-      </div>
-
-      {/* Pending Actions Alert */}
-      {pendingResponse > 0 && (
-        <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-4">
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
           <div className="flex items-center gap-3">
-            <Clock className="w-6 h-6 text-orange-600" />
-            <div className="flex-1">
-              <p className="font-semibold text-orange-900">Action Required</p>
-              <p className="text-sm text-orange-700">You have {pendingResponse} quotation{pendingResponse !== 1 ? 's' : ''} awaiting your response</p>
+            <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+              <FileText className="w-6 h-6 text-blue-600" />
             </div>
-            <Link to={createPageUrl('ClientRFQs')}>
-              <Button size="sm" className="bg-orange-600 hover:bg-orange-700">Review Now</Button>
-            </Link>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.totalRFQs}</p>
+              <p className="text-sm text-gray-500">Total RFQs</p>
+            </div>
           </div>
         </div>
-      )}
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-orange-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
+              <Clock className="w-6 h-6 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.pendingRFQs}</p>
+              <p className="text-sm text-gray-500">Pending RFQs</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+              <Ship className="w-6 h-6 text-green-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.activeShipments}</p>
+              <p className="text-sm text-gray-500">Active Shipments</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-gray-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-gray-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.completedShipments}</p>
+              <p className="text-sm text-gray-500">Completed</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Recent RFQs */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-[#1A1A1A]">Recent RFQs</h2>
-          <Link to={createPageUrl('ClientRFQs')} className="text-[#D50000] text-sm font-medium flex items-center gap-1">
-            View All <ArrowRight className="w-4 h-4" />
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#1A1A1A]">Recent RFQs</h2>
+          <Link to={createPageUrl('ClientRFQs')}>
+            <Button variant="outline" size="sm">View All</Button>
           </Link>
         </div>
-        {rfqLoading ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1,2,3].map(i => <Skeleton key={i} className="h-64 rounded-2xl" />)}
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {rfqs.slice(0, 3).map(rfq => (
-              <ClientRFQCard
-                key={rfq.id}
-                rfq={rfq}
-                onViewDetails={() => setSelectedRFQ(rfq)}
-                onUploadDocs={() => { setUploadEntity(rfq); setUploadType('rfq'); }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Recent Shipments */}
-      {shipments.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-[#1A1A1A]">Active Shipments</h2>
-            <Link to={createPageUrl('ClientShipments')} className="text-[#D50000] text-sm font-medium flex items-center gap-1">
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          {shipLoading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1,2,3].map(i => <Skeleton key={i} className="h-64 rounded-2xl" />)}
+        <div className="space-y-3">
+          {rfqs.slice(0, 5).map(rfq => (
+            <div key={rfq.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div>
+                <p className="font-semibold text-[#1A1A1A]">{rfq.reference_number}</p>
+                <p className="text-sm text-gray-500">{rfq.origin} → {rfq.destination}</p>
+              </div>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                {rfq.status.replace(/_/g, ' ')}
+              </span>
             </div>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {activeShipments.slice(0, 3).map(shipment => (
-                <ClientShipmentCard
-                  key={shipment.id}
-                  shipment={shipment}
-                  onUploadDocs={() => { setUploadEntity(shipment); setUploadType('shipment'); }}
-                />
-              ))}
-            </div>
+          ))}
+          {rfqs.length === 0 && (
+            <p className="text-center text-gray-400 py-8">No RFQs yet. Create your first request!</p>
           )}
         </div>
-      )}
+      </div>
 
-      <RFQDetailModal rfq={selectedRFQ} open={!!selectedRFQ} onClose={() => setSelectedRFQ(null)} role="client" onUpdate={refetchRFQs} />
-      
-      <UploadDocumentModal
-        entity={uploadEntity}
-        entityType={uploadType}
-        open={!!uploadEntity}
-        onClose={() => { setUploadEntity(null); setUploadType(null); }}
-        onUpdate={() => {
-          if (uploadType === 'rfq') refetchRFQs();
-          else refetchShipments();
-        }}
-      />
+      {/* Active Shipments */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#1A1A1A]">Active Shipments</h2>
+          <Link to={createPageUrl('ClientShipments')}>
+            <Button variant="outline" size="sm">View All</Button>
+          </Link>
+        </div>
+        <div className="space-y-3">
+          {shipments.filter(s => s.status !== 'delivered').slice(0, 5).map(shipment => (
+            <div key={shipment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div>
+                <p className="font-semibold text-[#1A1A1A]">{shipment.tracking_number}</p>
+                <p className="text-sm text-gray-500">{shipment.origin} → {shipment.destination}</p>
+              </div>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                {shipment.status.replace(/_/g, ' ')}
+              </span>
+            </div>
+          ))}
+          {shipments.filter(s => s.status !== 'delivered').length === 0 && (
+            <p className="text-center text-gray-400 py-8">No active shipments</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
