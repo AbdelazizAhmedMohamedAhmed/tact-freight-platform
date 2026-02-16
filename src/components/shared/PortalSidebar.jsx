@@ -59,7 +59,7 @@ const portalMenus = {
   ],
 };
 
-export default function PortalSidebar({ department, currentPage }) {
+export default function PortalSidebar({ department, currentPage, userName }) {
   const [collapsed, setCollapsed] = useState(false);
   const menu = portalMenus[department] || portalMenus.client;
 

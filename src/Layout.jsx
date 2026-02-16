@@ -50,7 +50,7 @@ export default function Layout({ children, currentPageName }) {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
       `}</style>
-      <PortalSidebar userRole={user?.role || 'user'} currentPage={currentPageName} />
+      <PortalSidebar userRole={user?.role || 'user'} currentPage={currentPageName} userName={user?.full_name} />
       <main className="flex-1 overflow-auto">
         <div className="p-6 md:p-8">
           {children}
