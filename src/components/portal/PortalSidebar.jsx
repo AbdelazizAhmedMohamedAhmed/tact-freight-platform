@@ -4,7 +4,7 @@ import { createPageUrl } from '../../utils';
 import Logo from '../shared/Logo';
 import { 
   LayoutDashboard, FileText, Truck, Users, LogOut, Menu, X, 
-  Ship, ClipboardList, DollarSign, Package, BarChart3
+  Ship, ClipboardList, DollarSign, Package, BarChart3, MessageSquare
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { logAuthAction } from '../utils/activityLogger';
@@ -19,10 +19,12 @@ const menuByRole = {
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
     { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQs' },
+    { label: 'Manage Pricing', icon: DollarSign, page: 'SalesManagePricing' },
   ],
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
     { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
+    { label: 'Contact Sales', icon: MessageSquare, page: 'PricingContactSales' },
   ],
   operations: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'OperationsDashboard' },
