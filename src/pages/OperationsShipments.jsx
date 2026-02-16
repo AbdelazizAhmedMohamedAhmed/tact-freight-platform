@@ -13,6 +13,7 @@ import { Ship, Plane, Truck, Upload, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { Skeleton } from "@/components/ui/skeleton";
 import { sendStatusNotification } from '../components/utils/notificationService';
+import { logShipmentAction, logFileAction } from '../components/utils/activityLogger';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 const statusOrder = [
@@ -45,6 +46,14 @@ export default function OperationsShipments() {
     const history = [...(selected.status_history || []), { status: newStatus, timestamp: now, note }];
     const updatedShipment = await base44.entities.Shipment.update(selected.id, { status: newStatus, status_history: history });
     
+    // Log activity
+    await logShipmentAction(
+      updatedShipment,
+      'shipment_status_changed',
+      `Shipment ${selected.tracking_number} status changed from ${selected.status} to ${newStatus}${note ? ': ' + note : ''}`,
+      { old_value: selected.status, new_value: newStatus }
+    );
+    
     // Send notification to client
     await sendStatusNotification('shipment', updatedShipment, selected.status, newStatus);
     
@@ -61,6 +70,9 @@ export default function OperationsShipments() {
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     const docs = [...(selected.document_urls || []), { name: file.name, url: file_url, type: 'Document' }];
     await base44.entities.Shipment.update(selected.id, { document_urls: docs });
+    
+    await logFileAction('file_uploaded', file.name, 'shipment', selected.id, `Document uploaded to shipment ${selected.tracking_number}`);
+    
     refetch();
   };
 
