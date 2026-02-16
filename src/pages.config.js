@@ -52,44 +52,44 @@ import AdminActivity from './pages/AdminActivity';
 import AdminAnalytics from './pages/AdminAnalytics';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRFQs from './pages/AdminRFQs';
+import AdminReporting from './pages/AdminReporting';
 import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
+import AirFreight from './pages/AirFreight';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
 import ClientShipments from './pages/ClientShipments';
+import ClientSupport from './pages/ClientSupport';
 import Clients from './pages/Clients';
+import Consultancy from './pages/Consultancy';
 import Contact from './pages/Contact';
 import CreateShipment from './pages/CreateShipment';
+import CustomsClearance from './pages/CustomsClearance';
 import GlobalNetwork from './pages/GlobalNetwork';
 import Home from './pages/Home';
 import Industries from './pages/Industries';
+import InlandTransport from './pages/InlandTransport';
+import MyWorkspace from './pages/MyWorkspace';
 import OperationsDashboard from './pages/OperationsDashboard';
+import OperationsFlow from './pages/OperationsFlow';
 import OperationsShipments from './pages/OperationsShipments';
 import Portal from './pages/Portal';
 import PricingDashboard from './pages/PricingDashboard';
 import PricingQueue from './pages/PricingQueue';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Profile from './pages/Profile';
+import ProjectLogistics from './pages/ProjectLogistics';
 import RequestQuote from './pages/RequestQuote';
+import RoRoServices from './pages/RoRoServices';
 import SalesDashboard from './pages/SalesDashboard';
 import SalesRFQQueue from './pages/SalesRFQQueue';
-import Services from './pages/Services';
-import TrackShipment from './pages/TrackShipment';
-import WhyChooseUs from './pages/WhyChooseUs';
 import SeaFreight from './pages/SeaFreight';
-import AirFreight from './pages/AirFreight';
-import InlandTransport from './pages/InlandTransport';
-import CustomsClearance from './pages/CustomsClearance';
-import Warehousing from './pages/Warehousing';
-import ProjectLogistics from './pages/ProjectLogistics';
-import RoRoServices from './pages/RoRoServices';
-import Consultancy from './pages/Consultancy';
-import PrivacyPolicy from './pages/PrivacyPolicy';
+import Services from './pages/Services';
 import TermsOfService from './pages/TermsOfService';
-import ClientSupport from './pages/ClientSupport';
-import OperationsFlow from './pages/OperationsFlow';
-import AdminReporting from './pages/AdminReporting';
-import Profile from './pages/Profile';
-import MyWorkspace from './pages/MyWorkspace';
+import TrackShipment from './pages/TrackShipment';
+import Warehousing from './pages/Warehousing';
+import WhyChooseUs from './pages/WhyChooseUs';
 import __Layout from './Layout.jsx';
 
 
@@ -99,44 +99,44 @@ export const PAGES = {
     "AdminAnalytics": AdminAnalytics,
     "AdminDashboard": AdminDashboard,
     "AdminRFQs": AdminRFQs,
+    "AdminReporting": AdminReporting,
     "AdminShipments": AdminShipments,
     "AdminUsers": AdminUsers,
+    "AirFreight": AirFreight,
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
     "ClientShipments": ClientShipments,
+    "ClientSupport": ClientSupport,
     "Clients": Clients,
+    "Consultancy": Consultancy,
     "Contact": Contact,
     "CreateShipment": CreateShipment,
+    "CustomsClearance": CustomsClearance,
     "GlobalNetwork": GlobalNetwork,
     "Home": Home,
     "Industries": Industries,
+    "InlandTransport": InlandTransport,
+    "MyWorkspace": MyWorkspace,
     "OperationsDashboard": OperationsDashboard,
+    "OperationsFlow": OperationsFlow,
     "OperationsShipments": OperationsShipments,
     "Portal": Portal,
     "PricingDashboard": PricingDashboard,
     "PricingQueue": PricingQueue,
+    "PrivacyPolicy": PrivacyPolicy,
+    "Profile": Profile,
+    "ProjectLogistics": ProjectLogistics,
     "RequestQuote": RequestQuote,
+    "RoRoServices": RoRoServices,
     "SalesDashboard": SalesDashboard,
     "SalesRFQQueue": SalesRFQQueue,
-    "Services": Services,
-    "TrackShipment": TrackShipment,
-    "WhyChooseUs": WhyChooseUs,
     "SeaFreight": SeaFreight,
-    "AirFreight": AirFreight,
-    "InlandTransport": InlandTransport,
-    "CustomsClearance": CustomsClearance,
-    "Warehousing": Warehousing,
-    "ProjectLogistics": ProjectLogistics,
-    "RoRoServices": RoRoServices,
-    "Consultancy": Consultancy,
-    "PrivacyPolicy": PrivacyPolicy,
+    "Services": Services,
     "TermsOfService": TermsOfService,
-    "ClientSupport": ClientSupport,
-    "OperationsFlow": OperationsFlow,
-    "AdminReporting": AdminReporting,
-    "Profile": Profile,
-    "MyWorkspace": MyWorkspace,
+    "TrackShipment": TrackShipment,
+    "Warehousing": Warehousing,
+    "WhyChooseUs": WhyChooseUs,
 }
 
 export const pagesConfig = {

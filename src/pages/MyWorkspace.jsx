@@ -26,33 +26,31 @@ export default function MyWorkspace() {
 
   const { data: myRFQs = [] } = useQuery({
     queryKey: ['my-rfqs', user?.email],
-    queryFn: () => {
+    queryFn: async () => {
       if (user?.role === 'admin') {
         return base44.entities.RFQ.list('-created_date', 100);
       }
-      return base44.entities.RFQ.filter({ 
-        $or: [
-          { assigned_sales: user.email },
-          { assigned_pricing: user.email },
-          { client_email: user.email }
-        ]
-      }, '-created_date', 100);
+      const allRFQs = await base44.entities.RFQ.list('-created_date', 100);
+      return allRFQs.filter(rfq => 
+        rfq.assigned_sales === user.email || 
+        rfq.assigned_pricing === user.email || 
+        rfq.client_email === user.email
+      );
     },
     enabled: !!user?.email,
   });
 
   const { data: myShipments = [] } = useQuery({
     queryKey: ['my-shipments', user?.email],
-    queryFn: () => {
+    queryFn: async () => {
       if (user?.role === 'admin') {
         return base44.entities.Shipment.list('-created_date', 100);
       }
-      return base44.entities.Shipment.filter({
-        $or: [
-          { assigned_operations: user.email },
-          { client_email: user.email }
-        ]
-      }, '-created_date', 100);
+      const allShipments = await base44.entities.Shipment.list('-created_date', 100);
+      return allShipments.filter(shipment => 
+        shipment.assigned_operations === user.email || 
+        shipment.client_email === user.email
+      );
     },
     enabled: !!user?.email,
   });
