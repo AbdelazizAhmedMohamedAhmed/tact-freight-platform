@@ -1,102 +1,166 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import { base44 } from '@/api/base44Client';
+import { FileText, Ship, Users, BarChart3, TrendingUp, DollarSign } from 'lucide-react';
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
-import StatsCard from '../components/portal/StatsCard';
-import { Users, FileText, Ship, Activity, ArrowRight } from 'lucide-react';
-import { Skeleton } from "@/components/ui/skeleton";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-
-const COLORS = ['#D50000', '#1A1A1A', '#C0C0C0', '#FF6B6B', '#4ECDC4'];
+import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {
-  const { data: rfqs = [], isLoading: rfqL } = useQuery({
-    queryKey: ['admin-rfqs'], queryFn: () => base44.entities.RFQ.list('-created_date', 500),
-  });
-  const { data: shipments = [], isLoading: shipL } = useQuery({
-    queryKey: ['admin-shipments'], queryFn: () => base44.entities.Shipment.list('-created_date', 500),
-  });
-  const { data: users = [], isLoading: userL } = useQuery({
-    queryKey: ['admin-users'], queryFn: () => base44.entities.User.list('-created_date', 200),
+  const { data: rfqs = [], isLoading: rfqsLoading } = useQuery({
+    queryKey: ['all-rfqs'],
+    queryFn: () => base44.entities.RFQ.list('-created_date', 1000),
   });
 
-  // RFQ status distribution
-  const rfqStatusCounts = {};
-  rfqs.forEach(r => { rfqStatusCounts[r.status] = (rfqStatusCounts[r.status] || 0) + 1; });
-  const rfqPieData = Object.entries(rfqStatusCounts).map(([name, value]) => ({ name: name.replace(/_/g, ' '), value }));
+  const { data: shipments = [], isLoading: shipmentsLoading } = useQuery({
+    queryKey: ['all-shipments'],
+    queryFn: () => base44.entities.Shipment.list('-created_date', 1000),
+  });
 
-  // Shipment mode distribution
-  const modeCounts = {};
-  shipments.forEach(s => { modeCounts[s.mode] = (modeCounts[s.mode] || 0) + 1; });
-  const modeData = Object.entries(modeCounts).map(([name, value]) => ({ name, value }));
+  const { data: users = [], isLoading: usersLoading } = useQuery({
+    queryKey: ['all-users'],
+    queryFn: () => base44.entities.User.list(),
+  });
 
-  const isLoading = rfqL || shipL || userL;
+  const stats = {
+    totalRFQs: rfqs.length,
+    confirmedRFQs: rfqs.filter(r => r.status === 'client_confirmed').length,
+    totalShipments: shipments.length,
+    activeShipments: shipments.filter(s => s.status !== 'delivered').length,
+    totalUsers: users.length,
+    clientUsers: users.filter(u => u.role === 'user').length,
+  };
+
+  if (rfqsLoading || shipmentsLoading || usersLoading) {
+    return <div className="space-y-6"><Skeleton className="h-32 w-full" /><Skeleton className="h-64 w-full" /></div>;
+  }
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Admin Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-1">System overview and analytics</p>
+        <h1 className="text-3xl font-bold text-[#1A1A1A]">Admin Dashboard</h1>
+        <p className="text-gray-500 mt-1">Complete system overview and management</p>
       </div>
 
-      {isLoading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => <Skeleton key={i} className="h-28 rounded-2xl" />)}
-        </div>
-      ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatsCard title="Total Users" value={users.length} icon={Users} />
-          <StatsCard title="Total RFQs" value={rfqs.length} icon={FileText} />
-          <StatsCard title="Active Shipments" value={shipments.filter(s => s.status !== 'delivered').length} icon={Ship} />
-          <StatsCard title="Delivered" value={shipments.filter(s => s.status === 'delivered').length} icon={Activity} />
-        </div>
-      )}
-
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl shadow-sm p-6">
-          <h3 className="font-bold text-[#1A1A1A] mb-4">RFQ Status Distribution</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie data={rfqPieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90} label>
-                {rfqPieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+              <FileText className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.totalRFQs}</p>
+              <p className="text-sm text-gray-500">Total RFQs</p>
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-6">
-          <h3 className="font-bold text-[#1A1A1A] mb-4">Shipments by Mode</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={modeData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="#D50000" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
+              <Ship className="w-6 h-6 text-green-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.totalShipments}</p>
+              <p className="text-sm text-gray-500">Total Shipments</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
+              <Users className="w-6 h-6 text-purple-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.totalUsers}</p>
+              <p className="text-sm text-gray-500">Total Users</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-orange-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.confirmedRFQs}</p>
+              <p className="text-sm text-gray-500">Confirmed RFQs</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center">
+              <Ship className="w-6 h-6 text-red-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.activeShipments}</p>
+              <p className="text-sm text-gray-500">Active Shipments</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-gray-500">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
+              <Users className="w-6 h-6 text-gray-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#1A1A1A]">{stats.clientUsers}</p>
+              <p className="text-sm text-gray-500">Clients</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Manage Users', page: 'AdminUsers', icon: Users },
-          { label: 'All RFQs', page: 'AdminRFQs', icon: FileText },
-          { label: 'All Shipments', page: 'AdminShipments', icon: Ship },
-          { label: 'Activity Log', page: 'AdminActivity', icon: Activity },
-        ].map(item => (
-          <Link key={item.page} to={createPageUrl(item.page)} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#D50000]/10 flex items-center justify-center">
-              <item.icon className="w-6 h-6 text-[#D50000]" />
+      {/* Quick Actions */}
+      <div className="grid grid-cols-3 gap-6">
+        <Link to={createPageUrl('AdminRFQs')}>
+          <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer">
+            <FileText className="w-8 h-8 text-[#D50000] mb-3" />
+            <h3 className="font-bold text-[#1A1A1A]">Manage RFQs</h3>
+            <p className="text-sm text-gray-500 mt-1">View and manage all RFQs</p>
+          </div>
+        </Link>
+
+        <Link to={createPageUrl('AdminShipments')}>
+          <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer">
+            <Ship className="w-8 h-8 text-[#D50000] mb-3" />
+            <h3 className="font-bold text-[#1A1A1A]">Manage Shipments</h3>
+            <p className="text-sm text-gray-500 mt-1">Track all shipments</p>
+          </div>
+        </Link>
+
+        <Link to={createPageUrl('AdminUsers')}>
+          <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer">
+            <Users className="w-8 h-8 text-[#D50000] mb-3" />
+            <h3 className="font-bold text-[#1A1A1A]">Manage Users</h3>
+            <p className="text-sm text-gray-500 mt-1">User roles and permissions</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-xl font-bold text-[#1A1A1A] mb-4">Recent RFQs</h2>
+        <div className="space-y-3">
+          {rfqs.slice(0, 10).map(rfq => (
+            <div key={rfq.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div>
+                <p className="font-semibold text-[#1A1A1A]">{rfq.reference_number}</p>
+                <p className="text-sm text-gray-500">{rfq.company_name} • {rfq.origin} → {rfq.destination}</p>
+              </div>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                {rfq.status.replace(/_/g, ' ')}
+              </span>
             </div>
-            <div className="flex-1">
-              <p className="font-semibold text-[#1A1A1A]">{item.label}</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-gray-400" />
-          </Link>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

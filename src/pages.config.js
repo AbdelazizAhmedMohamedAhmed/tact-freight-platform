@@ -90,6 +90,7 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
+import SupervisorDashboard from './pages/SupervisorDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -137,6 +138,7 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
+    "SupervisorDashboard": SupervisorDashboard,
 }
 
 export const pagesConfig = {
