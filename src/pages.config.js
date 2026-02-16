@@ -89,6 +89,7 @@ import ClientSupport from './pages/ClientSupport';
 import OperationsFlow from './pages/OperationsFlow';
 import AdminReporting from './pages/AdminReporting';
 import Profile from './pages/Profile';
+import MyWorkspace from './pages/MyWorkspace';
 import __Layout from './Layout.jsx';
 
 
@@ -135,6 +136,7 @@ export const PAGES = {
     "OperationsFlow": OperationsFlow,
     "AdminReporting": AdminReporting,
     "Profile": Profile,
+    "MyWorkspace": MyWorkspace,
 }
 
 export const pagesConfig = {

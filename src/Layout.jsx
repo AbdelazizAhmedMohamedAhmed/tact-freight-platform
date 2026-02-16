@@ -5,11 +5,11 @@ import PortalSidebar from './components/shared/PortalSidebar';
 import { base44 } from '@/api/base44Client';
 
 const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Clients', 'Contact', 'RequestQuote', 'TrackShipment', 'Portal'];
-const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'ClientPreferences', 'ClientSupport'];
-const salesPages = ['SalesDashboard', 'SalesRFQQueue'];
-const pricingPages = ['PricingDashboard', 'PricingQueue'];
-const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment', 'OperationsFlow'];
-const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting', 'Clients'];
+const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'ClientPreferences', 'ClientSupport', 'MyWorkspace'];
+const salesPages = ['SalesDashboard', 'SalesRFQQueue', 'MyWorkspace', 'Clients'];
+const pricingPages = ['PricingDashboard', 'PricingQueue', 'MyWorkspace', 'Clients'];
+const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment', 'OperationsFlow', 'MyWorkspace', 'Clients'];
+const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting', 'Clients', 'MyWorkspace'];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);

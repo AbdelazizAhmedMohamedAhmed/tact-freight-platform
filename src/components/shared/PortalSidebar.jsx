@@ -13,6 +13,7 @@ import { base44 } from '@/api/base44Client';
 const portalMenus = {
   client: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'ClientDashboard' },
+    { label: 'My Workspace', icon: Activity, page: 'MyWorkspace' },
     { label: 'Submit RFQ', icon: FileText, page: 'RequestQuote' },
     { label: 'My RFQs', icon: ClipboardList, page: 'ClientRFQs' },
     { label: 'Shipments', icon: Ship, page: 'ClientShipments' },
@@ -23,23 +24,30 @@ const portalMenus = {
   ],
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
+    { label: 'My Workspace', icon: Activity, page: 'MyWorkspace' },
     { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQQueue' },
+    { label: 'Clients', icon: Users, page: 'Clients' },
     { label: 'Profile', icon: User, page: 'Profile' },
   ],
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
+    { label: 'My Workspace', icon: Activity, page: 'MyWorkspace' },
     { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
+    { label: 'Clients', icon: Users, page: 'Clients' },
     { label: 'Profile', icon: User, page: 'Profile' },
   ],
   operations: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'OperationsDashboard' },
+    { label: 'My Workspace', icon: Activity, page: 'MyWorkspace' },
     { label: 'Shipments', icon: Ship, page: 'OperationsShipments' },
     { label: 'Workflow', icon: Activity, page: 'OperationsFlow' },
     { label: 'Create Shipment', icon: Package, page: 'CreateShipment' },
+    { label: 'Clients', icon: Users, page: 'Clients' },
     { label: 'Profile', icon: User, page: 'Profile' },
   ],
   admin: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'AdminDashboard' },
+    { label: 'My Workspace', icon: Activity, page: 'MyWorkspace' },
     { label: 'Clients', icon: Users, page: 'Clients' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
     { label: 'All RFQs', icon: FileText, page: 'AdminRFQs' },
