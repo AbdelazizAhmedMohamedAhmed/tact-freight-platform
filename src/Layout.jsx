@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PublicNav from './components/shared/PublicNav';
 import Footer from './components/shared/Footer';
-import PortalSidebar from './components/shared/PortalSidebar';
+import PortalSidebar from './components/portal/PortalSidebar';
 import { base44 } from '@/api/base44Client';
 
-const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'RequestQuote', 'TrackShipment', 'Portal'];
-const clientPages = ['ClientDashboard', 'ClientRFQs', 'ClientShipments', 'ClientPreferences', 'ClientSupport', 'MyWorkspace'];
-const salesPages = ['SalesDashboard', 'SalesRFQQueue', 'MyWorkspace', 'Clients'];
-const pricingPages = ['PricingDashboard', 'PricingQueue', 'MyWorkspace', 'Clients'];
-const operationsPages = ['OperationsDashboard', 'OperationsShipments', 'CreateShipment', 'OperationsFlow', 'MyWorkspace', 'Clients'];
-const adminPages = ['AdminDashboard', 'AdminUsers', 'AdminRFQs', 'AdminShipments', 'AdminActivity', 'AdminAnalytics', 'AdminReporting', 'Clients', 'MyWorkspace'];
+const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'Portal'];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -21,15 +16,6 @@ export default function Layout({ children, currentPageName }) {
   }, [currentPageName]);
 
   const isPublic = publicPages.includes(currentPageName);
-  
-  const getDepartment = () => {
-    if (adminPages.includes(currentPageName)) return 'admin';
-    if (salesPages.includes(currentPageName)) return 'sales';
-    if (pricingPages.includes(currentPageName)) return 'pricing';
-    if (operationsPages.includes(currentPageName)) return 'operations';
-    if (clientPages.includes(currentPageName)) return 'client';
-    return user?.department || 'client';
-  };
 
   if (isPublic) {
     return (
@@ -53,15 +39,13 @@ export default function Layout({ children, currentPageName }) {
   }
 
   // Portal pages
-  const department = getDepartment();
-
   return (
     <div className="min-h-screen bg-[#F2F2F2] flex">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
       `}</style>
-      <PortalSidebar department={department} currentPage={currentPageName} />
+      <PortalSidebar userRole={user?.role} currentPage={currentPageName} />
       <main className="flex-1 overflow-auto">
         <div className="p-6 md:p-8">
           {children}

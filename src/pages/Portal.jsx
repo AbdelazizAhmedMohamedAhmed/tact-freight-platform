@@ -19,6 +19,21 @@ export default function Portal() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      const role = user.role || 'user';
+      const redirectPage = 
+        role === 'admin' ? 'AdminDashboard' :
+        role === 'sales' ? 'SalesDashboard' :
+        role === 'pricing' ? 'PricingDashboard' :
+        role === 'operations' ? 'OperationsDashboard' :
+        role === 'supervisor' ? 'SupervisorDashboard' :
+        'ClientDashboard';
+      
+      navigate(createPageUrl(redirectPage));
+    }
+  }, [user, navigate]);
+
   if (loading) {
     return (
       <motion.div 
@@ -41,7 +56,6 @@ export default function Portal() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        {/* Animated background elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 right-20 w-96 h-96 bg-[#D50000]/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-[#D50000]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -67,7 +81,7 @@ export default function Portal() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            Welcome Back
+            Welcome to Tact Freight
           </motion.h1>
           <motion.p 
             className="text-white/70 mb-8 text-lg"
@@ -75,14 +89,12 @@ export default function Portal() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Sign in to access your dashboard and manage your shipments with ease.
+            Sign in to manage your shipments and logistics.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
           >
             <Button 
               onClick={() => base44.auth.redirectToLogin(createPageUrl('Portal'))}
@@ -96,20 +108,5 @@ export default function Portal() {
     );
   }
 
-  // Redirect based on user role/department
-  useEffect(() => {
-    if (user) {
-      const dept = user.department || 'client';
-      const redirectPage = 
-        dept === 'admin' ? 'AdminDashboard' :
-        dept === 'sales' ? 'SalesDashboard' :
-        dept === 'pricing' ? 'PricingDashboard' :
-        dept === 'operations' ? 'OperationsDashboard' :
-        'ClientDashboard';
-      
-      navigate(createPageUrl(redirectPage));
-    }
-  }, [user, navigate]);
-  
   return null;
 }
