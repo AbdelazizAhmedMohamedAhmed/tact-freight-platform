@@ -12,6 +12,7 @@ import CommentThread from '../components/portal/CommentThread';
 import StatusBadge from '../components/portal/StatusBadge';
 import { Plus, Upload, X, FileText, Download, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { logRFQAction } from '../components/utils/activityLogger';
 
 export default function ClientRFQs() {
   const [user, setUser] = useState(null);
@@ -62,12 +63,16 @@ export default function ClientRFQs() {
       const seq = String(Math.floor(10000 + Math.random() * 90000));
       const ref = `RFQ-${year}-${seq}`;
 
-      return base44.entities.RFQ.create({
+      const newRFQ = await base44.entities.RFQ.create({
         ...data,
         reference_number: ref,
         status: 'submitted',
         client_email: user.email,
       });
+
+      await logRFQAction(newRFQ, 'rfq_created', `New RFQ created: ${ref} for ${data.company_name}`);
+      
+      return newRFQ;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
@@ -83,7 +88,14 @@ export default function ClientRFQs() {
   });
 
   const confirmQuoteMutation = useMutation({
-    mutationFn: (id) => base44.entities.RFQ.update(id, { status: 'client_confirmed' }),
+    mutationFn: async (id) => {
+      const updated = await base44.entities.RFQ.update(id, { status: 'client_confirmed' });
+      await logRFQAction(updated, 'rfq_status_changed', `RFQ ${updated.reference_number} confirmed by client`, { 
+        old_value: selectedRFQ.status, 
+        new_value: 'client_confirmed' 
+      });
+      return updated;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
       setSelectedRFQ(null);
