@@ -78,6 +78,12 @@ export default function AdminShipments() {
           </Table>
         </div>
       )}
+
+      <ShipmentDetailModal
+        shipment={selectedShipment}
+        open={!!selectedShipment}
+        onClose={() => setSelectedShipment(null)}
+      />
     </div>
   );
 }
