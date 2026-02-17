@@ -59,8 +59,10 @@ export default function ClientRFQs() {
   }, []);
 
   const { data: rfqs = [] } = useQuery({
-    queryKey: ['my-rfqs'],
-    queryFn: () => base44.entities.RFQ.filter({ client_email: user?.email }, '-created_date', 100),
+    queryKey: ['my-rfqs', companyId, user?.email],
+    queryFn: () => companyId
+      ? base44.entities.RFQ.filter({ company_id: companyId }, '-created_date', 100)
+      : base44.entities.RFQ.filter({ client_email: user.email }, '-created_date', 100),
     enabled: !!user,
   });
 
