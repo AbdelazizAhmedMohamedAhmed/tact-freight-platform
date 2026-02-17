@@ -162,7 +162,9 @@ export function getAccessiblePages(role) {
     sales: ['SalesDashboard', 'SalesRFQQueue'],
     pricing: ['PricingDashboard', 'PricingQueue'],
     operations: ['OperationsDashboard', 'OperationsShipments', 'CreateShipment'],
-    admin: ['AdminDashboard', 'AdminRFQs', 'AdminShipments', 'AdminUsers', 'AdminActivity', 'AdminAnalytics']
+    admin: ['AdminDashboard', 'AdminRFQs', 'AdminShipments', 'AdminUsers', 'AdminActivity', 'AdminAnalytics'],
+    customer_service: ['CustomerServiceDashboard', 'CustomerServiceRFQs', 'CustomerServiceShipments'],
+    analyst: ['AnalystDashboard', 'AdminAnalytics', 'AdminReporting', 'AdminActivity'],
   };
   
   return pages[role] || pages.client;
