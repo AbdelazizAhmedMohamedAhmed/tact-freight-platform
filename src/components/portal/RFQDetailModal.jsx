@@ -243,10 +243,10 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {/* Actions by role */}
-            {!isReadOnly && canUpdateStatus && role === 'sales' && ['submitted', 'sales_review'].includes(rfq.status) && (
+            {/* Actions by role - Admin acts as all roles */}
+            {!isReadOnly && canUpdateStatus && (role === 'sales' || role === 'admin') && ['submitted', 'sales_review'].includes(rfq.status) && (
               <div className="space-y-4 pt-4 border-t">
-                <div className="space-y-2"><Label>Notes</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Add notes for pricing team..." /></div>
+                <div className="space-y-2"><Label>Sales Notes</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Add notes for pricing team..." /></div>
                 <div className="flex gap-3">
                   <Button onClick={() => handleAction('pricing_review')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Forward to Pricing</Button>
                   {rfq.status === 'submitted' && <Button variant="outline" onClick={() => handleAction('sales_review')} disabled={updating}>Mark as Reviewing</Button>}
@@ -254,13 +254,13 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {!isReadOnly && canSendToClient && role === 'sales' && rfq.status === 'quoted' && (
+            {!isReadOnly && canSendToClient && (role === 'sales' || role === 'admin') && rfq.status === 'quoted' && (
               <div className="space-y-4 pt-4 border-t">
                 <Button onClick={() => handleAction('sent_to_client')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Send Quotation to Client</Button>
               </div>
             )}
 
-            {!isReadOnly && canUploadQuotation && role === 'pricing' && rfq.status === 'pricing_review' && (
+            {!isReadOnly && canUploadQuotation && (role === 'pricing' || role === 'admin') && rfq.status === 'pricing_review' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -277,7 +277,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {!isReadOnly && canAcceptReject && role === 'client' && rfq.status === 'sent_to_client' && (
+            {!isReadOnly && canAcceptReject && (role === 'client' || role === 'admin') && rfq.status === 'sent_to_client' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="flex gap-3">
                   <Button onClick={() => handleAction('accepted')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
