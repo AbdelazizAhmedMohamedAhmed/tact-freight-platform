@@ -1,367 +1,165 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { base44 } from '@/api/base44Client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '../utils';
+import { Loader2, Search, Ship, Plane, Truck, AlertCircle } from 'lucide-react';
 import StatusBadge from '../components/shared/StatusBadge';
-import { Ship, Plane, Truck, Upload, FileText } from 'lucide-react';
 import { format } from 'date-fns';
-import { Skeleton } from "@/components/ui/skeleton";
-import { sendStatusNotification } from '../components/utils/notificationService';
-import { logShipmentAction, logFileAction } from '../components/utils/activityLogger';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
-const statusOrder = [
-  'booking_confirmed', 'cargo_received', 'export_clearance', 'departed_origin',
-  'in_transit', 'arrived_destination', 'customs_clearance', 'out_for_delivery', 'delivered'
-];
-const statusLabels = {
-  booking_confirmed: 'Booking Confirmed', cargo_received: 'Cargo Received',
-  export_clearance: 'Export Clearance', departed_origin: 'Departed Origin',
-  in_transit: 'In Transit', arrived_destination: 'Arrived Destination',
-  customs_clearance: 'Customs Clearance', out_for_delivery: 'Out for Delivery',
-  delivered: 'Delivered',
+
+const statusGroups = {
+  active: ['booking_confirmed', 'cargo_received', 'export_clearance', 'departed_origin', 'in_transit', 'arrived_destination', 'customs_clearance', 'out_for_delivery'],
+  delivered: ['delivered'],
+  all: [],
 };
 
 export default function OperationsShipments() {
-  const [selected, setSelected] = useState(null);
-  const [newStatus, setNewStatus] = useState('');
-  const [note, setNote] = useState('');
-  const [updating, setUpdating] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('active');
 
-  const { data: shipments = [], isLoading, refetch } = useQuery({
-    queryKey: ['ops-all-shipments'],
-    queryFn: () => base44.entities.Shipment.list('-created_date', 200),
+  const { data: shipments = [], isLoading } = useQuery({
+    queryKey: ['operations_shipments'],
+    queryFn: () => base44.entities.Shipment.list('-created_date', 100),
   });
 
-  const handleStatusUpdate = async () => {
-    if (!newStatus || !selected) return;
-    setUpdating(true);
-    const now = new Date().toISOString();
-    const history = [...(selected.status_history || []), { status: newStatus, timestamp: now, note }];
+  const filteredShipments = shipments.filter(s => {
+    const matchesSearch = !searchTerm || 
+      s.tracking_number.includes(searchTerm) || 
+      s.company_name.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const updatedShipment = await base44.entities.Shipment.update(selected.id, { 
-      status: newStatus, 
-      status_history: history,
-      bl_number: selected.bl_number,
-      shipping_line_airline: selected.shipping_line_airline,
-      actual_weight_kg: selected.actual_weight_kg,
-      num_containers: selected.num_containers,
-      commodity_description: selected.commodity_description,
-      shipper_name: selected.shipper_name,
-      shipper_address: selected.shipper_address,
-      shipper_contact: selected.shipper_contact,
-      shipper_phone: selected.shipper_phone,
-      shipper_email: selected.shipper_email,
-      consignee_name: selected.consignee_name,
-      consignee_address: selected.consignee_address,
-      consignee_contact: selected.consignee_contact,
-      consignee_phone: selected.consignee_phone,
-      consignee_email: selected.consignee_email,
-      lead_time_days: selected.lead_time_days,
-      first_available_vessel: selected.first_available_vessel,
-    });
-    
-    // Log activity
-    await logShipmentAction(
-      updatedShipment,
-      'shipment_status_changed',
-      `Shipment ${selected.tracking_number} updated - status changed from ${selected.status} to ${newStatus}${note ? ': ' + note : ''}`,
-      { old_value: selected.status, new_value: newStatus }
-    );
-    
-    // Send notification to client
-    await sendStatusNotification('shipment', updatedShipment, selected.status, newStatus);
-    
-    setUpdating(false);
-    setNote('');
-    setNewStatus('');
-    setSelected(null);
-    refetch();
-  };
+    if (activeTab === 'all') return matchesSearch;
+    return matchesSearch && statusGroups[activeTab].includes(s.status);
+  });
 
-  const handleDocUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file || !selected) return;
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    const docs = [...(selected.document_urls || []), { name: file.name, url: file_url, type: 'Document' }];
-    await base44.entities.Shipment.update(selected.id, { document_urls: docs });
-    
-    await logFileAction('file_uploaded', file.name, 'shipment', selected.id, `Document uploaded to shipment ${selected.tracking_number}`);
-    
-    refetch();
+  const activeCounts = {
+    active: shipments.filter(s => statusGroups.active.includes(s.status)).length,
+    delivered: shipments.filter(s => s.status === 'delivered').length,
+    all: shipments.length,
   };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">All Shipments</h1>
-        <p className="text-gray-500 text-sm mt-1">Update statuses and manage shipments</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1A1A1A]">Operations Shipments</h1>
+          <p className="text-sm text-gray-600 mt-1">Manage and track all shipments</p>
+        </div>
+        <Link to={createPageUrl('CreateShipment')}>
+          <Button className="bg-[#D50000] hover:bg-[#B00000]">
+            + New Shipment
+          </Button>
+        </Link>
       </div>
 
-      {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : (
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead>Tracking #</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Mode</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>ETA</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {shipments.map(s => {
-                const MIcon = modeIcons[s.mode] || Ship;
-                return (
-                  <TableRow key={s.id} className="hover:bg-gray-50">
-                    <TableCell className="font-mono font-semibold text-[#D50000]">{s.tracking_number}</TableCell>
-                    <TableCell>{s.company_name}</TableCell>
-                    <TableCell className="text-sm">{s.origin} → {s.destination}</TableCell>
-                    <TableCell><div className="flex items-center gap-2 capitalize"><MIcon className="w-4 h-4 text-gray-400" />{s.mode}</div></TableCell>
-                    <TableCell><StatusBadge status={s.status} /></TableCell>
-                    <TableCell className="text-sm text-gray-500">{s.eta ? format(new Date(s.eta), 'MMM d') : '-'}</TableCell>
-                    <TableCell>
-                      <Button size="sm" variant="outline" onClick={() => { setSelected(s); setNewStatus(''); }}>Update</Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+        <Input
+          placeholder="Search by tracking number or company..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className="pl-10"
+        />
+      </div>
 
-      {/* Update Modal */}
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="font-mono text-[#D50000]">{selected?.tracking_number}</DialogTitle>
-          </DialogHeader>
-          {selected && (
-            <div className="space-y-6 mt-4">
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-500">Current Status:</span>
-                <StatusBadge status={selected.status} />
-              </div>
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="active">
+            Active {activeCounts.active > 0 && <span className="ml-2 bg-[#D50000] text-white text-xs px-2 py-0.5 rounded-full">{activeCounts.active}</span>}
+          </TabsTrigger>
+          <TabsTrigger value="delivered">
+            Delivered {activeCounts.delivered > 0 && <span className="ml-2 bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">{activeCounts.delivered}</span>}
+          </TabsTrigger>
+          <TabsTrigger value="all">
+            All {activeCounts.all > 0 && <span className="ml-2 bg-gray-600 text-white text-xs px-2 py-0.5 rounded-full">{activeCounts.all}</span>}
+          </TabsTrigger>
+        </TabsList>
 
-              {/* Shipper Details */}
-              <div className="border rounded-lg p-4 space-y-3">
-                <h3 className="font-semibold text-[#1A1A1A]">Shipper Details</h3>
-                <div className="grid md:grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label>Company Name</Label>
-                    <Input 
-                      value={selected.shipper_name || ''} 
-                      onChange={e => setSelected({...selected, shipper_name: e.target.value})}
-                      placeholder="Shipper company name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Contact Person</Label>
-                    <Input 
-                      value={selected.shipper_contact || ''} 
-                      onChange={e => setSelected({...selected, shipper_contact: e.target.value})}
-                      placeholder="Contact person"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Phone</Label>
-                    <Input 
-                      value={selected.shipper_phone || ''} 
-                      onChange={e => setSelected({...selected, shipper_phone: e.target.value})}
-                      placeholder="+1234567890"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input 
-                      value={selected.shipper_email || ''} 
-                      onChange={e => setSelected({...selected, shipper_email: e.target.value})}
-                      placeholder="shipper@company.com"
-                      type="email"
-                    />
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <Label>Address</Label>
-                    <Textarea 
-                      value={selected.shipper_address || ''} 
-                      onChange={e => setSelected({...selected, shipper_address: e.target.value})}
-                      placeholder="Full shipper address"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
+        {/* Content */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-[#D50000]" />
+          </div>
+        ) : filteredShipments.length === 0 ? (
+          <Card className="bg-gray-50">
+            <CardContent className="pt-6 text-center">
+              <AlertCircle className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+              <p className="text-gray-600">No shipments found</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid gap-3">
+            {filteredShipments.map(shipment => {
+              const ModeIcon = modeIcons[shipment.mode] || Ship;
+              return (
+                <Link
+                  key={shipment.id}
+                  to={createPageUrl(`OperationsShipmentDetail?id=${shipment.id}`)}
+                >
+                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                    <CardContent className="pt-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-mono font-semibold text-[#D50000] text-lg">
+                              {shipment.tracking_number}
+                            </span>
+                            <StatusBadge status={shipment.status} />
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            {shipment.company_name}
+                          </p>
+                        </div>
+                        <ModeIcon className="w-6 h-6 text-[#D50000] flex-shrink-0" />
+                      </div>
 
-              {/* Consignee Details */}
-              <div className="border rounded-lg p-4 space-y-3">
-                <h3 className="font-semibold text-[#1A1A1A]">Consignee Details</h3>
-                <div className="grid md:grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label>Company Name</Label>
-                    <Input 
-                      value={selected.consignee_name || ''} 
-                      onChange={e => setSelected({...selected, consignee_name: e.target.value})}
-                      placeholder="Consignee company name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Contact Person</Label>
-                    <Input 
-                      value={selected.consignee_contact || ''} 
-                      onChange={e => setSelected({...selected, consignee_contact: e.target.value})}
-                      placeholder="Contact person"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Phone</Label>
-                    <Input 
-                      value={selected.consignee_phone || ''} 
-                      onChange={e => setSelected({...selected, consignee_phone: e.target.value})}
-                      placeholder="+1234567890"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input 
-                      value={selected.consignee_email || ''} 
-                      onChange={e => setSelected({...selected, consignee_email: e.target.value})}
-                      placeholder="consignee@company.com"
-                      type="email"
-                    />
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <Label>Address</Label>
-                    <Textarea 
-                      value={selected.consignee_address || ''} 
-                      onChange={e => setSelected({...selected, consignee_address: e.target.value})}
-                      placeholder="Full consignee address"
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-sm">
+                        <div>
+                          <p className="text-gray-500 text-xs">Route</p>
+                          <p className="font-medium">{shipment.origin} → {shipment.destination}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">BL/AWB</p>
+                          <p className="font-medium">{shipment.bl_number || 'Pending'}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">Weight</p>
+                          <p className="font-medium">
+                            {shipment.actual_weight_kg || shipment.weight_kg || 'N/A'} KG
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">Updated</p>
+                          <p className="font-medium">
+                            {format(new Date(shipment.updated_date), 'MMM d')}
+                          </p>
+                        </div>
+                      </div>
 
-              {/* BL & Vessel/Airline Info */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>BL / AWB Number</Label>
-                  <Input 
-                    value={selected.bl_number || ''} 
-                    onChange={e => setSelected({...selected, bl_number: e.target.value})}
-                    placeholder="Bill of Lading / Air Waybill number"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Shipping Line / Airline</Label>
-                  <Input 
-                    value={selected.shipping_line_airline || ''} 
-                    onChange={e => setSelected({...selected, shipping_line_airline: e.target.value})}
-                    placeholder="e.g. Maersk, Emirates"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Lead Time (Days)</Label>
-                  <Input 
-                    type="number"
-                    value={selected.lead_time_days || ''} 
-                    onChange={e => setSelected({...selected, lead_time_days: parseInt(e.target.value) || null})}
-                    placeholder="e.g. 14"
-                    min="1"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>First Available Vessel</Label>
-                  <Input 
-                    type="date"
-                    value={selected.first_available_vessel || ''} 
-                    onChange={e => setSelected({...selected, first_available_vessel: e.target.value})}
-                  />
-                </div>
-              </div>
-
-              {/* Actual Weights & Containers */}
-              <div className="border rounded-lg p-4 space-y-3 bg-blue-50">
-                <h3 className="font-semibold text-[#1A1A1A]">Actual Cargo Details</h3>
-                <div className="grid md:grid-cols-3 gap-3">
-                  <div className="space-y-2">
-                    <Label>Actual Weight (KG)</Label>
-                    <Input 
-                      type="number"
-                      value={selected.actual_weight_kg || ''} 
-                      onChange={e => setSelected({...selected, actual_weight_kg: parseFloat(e.target.value) || null})}
-                      placeholder="Actual weight in KG"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Number of Containers</Label>
-                    <Input 
-                      type="number"
-                      value={selected.num_containers || ''} 
-                      onChange={e => setSelected({...selected, num_containers: parseInt(e.target.value) || null})}
-                      placeholder="e.g. 2"
-                      min="0"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Volume (CBM)</Label>
-                    <Input 
-                      type="number"
-                      value={selected.volume_cbm || ''} 
-                      onChange={e => setSelected({...selected, volume_cbm: parseFloat(e.target.value) || null})}
-                      placeholder="Cubic meters"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Commodity Description</Label>
-                  <Textarea 
-                    value={selected.commodity_description || ''} 
-                    onChange={e => setSelected({...selected, commodity_description: e.target.value})}
-                    placeholder="Detailed commodity description..."
-                    rows={2}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Update Status</Label>
-                <Select value={newStatus} onValueChange={setNewStatus}>
-                  <SelectTrigger><SelectValue placeholder="Select new status" /></SelectTrigger>
-                  <SelectContent>
-                    {statusOrder.map(s => (
-                      <SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Note</Label>
-                <Textarea value={note} onChange={e => setNote(e.target.value)} placeholder="Optional status update note..." />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Upload Document</Label>
-                <Input type="file" onChange={handleDocUpload} />
-              </div>
-
-              <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000] w-full h-12">
-                {updating ? 'Updating...' : 'Update Shipment'}
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+                      {/* ETA Info */}
+                      {shipment.eta && (
+                        <div className="bg-blue-50 border border-blue-200 rounded px-3 py-2 text-xs">
+                          <p className="text-blue-900">
+                            ETA: <span className="font-semibold">{format(new Date(shipment.eta), 'MMM d, yyyy')}</span>
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </Tabs>
     </div>
   );
 }
