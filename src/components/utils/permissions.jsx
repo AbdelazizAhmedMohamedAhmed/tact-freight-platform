@@ -5,17 +5,19 @@ const ROLES = {
   SALES: 'sales',
   PRICING: 'pricing',
   OPERATIONS: 'operations',
-  ADMIN: 'admin'
+  ADMIN: 'admin',
+  CUSTOMER_SERVICE: 'customer_service',
+  ANALYST: 'analyst',
 };
 
 // Define permissions for each module and action
 const PERMISSIONS = {
   rfqs: {
-    view: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.ADMIN],
+    view: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     create: [ROLES.CLIENT, ROLES.ADMIN],
     edit: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN],
     delete: [ROLES.ADMIN],
-    viewAll: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN], // Can view all RFQs, not just own
+    viewAll: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE], // Can view all RFQs, not just own
     assign: [ROLES.ADMIN],
     updateStatus: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN],
     uploadQuotation: [ROLES.PRICING, ROLES.ADMIN],
@@ -23,11 +25,11 @@ const PERMISSIONS = {
     acceptReject: [ROLES.CLIENT] // Client can accept/reject their own RFQs
   },
   shipments: {
-    view: [ROLES.CLIENT, ROLES.OPERATIONS, ROLES.ADMIN],
+    view: [ROLES.CLIENT, ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     create: [ROLES.OPERATIONS, ROLES.ADMIN],
     edit: [ROLES.OPERATIONS, ROLES.ADMIN],
     delete: [ROLES.ADMIN],
-    viewAll: [ROLES.OPERATIONS, ROLES.ADMIN],
+    viewAll: [ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     updateStatus: [ROLES.OPERATIONS, ROLES.ADMIN],
     uploadDocuments: [ROLES.OPERATIONS, ROLES.ADMIN],
     trackPublic: ['*'] // Anyone can track with tracking number
@@ -41,17 +43,20 @@ const PERMISSIONS = {
     viewOwn: ['*'] // Everyone can view their own profile
   },
   messages: {
-    view: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN],
-    create: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN],
-    viewInternal: [ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN], // Internal notes only for staff
+    view: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
+    create: [ROLES.CLIENT, ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
+    viewInternal: [ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     createInternal: [ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ADMIN]
   },
   analytics: {
-    view: [ROLES.ADMIN],
-    viewDepartment: [ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS] // Can view their dept metrics
+    view: [ROLES.ADMIN, ROLES.ANALYST],
+    viewDepartment: [ROLES.SALES, ROLES.PRICING, ROLES.OPERATIONS, ROLES.ANALYST]
   },
   activityLog: {
-    view: [ROLES.ADMIN]
+    view: [ROLES.ADMIN, ROLES.ANALYST]
+  },
+  reporting: {
+    view: [ROLES.ADMIN, ROLES.ANALYST],
   }
 };
 
