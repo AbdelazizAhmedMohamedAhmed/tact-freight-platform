@@ -35,6 +35,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const canUploadQuotation = hasPermission(role, 'rfqs', 'uploadQuotation');
   const canSendToClient = hasPermission(role, 'rfqs', 'sendToClient');
   const canAcceptReject = hasPermission(role, 'rfqs', 'acceptReject');
+  const isReadOnly = role === 'customer_service' || role === 'analyst';
 
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
