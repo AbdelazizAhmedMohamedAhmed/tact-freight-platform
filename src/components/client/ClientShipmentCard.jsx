@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import StatusBadge from '../shared/StatusBadge';
-import { Ship, Plane, Truck, MapPin, Calendar, Upload, ExternalLink } from 'lucide-react';
+import { Ship, Plane, Truck, MapPin, Calendar, Upload, Eye } from 'lucide-react';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '../../utils';
+import ShipmentDetailModal from './ShipmentDetailModal';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
 export default function ClientShipmentCard({ shipment, onUploadDocs }) {
+  const [detailOpen, setDetailOpen] = useState(false);
   const MIcon = modeIcons[shipment.mode] || Ship;
 
   const getStatusMessage = (status) => {
