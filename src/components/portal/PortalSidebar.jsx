@@ -12,6 +12,7 @@ import { logAuthAction } from '../utils/activityLogger';
 const menuByRole = {
   user: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'ClientDashboard' },
+    { label: 'New RFQ', icon: Plus, page: 'ClientCreateRFQ' },
     { label: 'My RFQs', icon: FileText, page: 'ClientRFQs' },
     { label: 'My Shipments', icon: Ship, page: 'ClientShipments' },
     { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },

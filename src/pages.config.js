@@ -75,6 +75,8 @@ import OperationsDashboard from './pages/OperationsDashboard';
 import OperationsFlow from './pages/OperationsFlow';
 import OperationsShipments from './pages/OperationsShipments';
 import Portal from './pages/Portal';
+import PricingContactSales from './pages/PricingContactSales';
+import PricingCreateQuotation from './pages/PricingCreateQuotation';
 import PricingDashboard from './pages/PricingDashboard';
 import PricingQueue from './pages/PricingQueue';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -83,17 +85,16 @@ import ProjectLogistics from './pages/ProjectLogistics';
 import RequestQuote from './pages/RequestQuote';
 import RoRoServices from './pages/RoRoServices';
 import SalesDashboard from './pages/SalesDashboard';
+import SalesManagePricing from './pages/SalesManagePricing';
 import SalesRFQQueue from './pages/SalesRFQQueue';
 import SeaFreight from './pages/SeaFreight';
 import Services from './pages/Services';
+import SupervisorDashboard from './pages/SupervisorDashboard';
 import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import SupervisorDashboard from './pages/SupervisorDashboard';
-import SalesManagePricing from './pages/SalesManagePricing';
-import PricingContactSales from './pages/PricingContactSales';
-import PricingCreateQuotation from './pages/PricingCreateQuotation';
+import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import __Layout from './Layout.jsx';
 
 
@@ -126,6 +127,8 @@ export const PAGES = {
     "OperationsFlow": OperationsFlow,
     "OperationsShipments": OperationsShipments,
     "Portal": Portal,
+    "PricingContactSales": PricingContactSales,
+    "PricingCreateQuotation": PricingCreateQuotation,
     "PricingDashboard": PricingDashboard,
     "PricingQueue": PricingQueue,
     "PrivacyPolicy": PrivacyPolicy,
@@ -134,17 +137,16 @@ export const PAGES = {
     "RequestQuote": RequestQuote,
     "RoRoServices": RoRoServices,
     "SalesDashboard": SalesDashboard,
+    "SalesManagePricing": SalesManagePricing,
     "SalesRFQQueue": SalesRFQQueue,
     "SeaFreight": SeaFreight,
     "Services": Services,
+    "SupervisorDashboard": SupervisorDashboard,
     "TermsOfService": TermsOfService,
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "SupervisorDashboard": SupervisorDashboard,
-    "SalesManagePricing": SalesManagePricing,
-    "PricingContactSales": PricingContactSales,
-    "PricingCreateQuotation": PricingCreateQuotation,
+    "ClientCreateRFQ": ClientCreateRFQ,
 }
 
 export const pagesConfig = {
