@@ -62,6 +62,7 @@ const roleLabels = {
   pricing: 'Pricing Portal',
   operations: 'Operations Portal',
   supervisor: 'Supervisor Portal',
+  bizdev: 'Biz Dev Portal',
   admin: 'Admin Portal',
 };
 
