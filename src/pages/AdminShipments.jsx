@@ -124,7 +124,7 @@ export default function AdminShipments() {
                 return (
                   <TableRow key={s.id} className="hover:bg-gray-50">
                     <TableCell>
-                      <button onClick={() => setSelectedShipment(s)} className="font-mono font-semibold text-[#D50000] hover:underline">
+                      <button onClick={() => { setSelectedShipment(s); setNewStatus(''); }} className="font-mono font-semibold text-[#D50000] hover:underline">
                         {s.tracking_number}
                       </button>
                     </TableCell>
