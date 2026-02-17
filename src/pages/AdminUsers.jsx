@@ -31,6 +31,11 @@ export default function AdminUsers() {
   const [inviteRole, setInviteRole] = useState('user');
   const [inviteDept, setInviteDept] = useState('client');
   const [inviting, setInviting] = useState(false);
+  const [dummyOpen, setDummyOpen] = useState(false);
+  const [dummyName, setDummyName] = useState('');
+  const [dummyRole, setDummyRole] = useState('user');
+  const [dummyDept, setDummyDept] = useState('client');
+  const [creatingDummy, setCreatingDummy] = useState(false);
 
   const { data: users = [], isLoading, error, refetch } = useQuery({
     queryKey: ['admin-users-list'],
@@ -73,6 +78,36 @@ export default function AdminUsers() {
     refetch();
   };
 
+  const handleCreateDummy = async () => {
+    if (!dummyName) return;
+    setCreatingDummy(true);
+
+    const dummyEmail = `dummy-${Date.now()}@tact-freight.local`;
+    
+    await base44.users.inviteUser(dummyEmail, dummyRole);
+    
+    // Update with name and department
+    const newUser = await base44.entities.User.filter({ email: dummyEmail }, '-created_date', 1);
+    if (newUser.length > 0) {
+      await base44.entities.User.update(newUser[0].id, { 
+        department: dummyDept 
+      });
+    }
+    
+    await logUserAction(
+      { email: dummyEmail, role: dummyRole },
+      'user_invited',
+      `Dummy user ${dummyName} (${dummyEmail}) created with role ${dummyRole} and department ${dummyDept}`
+    );
+
+    setCreatingDummy(false);
+    setDummyOpen(false);
+    setDummyName('');
+    setDummyRole('user');
+    setDummyDept('client');
+    refetch();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
@@ -81,14 +116,17 @@ export default function AdminUsers() {
           <p className="text-gray-500 text-sm mt-1">Manage all system users</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input placeholder="Search users..." className="pl-10" value={search} onChange={e => setSearch(e.target.value)} />
-          </div>
-          <Button onClick={() => setInviteOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
-            <UserPlus className="w-4 h-4 mr-2" /> Invite User
-          </Button>
-        </div>
+           <div className="relative w-64">
+             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+             <Input placeholder="Search users..." className="pl-10" value={search} onChange={e => setSearch(e.target.value)} />
+           </div>
+           <Button onClick={() => setInviteOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
+             <UserPlus className="w-4 h-4 mr-2" /> Invite User
+           </Button>
+           <Button onClick={() => setDummyOpen(true)} variant="outline">
+             <UserPlus className="w-4 h-4 mr-2" /> Create Dummy
+           </Button>
+         </div>
       </div>
 
       {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : error ? (
@@ -179,6 +217,47 @@ export default function AdminUsers() {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Dummy User Dialog */}
+      <Dialog open={dummyOpen} onOpenChange={setDummyOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Create Dummy User</DialogTitle></DialogHeader>
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label>User Name</Label>
+              <Input value={dummyName} onChange={e => setDummyName(e.target.value)} placeholder="e.g., Test Sales User" />
+            </div>
+            <div className="space-y-2">
+              <Label>App Role</Label>
+              <Select value={dummyRole} onValueChange={setDummyRole}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Department</Label>
+              <Select value={dummyDept} onValueChange={setDummyDept}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="client">Client</SelectItem>
+                  <SelectItem value="sales">Sales</SelectItem>
+                  <SelectItem value="pricing">Pricing</SelectItem>
+                  <SelectItem value="operations">Operations</SelectItem>
+                  <SelectItem value="customer_service">Customer Service</SelectItem>
+                  <SelectItem value="analyst">Analyst</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button onClick={handleCreateDummy} disabled={creatingDummy || !dummyName} className="bg-[#D50000] hover:bg-[#B00000] w-full">
+              {creatingDummy ? 'Creating...' : 'Create Dummy User'}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
