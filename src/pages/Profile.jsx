@@ -21,6 +21,16 @@ export default function Profile() {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Company details state
+  const [companyName, setCompanyName] = useState('');
+  const [companyCountry, setCompanyCountry] = useState('');
+  const [companyCity, setCompanyCity] = useState('');
+  const [companyPhone, setCompanyPhone] = useState('');
+  const [companyWebsite, setCompanyWebsite] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
+  const [companyIndustry, setCompanyIndustry] = useState('');
+  const [savingCompany, setSavingCompany] = useState(false);
+
   useEffect(() => {
     base44.auth.me()
       .then(userData => {
