@@ -17,12 +17,12 @@ const PERMISSIONS = {
     create: [ROLES.CLIENT, ROLES.ADMIN],
     edit: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN],
     delete: [ROLES.ADMIN],
-    viewAll: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE], // Can view all RFQs, not just own
-    assign: [ROLES.ADMIN],
+    viewAll: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
+    assign: [ROLES.ADMIN, ROLES.SALES],
     updateStatus: [ROLES.SALES, ROLES.PRICING, ROLES.ADMIN],
     uploadQuotation: [ROLES.PRICING, ROLES.ADMIN],
     sendToClient: [ROLES.SALES, ROLES.ADMIN],
-    acceptReject: [ROLES.CLIENT] // Client can accept/reject their own RFQs
+    acceptReject: [ROLES.CLIENT, ROLES.ADMIN]
   },
   shipments: {
     view: [ROLES.CLIENT, ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
@@ -32,7 +32,7 @@ const PERMISSIONS = {
     viewAll: [ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     updateStatus: [ROLES.OPERATIONS, ROLES.ADMIN],
     uploadDocuments: [ROLES.OPERATIONS, ROLES.ADMIN],
-    trackPublic: ['*'] // Anyone can track with tracking number
+    trackPublic: ['*']
   },
   users: {
     view: [ROLES.ADMIN],
