@@ -73,16 +73,20 @@ export default function ClientShipmentCard({ shipment, onUploadDocs }) {
         </div>
 
         <div className="flex gap-2">
-          <Link to={createPageUrl(`TrackShipment?tn=${shipment.tracking_number}`)} className="flex-1">
-            <Button className="w-full bg-[#D50000] hover:bg-[#B00000]">
-              <ExternalLink className="w-4 h-4 mr-2" /> Track Live
-            </Button>
-          </Link>
+          <Button onClick={() => setDetailOpen(true)} className="flex-1 bg-[#D50000] hover:bg-[#B00000]">
+            <Eye className="w-4 h-4 mr-2" /> View Updates
+          </Button>
           <Button onClick={onUploadDocs} variant="outline" size="icon">
             <Upload className="w-4 h-4" />
           </Button>
         </div>
       </CardContent>
+
+      <ShipmentDetailModal
+        shipment={shipment}
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+      />
     </Card>
   );
 }
