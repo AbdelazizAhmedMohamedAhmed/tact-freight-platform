@@ -88,6 +88,7 @@ export default function AdminShipments() {
         shipment={selectedShipment}
         open={!!selectedShipment}
         onClose={() => setSelectedShipment(null)}
+        readOnly={userDept === 'customer_service' || userDept === 'analyst'}
       />
     </div>
   );
