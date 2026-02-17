@@ -32,7 +32,7 @@ export default function AdminUsers() {
   const [inviteDept, setInviteDept] = useState('client');
   const [inviting, setInviting] = useState(false);
 
-  const { data: users = [], isLoading, refetch } = useQuery({
+  const { data: users = [], isLoading, error, refetch } = useQuery({
     queryKey: ['admin-users-list'],
     queryFn: () => base44.entities.User.list('-created_date', 200),
   });
@@ -91,7 +91,11 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : (
+      {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : error ? (
+        <div className="bg-white rounded-2xl shadow-sm p-8 text-center text-gray-500">
+          <p>Unable to load users. Please try again later.</p>
+        </div>
+      ) : (
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <Table>
             <TableHeader>
