@@ -99,6 +99,7 @@ import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
 import AdminClients from './pages/AdminClients';
+import SalesCreateRFQ from './pages/SalesCreateRFQ';
 import __Layout from './Layout.jsx';
 
 
@@ -155,6 +156,7 @@ export const PAGES = {
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
     "AdminClients": AdminClients,
+    "SalesCreateRFQ": SalesCreateRFQ,
 }
 
 export const pagesConfig = {
