@@ -1,67 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SectionHeading from '../shared/SectionHeading';
+import { Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-function LogoWithFallback({ partner }) {
-  const [failed, setFailed] = useState(false);
-  if (failed) return <PartnerBadge partner={partner} />;
-  return (
-    <img
-      src={partner.logo}
-      alt={partner.name}
-      className="max-h-14 max-w-[140px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
-      onError={() => setFailed(true)}
-    />
-  );
-}
-
-function PartnerBadge({ partner }) {
-  return (
-    <div
-      className="px-5 py-3 rounded-xl flex items-center justify-center font-black text-white text-lg tracking-wide shadow-md"
-      style={{ backgroundColor: partner.color }}
-    >
-      {partner.name}
-    </div>
-  );
-}
-
 const partners = [
-  {
-    name: 'IATA',
-    desc: 'International Air Transport Association',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/IATA_logo.svg/320px-IATA_logo.svg.png',
-    url: 'https://www.iata.org',
-    color: '#003580',
-  },
-  {
-    name: 'FIATA',
-    desc: 'International Federation of Freight Forwarders Associations',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/FIATA_logo.svg/320px-FIATA_logo.svg.png',
-    url: 'https://fiata.org',
-    color: '#0066B3',
-  },
-  {
-    name: 'DF Alliance',
-    desc: 'Digital Freight Alliance – DP World Network',
-    logo: null,
-    url: 'https://www.df-alliance.com',
-    color: '#E4002B',
-  },
-  {
-    name: 'All Forward',
-    desc: 'Next-Gen Digital Freight Forwarder Network',
-    logo: null,
-    url: 'https://www.all-forward.com',
-    color: '#00AEEF',
-  },
-  {
-    name: 'Freightnet',
-    desc: "World's Largest Online Freight Logistics Hub",
-    logo: null,
-    url: 'https://www.freightnet.com',
-    color: '#FF6600',
-  },
+  { name: 'IATA', desc: 'International Air Transport Association', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/IATA_logo.svg/320px-IATA_logo.svg.png', url: 'https://www.iata.org' },
+  { name: 'FIATA', desc: 'International Federation of Freight Forwarders Associations', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/FIATA_logo.svg/320px-FIATA_logo.svg.png', url: 'https://fiata.org' },
+  { name: 'DF Alliance', desc: 'Digital Freight Alliance – DP World Network', logo: 'https://www.df-alliance.com/hubfs/df-alliance-logo.svg', url: 'https://www.df-alliance.com' },
+  { name: 'All Forward', desc: 'Next-Gen Digital Freight Forwarder Network', logo: 'https://www.all-forward.com/hubfs/all-forward-logo.svg', url: 'https://www.all-forward.com' },
+  { name: 'Freightnet', desc: "World's Largest Online Freight Logistics Hub", logo: 'https://www.freightnet.com/images/freightnet-logo.png', url: 'https://www.freightnet.com' },
 ];
 
 export default function PartnersSection() {
@@ -88,12 +35,19 @@ export default function PartnersSection() {
               whileHover={{ y: -5 }}
               className="group bg-white rounded-2xl p-6 flex flex-col items-center justify-center gap-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#D50000]/30 cursor-pointer"
             >
-              <div className="h-16 w-full flex items-center justify-center">
-                {partner.logo ? (
-                  <LogoWithFallback partner={partner} />
-                ) : (
-                  <PartnerBadge partner={partner} />
-                )}
+              <div className="h-14 flex items-center justify-center">
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="max-h-14 max-w-[140px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div style={{ display: 'none' }} className="w-14 h-14 rounded-full bg-[#D50000] items-center justify-center shadow-lg">
+                  <Shield className="w-7 h-7 text-white" />
+                </div>
               </div>
               <div className="text-center">
                 <h3 className="font-bold text-[#1A1A1A] text-sm">{partner.name}</h3>
