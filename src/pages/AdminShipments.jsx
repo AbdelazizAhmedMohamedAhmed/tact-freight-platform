@@ -142,12 +142,68 @@ export default function AdminShipments() {
         </div>
       )}
 
-      <ShipmentDetailModal
-        shipment={selectedShipment}
-        open={!!selectedShipment}
-        onClose={() => setSelectedShipment(null)}
-        readOnly={userDept === 'customer_service' || userDept === 'analyst'}
-      />
+      {/* Admin full-edit shipment modal */}
+      <Dialog open={!!selectedShipment} onOpenChange={() => setSelectedShipment(null)}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-mono text-[#D50000]">{selectedShipment?.tracking_number}</DialogTitle>
+          </DialogHeader>
+          {selectedShipment && (
+            <div className="space-y-6 mt-4">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-500">Current Status:</span>
+                <StatusBadge status={selectedShipment.status} />
+              </div>
+
+              {/* Shipper Details */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <h3 className="font-semibold text-[#1A1A1A]">Shipper Details</h3>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2"><Label>Company Name</Label><Input value={selectedShipment.shipper_name || ''} onChange={e => setSelectedShipment({...selectedShipment, shipper_name: e.target.value})} placeholder="Shipper company name" /></div>
+                  <div className="space-y-2"><Label>Contact Person</Label><Input value={selectedShipment.shipper_contact || ''} onChange={e => setSelectedShipment({...selectedShipment, shipper_contact: e.target.value})} placeholder="Contact person" /></div>
+                  <div className="space-y-2"><Label>Phone</Label><Input value={selectedShipment.shipper_phone || ''} onChange={e => setSelectedShipment({...selectedShipment, shipper_phone: e.target.value})} placeholder="+1234567890" /></div>
+                  <div className="space-y-2"><Label>Email</Label><Input value={selectedShipment.shipper_email || ''} onChange={e => setSelectedShipment({...selectedShipment, shipper_email: e.target.value})} placeholder="shipper@company.com" type="email" /></div>
+                  <div className="space-y-2 md:col-span-2"><Label>Address</Label><Textarea value={selectedShipment.shipper_address || ''} onChange={e => setSelectedShipment({...selectedShipment, shipper_address: e.target.value})} placeholder="Full shipper address" rows={2} /></div>
+                </div>
+              </div>
+
+              {/* Consignee Details */}
+              <div className="border rounded-lg p-4 space-y-3">
+                <h3 className="font-semibold text-[#1A1A1A]">Consignee Details</h3>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2"><Label>Company Name</Label><Input value={selectedShipment.consignee_name || ''} onChange={e => setSelectedShipment({...selectedShipment, consignee_name: e.target.value})} placeholder="Consignee company name" /></div>
+                  <div className="space-y-2"><Label>Contact Person</Label><Input value={selectedShipment.consignee_contact || ''} onChange={e => setSelectedShipment({...selectedShipment, consignee_contact: e.target.value})} placeholder="Contact person" /></div>
+                  <div className="space-y-2"><Label>Phone</Label><Input value={selectedShipment.consignee_phone || ''} onChange={e => setSelectedShipment({...selectedShipment, consignee_phone: e.target.value})} placeholder="+1234567890" /></div>
+                  <div className="space-y-2"><Label>Email</Label><Input value={selectedShipment.consignee_email || ''} onChange={e => setSelectedShipment({...selectedShipment, consignee_email: e.target.value})} placeholder="consignee@company.com" type="email" /></div>
+                  <div className="space-y-2 md:col-span-2"><Label>Address</Label><Textarea value={selectedShipment.consignee_address || ''} onChange={e => setSelectedShipment({...selectedShipment, consignee_address: e.target.value})} placeholder="Full consignee address" rows={2} /></div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2"><Label>Lead Time (Days)</Label><Input type="number" value={selectedShipment.lead_time_days || ''} onChange={e => setSelectedShipment({...selectedShipment, lead_time_days: parseInt(e.target.value) || null})} placeholder="e.g. 14" min="1" /></div>
+                <div className="space-y-2"><Label>First Available Vessel</Label><Input type="date" value={selectedShipment.first_available_vessel || ''} onChange={e => setSelectedShipment({...selectedShipment, first_available_vessel: e.target.value})} /></div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Update Status</Label>
+                <Select value={newStatus} onValueChange={setNewStatus}>
+                  <SelectTrigger><SelectValue placeholder="Select new status" /></SelectTrigger>
+                  <SelectContent>
+                    {statusOrder.map(s => (<SelectItem key={s} value={s}>{statusLabels[s]}</SelectItem>))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2"><Label>Note</Label><Textarea value={note} onChange={e => setNote(e.target.value)} placeholder="Optional status update note..." /></div>
+              <div className="space-y-2"><Label>Upload Document</Label><Input type="file" onChange={handleDocUpload} /></div>
+
+              <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000] w-full h-12">
+                {updating ? 'Updating...' : 'Update Shipment'}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
