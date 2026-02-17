@@ -65,10 +65,14 @@ const PERMISSIONS = {
  * @param {string} userRole - User's role (client, sales, pricing, operations, admin)
  * @param {string} module - Module name (rfqs, shipments, users, messages, analytics, activityLog)
  * @param {string} action - Action name (view, create, edit, delete, etc.)
+ * @param {string} effectiveRole - Optional: role being acted as (for admins)
  * @returns {boolean}
  */
-export function hasPermission(userRole, module, action) {
+export function hasPermission(userRole, module, action, effectiveRole) {
   if (!userRole || !module || !action) return false;
+  
+  // Use effective role if provided (for admins acting as another role)
+  const roleToCheck = effectiveRole || userRole;
   
   const modulePermissions = PERMISSIONS[module];
   if (!modulePermissions) return false;
@@ -79,7 +83,7 @@ export function hasPermission(userRole, module, action) {
   // '*' means all roles have access
   if (allowedRoles.includes('*')) return true;
   
-  return allowedRoles.includes(userRole);
+  return allowedRoles.includes(roleToCheck);
 }
 
 /**
@@ -88,13 +92,21 @@ export function hasPermission(userRole, module, action) {
  * @param {string} userEmail - User's email
  * @param {object} data - Data object to check
  * @param {string} module - Module name
+ * @param {string} effectiveRole - Optional: role being acted as (for admins)
  * @returns {boolean}
  */
-export function canAccessData(userRole, userEmail, data, module) {
+export function canAccessData(userRole, userEmail, data, module, effectiveRole) {
   if (!data || !userEmail) return false;
   
   // Admin can access everything
   if (userRole === ROLES.ADMIN) return true;
+  
+  // If acting as a role, use permission checks for that role
+  if (effectiveRole && effectiveRole !== userRole) {
+    const roleToCheck = effectiveRole;
+    if (module === 'rfqs' && PERMISSIONS.rfqs.viewAll?.includes(roleToCheck)) return true;
+    if (module === 'shipments' && PERMISSIONS.shipments.viewAll?.includes(roleToCheck)) return true;
+  }
   
   // Staff and read-only roles can access all data in their modules
   if (module === 'rfqs' && hasPermission(userRole, 'rfqs', 'viewAll')) {
@@ -119,13 +131,16 @@ export function canAccessData(userRole, userEmail, data, module) {
  * Filter messages based on user role (hide internal messages from clients)
  * @param {Array} messages - Array of messages
  * @param {string} userRole - User's role
+ * @param {string} effectiveRole - Optional: role being acted as (for admins)
  * @returns {Array} Filtered messages
  */
-export function filterMessages(messages, userRole) {
+export function filterMessages(messages, userRole, effectiveRole) {
   if (!messages || !Array.isArray(messages)) return [];
   
+  const roleToCheck = effectiveRole || userRole;
+  
   // Staff can see all messages including internal
-  if (hasPermission(userRole, 'messages', 'viewInternal')) {
+  if (hasPermission(userRole, 'messages', 'viewInternal', effectiveRole)) {
     return messages;
   }
   
