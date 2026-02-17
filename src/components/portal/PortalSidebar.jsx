@@ -40,6 +40,16 @@ const menuByRole = {
     { label: 'Shipments', icon: Ship, page: 'OperationsShipments' },
     { label: 'Create Shipment', icon: Package, page: 'CreateShipment' },
   ],
+  customer_service: [
+    { label: 'RFQs', icon: FileText, page: 'AdminRFQs' },
+    { label: 'Shipments', icon: Ship, page: 'AdminShipments' },
+    { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
+  ],
+  analyst: [
+    { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
+    { label: 'Reporting', icon: ClipboardList, page: 'AdminReporting' },
+    { label: 'Activity Log', icon: FileText, page: 'AdminActivity' },
+  ],
   supervisor: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SupervisorDashboard' },
     { label: 'RFQs', icon: FileText, page: 'SupervisorRFQs' },
