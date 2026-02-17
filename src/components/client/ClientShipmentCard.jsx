@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import StatusBadge from '../shared/StatusBadge';
-import { Ship, Plane, Truck, MapPin, Calendar, Upload, Eye } from 'lucide-react';
+import { Ship, Plane, Truck, MapPin, Calendar, Upload, Eye, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import ShipmentDetailModal from './ShipmentDetailModal';
+import RequestAmendmentModal from './RequestAmendmentModal';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
-export default function ClientShipmentCard({ shipment, onUploadDocs }) {
+export default function ClientShipmentCard({ shipment, onUploadDocs, onRefresh }) {
   const [detailOpen, setDetailOpen] = useState(false);
+  const [amendOpen, setAmendOpen] = useState(false);
   const MIcon = modeIcons[shipment.mode] || Ship;
 
   const getStatusMessage = (status) => {
@@ -72,13 +74,18 @@ export default function ClientShipmentCard({ shipment, onUploadDocs }) {
           <p className="text-xs text-blue-700">{getStatusMessage(shipment.status)}</p>
         </div>
 
-        <div className="flex gap-2">
-          <Button onClick={() => setDetailOpen(true)} className="flex-1 bg-[#D50000] hover:bg-[#B00000]">
-            <Eye className="w-4 h-4 mr-2" /> View Updates
+        <div className="flex gap-2 flex-col">
+          <Button onClick={() => setDetailOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
+            <Eye className="w-4 h-4 mr-2" /> View Details
           </Button>
-          <Button onClick={onUploadDocs} variant="outline" size="icon">
-            <Upload className="w-4 h-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={onUploadDocs} variant="outline" className="flex-1" size="sm">
+              <Upload className="w-4 h-4 mr-1" /> Upload Docs
+            </Button>
+            <Button onClick={() => setAmendOpen(true)} variant="outline" className="flex-1" size="sm">
+              <AlertCircle className="w-4 h-4 mr-1" /> Request Change
+            </Button>
+          </div>
         </div>
       </CardContent>
 
@@ -86,6 +93,12 @@ export default function ClientShipmentCard({ shipment, onUploadDocs }) {
         shipment={shipment}
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
+      />
+      <RequestAmendmentModal
+        shipment={shipment}
+        open={amendOpen}
+        onClose={() => setAmendOpen(false)}
+        onUpdate={onRefresh}
       />
     </Card>
   );
