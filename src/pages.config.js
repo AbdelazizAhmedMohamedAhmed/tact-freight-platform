@@ -101,6 +101,7 @@ import WhyChooseUs from './pages/WhyChooseUs';
 import AdminClients from './pages/AdminClients';
 import SalesCreateRFQ from './pages/SalesCreateRFQ';
 import OperationsShipmentDetail from './pages/OperationsShipmentDetail';
+import PendingAmendments from './pages/PendingAmendments';
 import __Layout from './Layout.jsx';
 
 
@@ -159,6 +160,7 @@ export const PAGES = {
     "AdminClients": AdminClients,
     "SalesCreateRFQ": SalesCreateRFQ,
     "OperationsShipmentDetail": OperationsShipmentDetail,
+    "PendingAmendments": PendingAmendments,
 }
 
 export const pagesConfig = {
