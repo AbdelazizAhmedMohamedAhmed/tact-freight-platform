@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { logAuthAction } from '../utils/activityLogger';
+import AdminRoleSelector from './AdminRoleSelector';
 
 const menuByRole = {
   user: [
@@ -103,6 +104,8 @@ export default function PortalSidebar({ userRole, currentPage }) {
           </span>
         </div>
       )}
+
+      {!collapsed && userRole === 'admin' && <AdminRoleSelector />}
 
       <nav className="flex-1 px-2 py-2 space-y-1">
         {menu.map(item => {
