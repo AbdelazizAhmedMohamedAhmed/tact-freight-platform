@@ -137,7 +137,7 @@ export default function ClientRFQs() {
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
       setSelectedRFQ(null);
-      window.location.href = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/' + 'ClientShipments';
+      window.location.href = createPageUrl('ClientShipments');
     },
   });
 
