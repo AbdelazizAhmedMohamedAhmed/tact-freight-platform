@@ -287,7 +287,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
             )}
 
             {/* Mark as Won/Lost - Admin/Sales only */}
-            {(role === 'admin' || role === 'sales') && ['accepted', 'sent_to_client', 'quoted'].includes(rfq.status) && rfq.final_status === 'pending' && (
+            {!isReadOnly && (role === 'admin' || role === 'sales') && ['accepted', 'sent_to_client', 'quoted'].includes(rfq.status) && rfq.final_status === 'pending' && (
               <div className="space-y-4 pt-4 border-t">
                 <p className="text-sm text-gray-600">Mark the final outcome of this RFQ</p>
                 <Button 
