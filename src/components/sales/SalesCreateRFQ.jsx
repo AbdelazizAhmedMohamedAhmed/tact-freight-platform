@@ -81,6 +81,10 @@ export default function SalesCreateRFQ() {
 
       await logRFQAction(rfq, 'rfq_created', `RFQ ${ref} created by sales for ${selectedClientData.name}`);
 
+      // Notify team
+      const { notifyRFQCreated } = await import('@/components/utils/notificationEngine');
+      await notifyRFQCreated(rfq);
+
       setSuccess(ref);
       setSubmitting(false);
     } catch (err) {
