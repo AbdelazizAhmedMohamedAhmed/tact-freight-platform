@@ -41,6 +41,7 @@ const menuByRole = {
     { label: 'Dashboard', icon: LayoutDashboard, page: 'OperationsDashboard' },
     { label: 'Shipments', icon: Ship, page: 'OperationsShipments' },
     { label: 'Create Shipment', icon: Package, page: 'CreateShipment' },
+    { label: 'Pending Amendments', icon: FileText, page: 'PendingAmendments' },
   ],
   customer_service: [
     { label: 'RFQs', icon: FileText, page: 'AdminRFQs' },
