@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeading from '../shared/SectionHeading';
-import { Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+function LogoWithFallback({ partner }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <PartnerBadge partner={partner} />;
+  return (
+    <img
+      src={partner.logo}
+      alt={partner.name}
+      className="max-h-14 max-w-[140px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+function PartnerBadge({ partner }) {
+  return (
+    <div
+      className="px-5 py-3 rounded-xl flex items-center justify-center font-black text-white text-lg tracking-wide shadow-md"
+      style={{ backgroundColor: partner.color }}
+    >
+      {partner.name}
+    </div>
+  );
+}
 
 const partners = [
   {
