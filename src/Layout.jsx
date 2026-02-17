@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PublicNav from './components/shared/PublicNav';
 import Footer from './components/shared/Footer';
 import PortalSidebar from './components/portal/PortalSidebar';
+import { RoleProvider } from './components/utils/roleContext';
 import { base44 } from '@/api/base44Client';
 
 const publicPages = [
@@ -47,18 +48,22 @@ export default function Layout({ children, currentPageName }) {
   }
 
   // Portal pages
+  const userRole = user?.department || user?.role || 'user';
+  
   return (
-    <div className="min-h-screen bg-[#F2F2F2] flex">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        * { font-family: 'Inter', sans-serif; }
-      `}</style>
-      <PortalSidebar userRole={user?.department || user?.role || 'user'} currentPage={currentPageName} userName={user?.full_name} />
-      <main className="flex-1 overflow-auto">
-        <div className="p-6 md:p-8">
-          {children}
-        </div>
-      </main>
-    </div>
+    <RoleProvider userRole={userRole}>
+      <div className="min-h-screen bg-[#F2F2F2] flex">
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+          * { font-family: 'Inter', sans-serif; }
+        `}</style>
+        <PortalSidebar userRole={userRole} currentPage={currentPageName} userName={user?.full_name} />
+        <main className="flex-1 overflow-auto">
+          <div className="p-6 md:p-8">
+            {children}
+          </div>
+        </main>
+      </div>
+    </RoleProvider>
   );
 }
