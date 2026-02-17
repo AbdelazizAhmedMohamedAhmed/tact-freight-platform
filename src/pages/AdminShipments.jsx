@@ -13,6 +13,7 @@ const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
 export default function AdminShipments() {
   const [search, setSearch] = useState('');
+  const [selectedShipment, setSelectedShipment] = useState(null);
 
   const { data: shipments = [], isLoading } = useQuery({
     queryKey: ['admin-all-shipments'],
