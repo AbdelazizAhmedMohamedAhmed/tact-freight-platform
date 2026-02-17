@@ -31,11 +31,17 @@ export default function ClientRFQs() {
   });
 
   useEffect(() => {
-    base44.auth.me().then(u => {
+    base44.auth.me().then(async u => {
       setUser(u);
+      setCompanyId(u.company_id || null);
+      let companyName = '';
+      if (u.company_id) {
+        const res = await base44.entities.ClientCompany.filter({ id: u.company_id }, '', 1);
+        if (res[0]) companyName = res[0].name;
+      }
       setFormData(prev => ({
         ...prev,
-        company_name: u.company_name || '',
+        company_name: companyName,
         contact_person: u.full_name || '',
         email: u.email,
         phone: u.phone || '',
