@@ -65,19 +65,12 @@ export default function PartnersSection() {
               whileHover={{ y: -5 }}
               className="group bg-white rounded-2xl p-6 flex flex-col items-center justify-center gap-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#D50000]/30 cursor-pointer"
             >
-              <div className="h-14 flex items-center justify-center">
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  className="max-h-14 max-w-[140px] object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                <div style={{ display: 'none' }} className="w-14 h-14 rounded-full bg-[#D50000] items-center justify-center shadow-lg">
-                  <Shield className="w-7 h-7 text-white" />
-                </div>
+              <div className="h-16 w-full flex items-center justify-center">
+                {partner.logo ? (
+                  <LogoWithFallback partner={partner} />
+                ) : (
+                  <PartnerBadge partner={partner} />
+                )}
               </div>
               <div className="text-center">
                 <h3 className="font-bold text-[#1A1A1A] text-sm">{partner.name}</h3>
