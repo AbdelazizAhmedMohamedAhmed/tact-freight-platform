@@ -167,6 +167,8 @@ export default function AdminUsers() {
                     <SelectItem value="sales">Sales</SelectItem>
                     <SelectItem value="pricing">Pricing</SelectItem>
                     <SelectItem value="operations">Operations</SelectItem>
+                    <SelectItem value="customer_service">Customer Service</SelectItem>
+                    <SelectItem value="analyst">Analyst</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
