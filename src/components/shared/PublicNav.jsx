@@ -126,12 +126,12 @@ export default function PublicNav() {
                     Request Quote
                   </Button>
                 </Link>
-                <a href={createPageUrl('Portal')} target="_blank" rel="noopener noreferrer">
+                <Link to={createPageUrl('Portal')} onClick={() => setMobileOpen(false)}>
                   <Button variant="ghost" className="w-full text-[#1A1A1A] hover:bg-[#D50000]/10 hover:text-[#D50000] font-medium h-11">
                     <User className="w-4 h-4 mr-2" />
                     Portal
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
