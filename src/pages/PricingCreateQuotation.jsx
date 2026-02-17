@@ -33,9 +33,12 @@ export default function PricingCreateQuotation() {
     queryFn: () => base44.auth.me(),
   });
 
+  const userRole = user?.department || user?.role || 'user';
+
   const { data: rfqs = [], isLoading } = useQuery({
     queryKey: ['pricing-rfqs'],
     queryFn: () => base44.entities.RFQ.filter({ status: 'pricing_in_progress' }, '-created_date', 100),
+    enabled: userRole === 'pricing' || userRole === 'admin',
   });
 
   const filteredRFQs = rfqs.filter(r => 
@@ -121,6 +124,19 @@ export default function PricingCreateQuotation() {
       queryClient.invalidateQueries({ queryKey: ['pricing-rfqs'] });
     }, 2000);
   };
+
+  // Permission check
+  if (userRole !== 'pricing' && userRole !== 'admin') {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Card className="max-w-md w-full">
+          <CardContent className="pt-12 pb-12 text-center">
+            <p className="text-red-600 font-medium">You don't have permission to access this page.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (success) {
     return (
