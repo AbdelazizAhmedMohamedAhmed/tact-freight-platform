@@ -14,6 +14,7 @@ import { base44 } from '@/api/base44Client';
 import { hasPermission } from '@/components/utils/permissions';
 import { logRFQAction, logFileAction } from '@/components/utils/activityLogger';
 import { sendStatusNotification, sendQuotationNotification } from '@/components/utils/notificationService';
+import { notifyRFQSentToPricing, notifyPricingComplete, notifyQuotationSent } from '@/components/utils/notificationEngine';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -53,6 +54,15 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     
     // Send notification to client
     await sendStatusNotification('rfq', { ...rfq, ...updateData }, rfq.status, newStatus);
+    
+    // Trigger workflow-specific notifications
+    if (newStatus === 'pricing_review') {
+      await notifyRFQSentToPricing({ ...rfq, ...updateData }, rfq.assigned_pricing);
+    } else if (newStatus === 'quoted') {
+      await notifyPricingComplete({ ...rfq, ...updateData }, rfq.assigned_sales);
+    } else if (newStatus === 'sent_to_client') {
+      await notifyQuotationSent({ ...rfq, ...updateData });
+    }
     
     setUpdating(false);
     setNotes('');
