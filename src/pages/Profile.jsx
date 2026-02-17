@@ -4,24 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, Lock, CheckCircle2, Building2 } from 'lucide-react';
+import { User, Lock, CheckCircle2, Building2, Users } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
+import { createAndLinkCompany } from '../components/utils/companyResolver';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
+  const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Profile state
   const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [updating, setUpdating] = useState(false);
+
+  // Password state
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [updating, setUpdating] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
-  // Company details state
+  // Company state
   const [companyName, setCompanyName] = useState('');
   const [companyCountry, setCompanyCountry] = useState('');
   const [companyCity, setCompanyCity] = useState('');
@@ -31,94 +34,71 @@ export default function Profile() {
   const [companyIndustry, setCompanyIndustry] = useState('');
   const [savingCompany, setSavingCompany] = useState(false);
 
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     base44.auth.me()
       .then(async userData => {
         setUser(userData);
         setFullName(userData.full_name || '');
-        setEmail(userData.email || '');
         setPhone(userData.phone || '');
-        // Load existing company if any
-        setCompanyName(userData.company_name || '');
-        setCompanyCountry(userData.company_country || '');
-        setCompanyCity(userData.company_city || '');
-        setCompanyPhone(userData.company_phone || '');
-        setCompanyWebsite(userData.company_website || '');
-        setCompanyAddress(userData.company_address || '');
-        setCompanyIndustry(userData.company_industry || '');
+
+        if (userData.company_id) {
+          const results = await base44.entities.ClientCompany.filter({ id: userData.company_id }, '', 1);
+          if (results[0]) {
+            const c = results[0];
+            setCompany(c);
+            setCompanyName(c.name || '');
+            setCompanyCountry(c.country || '');
+            setCompanyCity(c.city || '');
+            setCompanyPhone(c.phone || '');
+            setCompanyWebsite(c.website || '');
+            setCompanyAddress(c.address || '');
+            setCompanyIndustry(c.industry || '');
+          }
+        }
         setLoading(false);
       })
       .catch(() => base44.auth.redirectToLogin());
   }, []);
 
+  const showSuccess = (msg) => {
+    setErrorMessage('');
+    setSuccessMessage(msg);
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    if (!fullName.trim()) {
-      setErrorMessage('Name cannot be empty');
-      return;
-    }
-    if (!email.trim()) {
-      setErrorMessage('Email cannot be empty');
-      return;
-    }
-
+    if (!fullName.trim()) { setErrorMessage('Name cannot be empty'); return; }
     setUpdating(true);
     setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await base44.auth.updateMe({ 
-        full_name: fullName,
-        email: email,
-        phone: phone 
-      });
-      
-      // Refresh user data
-      const updatedUser = await base44.auth.me();
-      setUser(updatedUser);
-      
-      setSuccessMessage('Profile updated successfully!');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      setErrorMessage('Failed to update profile');
-    } finally {
-      setUpdating(false);
-    }
+    await base44.auth.updateMe({ full_name: fullName, phone });
+    const updatedUser = await base44.auth.me();
+    setUser(updatedUser);
+    setUpdating(false);
+    showSuccess('Profile updated successfully!');
   };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    setSuccessMessage('');
-
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setErrorMessage('All password fields are required');
-      return;
+      setErrorMessage('All password fields are required'); return;
     }
-
     if (newPassword !== confirmPassword) {
-      setErrorMessage('New passwords do not match');
-      return;
+      setErrorMessage('New passwords do not match'); return;
     }
-
     if (newPassword.length < 8) {
-      setErrorMessage('New password must be at least 8 characters');
-      return;
+      setErrorMessage('New password must be at least 8 characters'); return;
     }
-
     setChangingPassword(true);
-
     try {
-      await base44.auth.changePassword({
-        current_password: currentPassword,
-        new_password: newPassword,
-      });
-      setSuccessMessage('Password changed successfully!');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
+      await base44.auth.changePassword({ current_password: currentPassword, new_password: newPassword });
+      setCurrentPassword(''); setNewPassword(''); setConfirmPassword('');
+      showSuccess('Password changed successfully!');
+    } catch {
       setErrorMessage('Failed to change password. Please check your current password.');
     } finally {
       setChangingPassword(false);
@@ -127,25 +107,33 @@ export default function Profile() {
 
   const handleCompanySave = async (e) => {
     e.preventDefault();
-    if (!companyName.trim()) {
-      setErrorMessage('Company name is required');
-      return;
-    }
+    if (!companyName.trim()) { setErrorMessage('Company name is required'); return; }
     setSavingCompany(true);
     setErrorMessage('');
-    setSuccessMessage('');
-    await base44.auth.updateMe({
-      company_name: companyName,
-      company_country: companyCountry,
-      company_city: companyCity,
-      company_phone: companyPhone,
-      company_website: companyWebsite,
-      company_address: companyAddress,
-      company_industry: companyIndustry,
-    });
-    setSuccessMessage('Company details saved successfully!');
-    setTimeout(() => setSuccessMessage(''), 3000);
+
+    const companyData = {
+      name: companyName,
+      country: companyCountry,
+      city: companyCity,
+      phone: companyPhone,
+      website: companyWebsite,
+      address: companyAddress,
+      industry: companyIndustry,
+    };
+
+    if (company) {
+      // Update existing
+      await base44.entities.ClientCompany.update(company.id, companyData);
+      setCompany({ ...company, ...companyData });
+    } else {
+      // Create new company and link user
+      const newCompany = await createAndLinkCompany(user, companyData);
+      setCompany(newCompany);
+      const refreshed = await base44.auth.me();
+      setUser(refreshed);
+    }
     setSavingCompany(false);
+    showSuccess('Company details saved!');
   };
 
   if (loading) {
@@ -160,8 +148,15 @@ export default function Profile() {
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">My Profile</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage your account settings</p>
+        <h1 className="text-2xl font-bold text-[#1A1A1A]">My Account</h1>
+        <p className="text-gray-500 text-sm mt-1">
+          {company ? (
+            <span className="inline-flex items-center gap-1.5">
+              <Building2 className="w-3.5 h-3.5" />
+              {company.name}
+            </span>
+          ) : 'Manage your account and company settings'}
+        </p>
       </div>
 
       {successMessage && (
@@ -170,14 +165,13 @@ export default function Profile() {
           <p className="text-green-700">{successMessage}</p>
         </div>
       )}
-
       {errorMessage && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <p className="text-red-700">{errorMessage}</p>
         </div>
       )}
 
-      {/* Profile Information */}
+      {/* Profile */}
       <div className="bg-white rounded-2xl shadow-sm p-8">
         <div className="flex items-center gap-4 mb-8 pb-8 border-b">
           <div className="w-16 h-16 rounded-full bg-[#D50000] flex items-center justify-center">
@@ -185,52 +179,91 @@ export default function Profile() {
           </div>
           <div>
             <p className="text-lg font-bold text-[#1A1A1A]">Profile Information</p>
-            <p className="text-sm text-gray-500 mt-1">Update your personal details</p>
+            <p className="text-sm text-gray-500">{user?.email}</p>
+          </div>
+        </div>
+        <form onSubmit={handleProfileUpdate} className="space-y-5">
+          <div className="space-y-2">
+            <Label>Full Name *</Label>
+            <Input value={fullName} onChange={e => setFullName(e.target.value)} className="h-12" placeholder="Your full name" />
+          </div>
+          <div className="space-y-2">
+            <Label>Email Address</Label>
+            <Input value={user?.email} disabled className="h-12 bg-gray-50 text-gray-500" />
+          </div>
+          <div className="space-y-2">
+            <Label>Phone Number</Label>
+            <Input type="tel" value={phone} onChange={e => setPhone(e.target.value)} className="h-12" placeholder="+1 (555) 123-4567" />
+          </div>
+          <Button type="submit" disabled={updating} className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full">
+            {updating ? 'Updating...' : 'Update Profile'}
+          </Button>
+        </form>
+      </div>
+
+      {/* Company */}
+      <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="flex items-center gap-3 mb-8 pb-8 border-b">
+          <Building2 className="w-6 h-6 text-[#D50000]" />
+          <div>
+            <h2 className="text-lg font-bold text-[#1A1A1A]">
+              {company ? 'Company Details' : 'Register Your Company'}
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              {company
+                ? 'All users linked to this company share the same RFQs and shipments'
+                : 'Create your company profile — colleagues can be linked to the same company'}
+            </p>
           </div>
         </div>
 
-        <form onSubmit={handleProfileUpdate} className="space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name *</Label>
-            <Input
-              id="fullName"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="h-12"
-              placeholder="Your full name"
-            />
+        {company && (
+          <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+            <Users className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-blue-800">Company Account</p>
+              <p className="text-xs text-blue-600 mt-0.5">
+                Multiple users can be linked to <strong>{company.name}</strong>. All your team's RFQs and shipments are shared under this company.
+              </p>
+            </div>
           </div>
+        )}
 
+        <form onSubmit={handleCompanySave} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address *</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="h-12"
-              placeholder="your.email@example.com"
-            />
+            <Label>Company Name *</Label>
+            <Input value={companyName} onChange={e => setCompanyName(e.target.value)} className="h-12" placeholder="Your company name" />
           </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Country</Label>
+              <Input value={companyCountry} onChange={e => setCompanyCountry(e.target.value)} className="h-12" placeholder="e.g. United Arab Emirates" />
+            </div>
+            <div className="space-y-2">
+              <Label>City</Label>
+              <Input value={companyCity} onChange={e => setCompanyCity(e.target.value)} className="h-12" placeholder="e.g. Dubai" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Company Phone</Label>
+              <Input type="tel" value={companyPhone} onChange={e => setCompanyPhone(e.target.value)} className="h-12" placeholder="+971 4 123 4567" />
+            </div>
+            <div className="space-y-2">
+              <Label>Website</Label>
+              <Input value={companyWebsite} onChange={e => setCompanyWebsite(e.target.value)} className="h-12" placeholder="https://yourcompany.com" />
+            </div>
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="h-12"
-              placeholder="+1 (555) 123-4567"
-            />
+            <Label>Industry</Label>
+            <Input value={companyIndustry} onChange={e => setCompanyIndustry(e.target.value)} className="h-12" placeholder="e.g. Manufacturing, Retail, Oil & Gas" />
           </div>
-
-          <Button
-            type="submit"
-            disabled={updating || (fullName === user?.full_name && email === user?.email && phone === user?.phone)}
-            className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full"
-          >
-            {updating ? 'Updating...' : 'Update Profile'}
+          <div className="space-y-2">
+            <Label>Full Address</Label>
+            <Textarea value={companyAddress} onChange={e => setCompanyAddress(e.target.value)} className="min-h-[80px]" placeholder="Street address, building, P.O. Box..." />
+          </div>
+          <Button type="submit" disabled={savingCompany} className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full">
+            {savingCompany ? 'Saving...' : company ? 'Save Changes' : 'Create Company'}
           </Button>
         </form>
       </div>
@@ -241,151 +274,21 @@ export default function Profile() {
           <Lock className="w-6 h-6 text-[#D50000]" />
           <h2 className="text-lg font-bold text-[#1A1A1A]">Change Password</h2>
         </div>
-
         <form onSubmit={handlePasswordChange} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="currentPassword">Current Password</Label>
-            <Input
-              id="currentPassword"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="h-12"
-              placeholder="Enter current password"
-            />
+            <Label>Current Password</Label>
+            <Input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="h-12" placeholder="Enter current password" />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="newPassword">New Password</Label>
-            <Input
-              id="newPassword"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="h-12"
-              placeholder="Enter new password (min 8 characters)"
-            />
+            <Label>New Password</Label>
+            <Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="h-12" placeholder="Min 8 characters" />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="h-12"
-              placeholder="Confirm new password"
-            />
+            <Label>Confirm Password</Label>
+            <Input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="h-12" placeholder="Confirm new password" />
           </div>
-
-          <Button
-            type="submit"
-            disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}
-            className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full"
-          >
+          <Button type="submit" disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword} className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full">
             {changingPassword ? 'Changing...' : 'Change Password'}
-          </Button>
-        </form>
-      </div>
-
-      {/* Company Details */}
-      <div className="bg-white rounded-2xl shadow-sm p-8">
-        <div className="flex items-center gap-3 mb-8 pb-8 border-b">
-          <Building2 className="w-6 h-6 text-[#D50000]" />
-          <div>
-            <h2 className="text-lg font-bold text-[#1A1A1A]">Company Details</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Help us serve you better by sharing your company info</p>
-          </div>
-        </div>
-
-        <form onSubmit={handleCompanySave} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name *</Label>
-            <Input
-              id="companyName"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              className="h-12"
-              placeholder="Your company name"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="companyCountry">Country</Label>
-              <Input
-                id="companyCountry"
-                value={companyCountry}
-                onChange={(e) => setCompanyCountry(e.target.value)}
-                className="h-12"
-                placeholder="e.g. United Arab Emirates"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="companyCity">City</Label>
-              <Input
-                id="companyCity"
-                value={companyCity}
-                onChange={(e) => setCompanyCity(e.target.value)}
-                className="h-12"
-                placeholder="e.g. Dubai"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="companyPhone">Company Phone</Label>
-              <Input
-                id="companyPhone"
-                type="tel"
-                value={companyPhone}
-                onChange={(e) => setCompanyPhone(e.target.value)}
-                className="h-12"
-                placeholder="+971 4 123 4567"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="companyWebsite">Website</Label>
-              <Input
-                id="companyWebsite"
-                value={companyWebsite}
-                onChange={(e) => setCompanyWebsite(e.target.value)}
-                className="h-12"
-                placeholder="https://yourcompany.com"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="companyIndustry">Industry</Label>
-            <Input
-              id="companyIndustry"
-              value={companyIndustry}
-              onChange={(e) => setCompanyIndustry(e.target.value)}
-              className="h-12"
-              placeholder="e.g. Manufacturing, Retail, Oil & Gas"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="companyAddress">Full Address</Label>
-            <Textarea
-              id="companyAddress"
-              value={companyAddress}
-              onChange={(e) => setCompanyAddress(e.target.value)}
-              className="min-h-[80px]"
-              placeholder="Street address, building, P.O. Box..."
-            />
-          </div>
-
-          <Button
-            type="submit"
-            disabled={savingCompany}
-            className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full"
-          >
-            {savingCompany ? 'Saving...' : 'Save Company Details'}
           </Button>
         </form>
       </div>
