@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { Button } from "@/components/ui/button";
+import PendingAmendments from '../components/operations/PendingAmendments';
 
 export default function OperationsDashboard() {
   const [user, setUser] = useState(null);
@@ -14,7 +15,7 @@ export default function OperationsDashboard() {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const { data: shipments = [], isLoading } = useQuery({
+  const { data: shipments = [], isLoading, refetch: refetchShipments } = useQuery({
     queryKey: ['all-shipments'],
     queryFn: () => base44.entities.Shipment.list('-created_date', 100),
   });
@@ -96,6 +97,9 @@ export default function OperationsDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Pending Amendments */}
+      <PendingAmendments refetch={refetchShipments} />
 
       {/* Active Shipments */}
       <div className="bg-white rounded-xl shadow-sm p-6">
