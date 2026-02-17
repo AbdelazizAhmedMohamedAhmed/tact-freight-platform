@@ -88,7 +88,7 @@ export default function ClientRFQs() {
       queryClient.invalidateQueries(['my-rfqs']);
       setShowNewRFQ(false);
       setFormData({
-        company_name: user?.company_name || '', contact_person: user?.full_name || '', email: user?.email, phone: user?.phone || '',
+        company_name: formData.company_name || '', contact_person: user?.full_name || '', email: user?.email, phone: user?.phone || '',
         mode: '', incoterm: '', origin: '', destination: '',
         cargo_type: '', weight_kg: '', volume_cbm: '', num_packages: '',
         commodity_description: '', is_hazardous: false, preferred_shipping_date: '',
