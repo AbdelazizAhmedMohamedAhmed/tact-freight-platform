@@ -28,6 +28,7 @@ export default function Portal() {
         role === 'pricing' ? 'PricingDashboard' :
         role === 'operations' ? 'OperationsDashboard' :
         role === 'supervisor' ? 'SupervisorDashboard' :
+        role === 'bizdev' ? 'BizDevPartners' :
         'ClientDashboard';
       
       navigate(createPageUrl(redirectPage));
