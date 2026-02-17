@@ -17,11 +17,8 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     if (!publicPages.includes(currentPageName)) {
-      base44.auth.me().then(async (userData) => {
+      base44.auth.me().then((userData) => {
         setUser(userData);
-        // Log login
-        const { logAuthAction } = await import('./components/utils/activityLogger');
-        await logAuthAction('login', `User ${userData.email} logged in`);
       }).catch(() => {});
     }
   }, [currentPageName]);
