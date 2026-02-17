@@ -290,28 +290,47 @@ export default function ClientRFQs() {
                 )}
               </div>
 
-              {selectedRFQ.quotation_url && (
-                <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-                  <div className="flex items-center justify-between">
+              {(selectedRFQ.quotation_url || selectedRFQ.quotation_amount) && (
+                <div className="bg-green-50 border border-green-200 rounded-xl p-6 space-y-4">
+                  <div className="flex items-start justify-between flex-wrap gap-4">
                     <div>
-                      <p className="font-semibold text-green-900">Quotation Available</p>
+                      <p className="font-semibold text-green-900 text-lg">Quotation Ready</p>
                       {selectedRFQ.quotation_amount && (
-                        <p className="text-2xl font-bold text-green-700 mt-2">
-                          {selectedRFQ.quotation_currency} {selectedRFQ.quotation_amount.toLocaleString()}
+                        <p className="text-3xl font-black text-green-700 mt-1">
+                          {selectedRFQ.quotation_currency || 'USD'} {Number(selectedRFQ.quotation_amount).toLocaleString()}
                         </p>
                       )}
+                      {selectedRFQ.pricing_notes && (
+                        <p className="text-sm text-green-800 mt-2">{selectedRFQ.pricing_notes}</p>
+                      )}
                     </div>
-                    <div className="flex gap-3">
-                      <a href={selectedRFQ.quotation_url} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline"><Download className="w-4 h-4 mr-2" /> Download</Button>
-                      </a>
-                      {selectedRFQ.status !== 'client_confirmed' && (
-                        <Button onClick={() => confirmQuoteMutation.mutate(selectedRFQ.id)} className="bg-green-600 hover:bg-green-700">
-                          <CheckCircle className="w-4 h-4 mr-2" /> Confirm
-                        </Button>
+                    <div className="flex gap-3 flex-wrap">
+                      {selectedRFQ.quotation_url && (
+                        <a href={selectedRFQ.quotation_url} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline"><Download className="w-4 h-4 mr-2" /> Download Quote</Button>
+                        </a>
                       )}
                     </div>
                   </div>
+
+                  {selectedRFQ.status === 'client_confirmed' ? (
+                    <div className="flex items-center gap-2 bg-green-100 rounded-lg px-4 py-3">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <span className="text-green-800 font-medium">Quotation confirmed — shipment is being arranged</span>
+                    </div>
+                  ) : (
+                    <div className="border-t border-green-200 pt-4">
+                      <p className="text-sm text-green-800 mb-3">By confirming, a shipment booking will be created automatically and you will be redirected to My Shipments.</p>
+                      <Button
+                        onClick={() => confirmQuoteMutation.mutate(selectedRFQ)}
+                        disabled={confirmQuoteMutation.isPending}
+                        className="bg-green-600 hover:bg-green-700 w-full text-base font-semibold"
+                      >
+                        <Ship className="w-4 h-4 mr-2" />
+                        {confirmQuoteMutation.isPending ? 'Confirming...' : 'Confirm Quotation & Book Shipment'}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
 
