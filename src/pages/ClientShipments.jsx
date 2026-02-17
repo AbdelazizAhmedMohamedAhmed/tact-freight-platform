@@ -8,17 +8,23 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ClientShipments() {
   const [user, setUser] = useState(null);
+  const [companyId, setCompanyId] = useState(null);
   const [uploadEntity, setUploadEntity] = useState(null);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
+    base44.auth.me().then(u => {
+      setUser(u);
+      setCompanyId(u.company_id || null);
+    }).catch(() => base44.auth.redirectToLogin());
   }, []);
 
   const { data: shipments = [], isLoading, refetch } = useQuery({
-    queryKey: ['client-shipments-all', user?.email],
-    queryFn: () => base44.entities.Shipment.filter({ client_email: user.email }, '-created_date', 100),
-    enabled: !!user?.email,
+    queryKey: ['client-shipments-all', companyId, user?.email],
+    queryFn: () => companyId
+      ? base44.entities.Shipment.filter({ company_id: companyId }, '-created_date', 100)
+      : base44.entities.Shipment.filter({ client_email: user.email }, '-created_date', 100),
+    enabled: !!user,
   });
 
   const filtered = filter === 'all' ? shipments : 
