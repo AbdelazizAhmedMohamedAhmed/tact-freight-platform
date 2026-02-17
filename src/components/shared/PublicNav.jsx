@@ -76,12 +76,12 @@ export default function PublicNav() {
                  </Link>
                </motion.div>
                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                 <a href={createPageUrl('Portal')} target="_blank" rel="noopener noreferrer">
+                 <Link to={createPageUrl('Portal')}>
                    <Button variant="ghost" size="sm" className="text-[#1A1A1A] hover:bg-[#D50000]/10 hover:text-[#D50000] font-medium">
                      <User className="w-4 h-4 mr-2" />
                      Portal
                    </Button>
-                 </a>
+                 </Link>
                </motion.div>
              </div>
 
