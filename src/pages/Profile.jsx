@@ -125,6 +125,29 @@ export default function Profile() {
     }
   };
 
+  const handleCompanySave = async (e) => {
+    e.preventDefault();
+    if (!companyName.trim()) {
+      setErrorMessage('Company name is required');
+      return;
+    }
+    setSavingCompany(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    await base44.auth.updateMe({
+      company_name: companyName,
+      company_country: companyCountry,
+      company_city: companyCity,
+      company_phone: companyPhone,
+      company_website: companyWebsite,
+      company_address: companyAddress,
+      company_industry: companyIndustry,
+    });
+    setSuccessMessage('Company details saved successfully!');
+    setTimeout(() => setSuccessMessage(''), 3000);
+    setSavingCompany(false);
+  };
+
   if (loading) {
     return (
       <div className="space-y-8">
