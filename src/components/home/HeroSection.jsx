@@ -18,7 +18,7 @@ export default function HeroSection() {
         <img
           src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=90"
           alt="Global Shipping"
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover opacity-35"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/90 to-[#0F0F0F]/75" />
       </motion.div>
