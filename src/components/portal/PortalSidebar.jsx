@@ -20,11 +20,12 @@ const menuByRole = {
     { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
   ],
   sales: [
-    { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
-    { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQQueue' },
-    { label: 'CRM — Leads', icon: Users, page: 'SalesCRM' },
-    { label: 'Companies', icon: Building2, page: 'SalesCompanies' },
-    { label: 'Manage Pricing', icon: DollarSign, page: 'SalesManagePricing' },
+  { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
+  { label: 'Create RFQ', icon: Plus, page: 'SalesCreateRFQ' },
+  { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQQueue' },
+  { label: 'CRM — Leads', icon: Users, page: 'SalesCRM' },
+  { label: 'Companies', icon: Building2, page: 'SalesCompanies' },
+  { label: 'Manage Pricing', icon: DollarSign, page: 'SalesManagePricing' },
   ],
   bizdev: [
     { label: 'Partners & Agents', icon: Handshake, page: 'BizDevPartners' },
