@@ -288,6 +288,107 @@ export default function Profile() {
           </Button>
         </form>
       </div>
+
+      {/* Company Details */}
+      <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="flex items-center gap-3 mb-8 pb-8 border-b">
+          <Building2 className="w-6 h-6 text-[#D50000]" />
+          <div>
+            <h2 className="text-lg font-bold text-[#1A1A1A]">Company Details</h2>
+            <p className="text-sm text-gray-500 mt-0.5">Help us serve you better by sharing your company info</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleCompanySave} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="companyName">Company Name *</Label>
+            <Input
+              id="companyName"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              className="h-12"
+              placeholder="Your company name"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="companyCountry">Country</Label>
+              <Input
+                id="companyCountry"
+                value={companyCountry}
+                onChange={(e) => setCompanyCountry(e.target.value)}
+                className="h-12"
+                placeholder="e.g. United Arab Emirates"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="companyCity">City</Label>
+              <Input
+                id="companyCity"
+                value={companyCity}
+                onChange={(e) => setCompanyCity(e.target.value)}
+                className="h-12"
+                placeholder="e.g. Dubai"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="companyPhone">Company Phone</Label>
+              <Input
+                id="companyPhone"
+                type="tel"
+                value={companyPhone}
+                onChange={(e) => setCompanyPhone(e.target.value)}
+                className="h-12"
+                placeholder="+971 4 123 4567"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="companyWebsite">Website</Label>
+              <Input
+                id="companyWebsite"
+                value={companyWebsite}
+                onChange={(e) => setCompanyWebsite(e.target.value)}
+                className="h-12"
+                placeholder="https://yourcompany.com"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="companyIndustry">Industry</Label>
+            <Input
+              id="companyIndustry"
+              value={companyIndustry}
+              onChange={(e) => setCompanyIndustry(e.target.value)}
+              className="h-12"
+              placeholder="e.g. Manufacturing, Retail, Oil & Gas"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="companyAddress">Full Address</Label>
+            <Textarea
+              id="companyAddress"
+              value={companyAddress}
+              onChange={(e) => setCompanyAddress(e.target.value)}
+              className="min-h-[80px]"
+              placeholder="Street address, building, P.O. Box..."
+            />
+          </div>
+
+          <Button
+            type="submit"
+            disabled={savingCompany}
+            className="bg-[#D50000] hover:bg-[#B00000] h-12 w-full"
+          >
+            {savingCompany ? 'Saving...' : 'Save Company Details'}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
