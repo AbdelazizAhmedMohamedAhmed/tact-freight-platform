@@ -77,6 +77,7 @@ export default function ClientRFQs() {
         reference_number: ref,
         status: 'submitted',
         client_email: user.email,
+        ...(companyId ? { company_id: companyId } : {}),
       });
 
       await logRFQAction(newRFQ, 'rfq_created', `New RFQ created: ${ref} for ${data.company_name}`);
