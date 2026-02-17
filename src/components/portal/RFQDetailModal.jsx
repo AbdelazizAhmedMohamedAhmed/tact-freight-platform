@@ -254,7 +254,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {canSendToClient && role === 'sales' && rfq.status === 'quoted' && (
+            {!isReadOnly && canSendToClient && role === 'sales' && rfq.status === 'quoted' && (
               <div className="space-y-4 pt-4 border-t">
                 <Button onClick={() => handleAction('sent_to_client')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Send Quotation to Client</Button>
               </div>
