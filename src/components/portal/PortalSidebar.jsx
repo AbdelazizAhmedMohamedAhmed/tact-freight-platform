@@ -20,7 +20,7 @@ const menuByRole = {
   ],
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
-    { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQs' },
+    { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQQueue' },
     { label: 'CRM — Leads', icon: Users, page: 'SalesCRM' },
     { label: 'Companies', icon: Building2, page: 'SalesCompanies' },
     { label: 'Manage Pricing', icon: DollarSign, page: 'SalesManagePricing' },
