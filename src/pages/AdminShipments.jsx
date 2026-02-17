@@ -35,7 +35,7 @@ export default function AdminShipments() {
   const [note, setNote] = useState('');
   const [updating, setUpdating] = useState(false);
 
-  const { data: shipments = [], isLoading } = useQuery({
+  const { data: shipments = [], isLoading, refetch } = useQuery({
     queryKey: ['admin-all-shipments'],
     queryFn: () => base44.entities.Shipment.list('-created_date', 500),
   });
@@ -44,6 +44,49 @@ export default function AdminShipments() {
     s.tracking_number?.toLowerCase().includes(search.toLowerCase()) ||
     s.company_name?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleStatusUpdate = async () => {
+    if (!newStatus || !selectedShipment) return;
+    setUpdating(true);
+    const now = new Date().toISOString();
+    const history = [...(selectedShipment.status_history || []), { status: newStatus, timestamp: now, note }];
+    const updatedShipment = await base44.entities.Shipment.update(selectedShipment.id, {
+      status: newStatus,
+      status_history: history,
+      shipper_name: selectedShipment.shipper_name,
+      shipper_address: selectedShipment.shipper_address,
+      shipper_contact: selectedShipment.shipper_contact,
+      shipper_phone: selectedShipment.shipper_phone,
+      shipper_email: selectedShipment.shipper_email,
+      consignee_name: selectedShipment.consignee_name,
+      consignee_address: selectedShipment.consignee_address,
+      consignee_contact: selectedShipment.consignee_contact,
+      consignee_phone: selectedShipment.consignee_phone,
+      consignee_email: selectedShipment.consignee_email,
+      lead_time_days: selectedShipment.lead_time_days,
+      first_available_vessel: selectedShipment.first_available_vessel,
+    });
+    await logShipmentAction(updatedShipment, 'shipment_status_changed',
+      `Shipment ${selectedShipment.tracking_number} status changed to ${newStatus}`,
+      { old_value: selectedShipment.status, new_value: newStatus }
+    );
+    await sendStatusNotification('shipment', updatedShipment, selectedShipment.status, newStatus);
+    setUpdating(false);
+    setNote('');
+    setNewStatus('');
+    setSelectedShipment(null);
+    refetch();
+  };
+
+  const handleDocUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !selectedShipment) return;
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const docs = [...(selectedShipment.document_urls || []), { name: file.name, url: file_url, type: 'Document' }];
+    await base44.entities.Shipment.update(selectedShipment.id, { document_urls: docs });
+    await logFileAction('file_uploaded', file.name, 'shipment', selectedShipment.id, `Document uploaded to shipment ${selectedShipment.tracking_number}`);
+    refetch();
+  };
 
   return (
     <div className="space-y-6">
