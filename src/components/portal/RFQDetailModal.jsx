@@ -277,7 +277,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {canAcceptReject && role === 'client' && rfq.status === 'sent_to_client' && (
+            {!isReadOnly && canAcceptReject && role === 'client' && rfq.status === 'sent_to_client' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="flex gap-3">
                   <Button onClick={() => handleAction('accepted')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
