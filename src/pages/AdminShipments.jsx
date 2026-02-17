@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Ship, Plane, Truck } from 'lucide-react';
 import { format } from 'date-fns';
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '../utils';
+import ShipmentDetailModal from '../components/client/ShipmentDetailModal';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
