@@ -16,7 +16,7 @@ export default function HeroSection() {
         transition={{ duration: 1.5 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=90"
+          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=90"
           alt="Global Shipping"
           className="w-full h-full object-cover opacity-35"
         />
