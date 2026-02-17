@@ -22,6 +22,8 @@ export default function PendingAmendments() {
     });
   }, []);
 
+  const userRole = user?.department || user?.role || 'user';
+
   const { data: amendments = [], isLoading, refetch } = useQuery({
     queryKey: ['amendments'],
     queryFn: () => base44.entities.ShipmentAmendment.filter(
@@ -29,7 +31,7 @@ export default function PendingAmendments() {
       '-created_date',
       100
     ),
-    enabled: !!user,
+    enabled: !!user && (userRole === 'operations' || userRole === 'admin'),
   });
 
   const handleApprove = async (amendment) => {
@@ -118,6 +120,16 @@ export default function PendingAmendments() {
       setProcessing(false);
     }
   };
+
+  // Permission check
+  if (userRole !== 'operations' && userRole !== 'admin') {
+    return (
+      <div className="text-center py-8">
+        <AlertCircle className="w-8 h-8 mx-auto text-red-600 mb-2" />
+        <p className="text-red-600 font-medium">You don't have permission to access this page.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
