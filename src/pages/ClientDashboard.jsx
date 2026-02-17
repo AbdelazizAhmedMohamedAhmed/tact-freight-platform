@@ -10,20 +10,28 @@ import { Plus, FileText, Ship, TrendingUp } from 'lucide-react';
 
 export default function ClientDashboard() {
   const [user, setUser] = useState(null);
+  const [companyId, setCompanyId] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    base44.auth.me().then(u => {
+      setUser(u);
+      setCompanyId(u.company_id || null);
+    }).catch(() => {});
   }, []);
 
   const { data: rfqs = [] } = useQuery({
-    queryKey: ['my-rfqs'],
-    queryFn: () => base44.entities.RFQ.filter({ client_email: user?.email }, '-created_date', 10),
+    queryKey: ['my-rfqs', companyId, user?.email],
+    queryFn: () => companyId
+      ? base44.entities.RFQ.filter({ company_id: companyId }, '-created_date', 10)
+      : base44.entities.RFQ.filter({ client_email: user.email }, '-created_date', 10),
     enabled: !!user,
   });
 
   const { data: shipments = [] } = useQuery({
-    queryKey: ['my-shipments'],
-    queryFn: () => base44.entities.Shipment.filter({ client_email: user?.email }, '-updated_date', 10),
+    queryKey: ['my-shipments', companyId, user?.email],
+    queryFn: () => companyId
+      ? base44.entities.Shipment.filter({ company_id: companyId }, '-updated_date', 10)
+      : base44.entities.Shipment.filter({ client_email: user.email }, '-updated_date', 10),
     enabled: !!user,
   });
 
