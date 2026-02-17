@@ -57,6 +57,8 @@ export default function OperationsShipmentDetail() {
 
   const ModeIcon = modeIcons[shipment.mode] || Ship;
 
+  const userRole = user?.department || user?.role || 'user';
+  
   const handleStatusUpdate = async (newStatus) => {
     if (!newStatus || updatingStatus) return;
     setUpdatingStatus(newStatus);
@@ -192,7 +194,7 @@ export default function OperationsShipmentDetail() {
 
         {/* Status Update Tab */}
         <TabsContent value="status" className="space-y-4">
-          {availableNextStatuses.length > 0 ? (
+          {(userRole === 'operations' || userRole === 'admin') && availableNextStatuses.length > 0 ? (
             <Card>
               <CardHeader>
                 <CardTitle>Update Shipment Status</CardTitle>
@@ -246,11 +248,19 @@ export default function OperationsShipmentDetail() {
                 </Button>
               </CardContent>
             </Card>
-          ) : (
+          ) : userRole === 'operations' || userRole === 'admin' ? (
             <Card className="bg-green-50 border-green-200">
               <CardContent className="pt-6">
                 <p className="text-green-800 font-medium">
                   ✓ This shipment has been delivered and cannot be updated further.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="bg-yellow-50 border-yellow-200">
+              <CardContent className="pt-6">
+                <p className="text-yellow-800 font-medium">
+                  You don't have permission to update shipment status.
                 </p>
               </CardContent>
             </Card>
