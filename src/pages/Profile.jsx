@@ -33,11 +33,19 @@ export default function Profile() {
 
   useEffect(() => {
     base44.auth.me()
-      .then(userData => {
+      .then(async userData => {
         setUser(userData);
         setFullName(userData.full_name || '');
         setEmail(userData.email || '');
         setPhone(userData.phone || '');
+        // Load existing company if any
+        setCompanyName(userData.company_name || '');
+        setCompanyCountry(userData.company_country || '');
+        setCompanyCity(userData.company_city || '');
+        setCompanyPhone(userData.company_phone || '');
+        setCompanyWebsite(userData.company_website || '');
+        setCompanyAddress(userData.company_address || '');
+        setCompanyIndustry(userData.company_industry || '');
         setLoading(false);
       })
       .catch(() => base44.auth.redirectToLogin());
