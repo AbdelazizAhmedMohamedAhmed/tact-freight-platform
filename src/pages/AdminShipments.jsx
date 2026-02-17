@@ -1,24 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import StatusBadge from '../components/shared/StatusBadge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import StatusBadge from '../components/shared/StatusBadge';
 import { Search, Ship, Plane, Truck } from 'lucide-react';
 import { format } from 'date-fns';
 import { Skeleton } from "@/components/ui/skeleton";
-import ShipmentDetailModal from '../components/client/ShipmentDetailModal';
+import { sendStatusNotification } from '../components/utils/notificationService';
+import { logShipmentAction, logFileAction } from '../components/utils/activityLogger';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
+const statusOrder = [
+  'booking_confirmed', 'cargo_received', 'export_clearance', 'departed_origin',
+  'in_transit', 'arrived_destination', 'customs_clearance', 'out_for_delivery', 'delivered'
+];
+const statusLabels = {
+  booking_confirmed: 'Booking Confirmed', cargo_received: 'Cargo Received',
+  export_clearance: 'Export Clearance', departed_origin: 'Departed Origin',
+  in_transit: 'In Transit', arrived_destination: 'Arrived Destination',
+  customs_clearance: 'Customs Clearance', out_for_delivery: 'Out for Delivery',
+  delivered: 'Delivered',
+};
 
 export default function AdminShipments() {
   const [search, setSearch] = useState('');
   const [selectedShipment, setSelectedShipment] = useState(null);
-  const [userDept, setUserDept] = useState('admin');
-
-  useEffect(() => {
-    base44.auth.me().then(u => setUserDept(u.department || u.role || 'admin')).catch(() => {});
-  }, []);
+  const [newStatus, setNewStatus] = useState('');
+  const [note, setNote] = useState('');
+  const [updating, setUpdating] = useState(false);
 
   const { data: shipments = [], isLoading } = useQuery({
     queryKey: ['admin-all-shipments'],
