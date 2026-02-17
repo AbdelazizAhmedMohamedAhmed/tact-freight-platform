@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import ClientShipmentCard from '../components/client/ClientShipmentCard';
 import UploadDocumentModal from '../components/client/UploadDocumentModal';
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { createPageUrl } from '../utils';
+import { Link } from 'react-router-dom';
 
 export default function ClientShipments() {
   const [user, setUser] = useState(null);
@@ -57,15 +59,16 @@ export default function ClientShipments() {
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map(shipment => (
-            <ClientShipmentCard
-              key={shipment.id}
-              shipment={shipment}
-              onUploadDocs={() => setUploadEntity(shipment)}
-              onRefresh={refetch}
-            />
-          ))}
-        </div>
+           {filtered.map(shipment => (
+             <Link key={shipment.id} to={createPageUrl(`ClientShipmentDetail?id=${shipment.id}`)}>
+               <ClientShipmentCard
+                 shipment={shipment}
+                 onUploadDocs={() => setUploadEntity(shipment)}
+                 onRefresh={refetch}
+               />
+             </Link>
+           ))}
+         </div>
       )}
 
       <UploadDocumentModal
