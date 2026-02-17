@@ -4,7 +4,13 @@ import Footer from './components/shared/Footer';
 import PortalSidebar from './components/portal/PortalSidebar';
 import { base44 } from '@/api/base44Client';
 
-const publicPages = ['Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'Portal'];
+const publicPages = [
+  'Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'Portal',
+  'TrackShipment', 'RequestQuote',
+  'SeaFreight', 'AirFreight', 'InlandTransport', 'CustomsClearance',
+  'Warehousing', 'ProjectLogistics', 'RoRoServices', 'Consultancy',
+  'PrivacyPolicy', 'TermsOfService'
+];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);

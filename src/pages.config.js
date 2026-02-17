@@ -56,6 +56,8 @@ import AdminReporting from './pages/AdminReporting';
 import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
 import AirFreight from './pages/AirFreight';
+import BizDevPartners from './pages/BizDevPartners';
+import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
@@ -84,6 +86,8 @@ import Profile from './pages/Profile';
 import ProjectLogistics from './pages/ProjectLogistics';
 import RequestQuote from './pages/RequestQuote';
 import RoRoServices from './pages/RoRoServices';
+import SalesCRM from './pages/SalesCRM';
+import SalesCompanies from './pages/SalesCompanies';
 import SalesDashboard from './pages/SalesDashboard';
 import SalesManagePricing from './pages/SalesManagePricing';
 import SalesRFQQueue from './pages/SalesRFQQueue';
@@ -94,10 +98,6 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import ClientCreateRFQ from './pages/ClientCreateRFQ';
-import SalesCRM from './pages/SalesCRM';
-import SalesCompanies from './pages/SalesCompanies';
-import BizDevPartners from './pages/BizDevPartners';
 import __Layout from './Layout.jsx';
 
 
@@ -111,6 +111,8 @@ export const PAGES = {
     "AdminShipments": AdminShipments,
     "AdminUsers": AdminUsers,
     "AirFreight": AirFreight,
+    "BizDevPartners": BizDevPartners,
+    "ClientCreateRFQ": ClientCreateRFQ,
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
@@ -139,6 +141,8 @@ export const PAGES = {
     "ProjectLogistics": ProjectLogistics,
     "RequestQuote": RequestQuote,
     "RoRoServices": RoRoServices,
+    "SalesCRM": SalesCRM,
+    "SalesCompanies": SalesCompanies,
     "SalesDashboard": SalesDashboard,
     "SalesManagePricing": SalesManagePricing,
     "SalesRFQQueue": SalesRFQQueue,
@@ -149,10 +153,6 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "ClientCreateRFQ": ClientCreateRFQ,
-    "SalesCRM": SalesCRM,
-    "SalesCompanies": SalesCompanies,
-    "BizDevPartners": BizDevPartners,
 }
 
 export const pagesConfig = {
