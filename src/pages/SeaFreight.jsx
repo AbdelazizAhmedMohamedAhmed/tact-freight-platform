@@ -27,7 +27,7 @@ export default function SeaFreight() {
       <section className="relative min-h-[70vh] flex items-center overflow-hidden bg-gradient-to-b from-[#1A1A1A] to-[#0F0F0F]">
         <motion.div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=1920&q=80"
             alt="Sea Freight"
             className="w-full h-full object-cover opacity-30"
           />
