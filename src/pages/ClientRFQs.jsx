@@ -98,17 +98,45 @@ export default function ClientRFQs() {
   });
 
   const confirmQuoteMutation = useMutation({
-    mutationFn: async (id) => {
-      const updated = await base44.entities.RFQ.update(id, { status: 'client_confirmed' });
+    mutationFn: async (rfq) => {
+      const updated = await base44.entities.RFQ.update(rfq.id, { status: 'client_confirmed' });
       await logRFQAction(updated, 'rfq_status_changed', `RFQ ${updated.reference_number} confirmed by client`, { 
-        old_value: selectedRFQ.status, 
+        old_value: rfq.status, 
         new_value: 'client_confirmed' 
       });
+
+      // Create a shipment from this confirmed RFQ
+      const year = new Date().getFullYear().toString().slice(-2);
+      const seq = String(Math.floor(10000 + Math.random() * 90000));
+      const trackingNumber = `TF-${year}-${seq}`;
+
+      await base44.entities.Shipment.create({
+        tracking_number: trackingNumber,
+        rfq_id: rfq.id,
+        status: 'booking_confirmed',
+        mode: rfq.mode,
+        origin: rfq.origin,
+        destination: rfq.destination,
+        client_email: rfq.client_email || rfq.email,
+        company_id: rfq.company_id || null,
+        company_name: rfq.company_name,
+        cargo_description: rfq.commodity_description,
+        weight_kg: rfq.weight_kg,
+        volume_cbm: rfq.volume_cbm,
+        status_history: [{
+          status: 'booking_confirmed',
+          timestamp: new Date().toISOString(),
+          note: `Booking confirmed. Quotation accepted by client.`,
+          updated_by: user?.email,
+        }],
+      });
+
       return updated;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
       setSelectedRFQ(null);
+      window.location.href = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '') + '/' + 'ClientShipments';
     },
   });
 
