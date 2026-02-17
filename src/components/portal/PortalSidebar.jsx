@@ -50,6 +50,8 @@ const menuByRole = {
     { label: 'Dashboard', icon: LayoutDashboard, page: 'AdminDashboard' },
     { label: 'RFQs', icon: FileText, page: 'AdminRFQs' },
     { label: 'Shipments', icon: Ship, page: 'AdminShipments' },
+    { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
+    { label: 'Create Quotation', icon: ClipboardList, page: 'PricingCreateQuotation' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
     { label: 'Activity Log', icon: BarChart3, page: 'AdminActivity' },
     { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
