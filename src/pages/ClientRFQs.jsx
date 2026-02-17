@@ -16,6 +16,7 @@ import { logRFQAction } from '../components/utils/activityLogger';
 
 export default function ClientRFQs() {
   const [user, setUser] = useState(null);
+  const [companyId, setCompanyId] = useState(null);
   const [showNewRFQ, setShowNewRFQ] = useState(false);
   const [selectedRFQ, setSelectedRFQ] = useState(null);
   const [uploading, setUploading] = useState(false);
