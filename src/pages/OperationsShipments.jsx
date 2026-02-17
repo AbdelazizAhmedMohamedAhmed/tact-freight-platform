@@ -17,12 +17,12 @@ import { logShipmentAction, logFileAction } from '../components/utils/activityLo
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 const statusOrder = [
-  'booking_confirmed', 'cargo_received', 'customs_export', 'departed_origin',
+  'booking_confirmed', 'cargo_received', 'export_clearance', 'departed_origin',
   'in_transit', 'arrived_destination', 'customs_clearance', 'out_for_delivery', 'delivered'
 ];
 const statusLabels = {
   booking_confirmed: 'Booking Confirmed', cargo_received: 'Cargo Received',
-  customs_export: 'Customs Export', departed_origin: 'Departed Origin',
+  export_clearance: 'Export Clearance', departed_origin: 'Departed Origin',
   in_transit: 'In Transit', arrived_destination: 'Arrived Destination',
   customs_clearance: 'Customs Clearance', out_for_delivery: 'Out for Delivery',
   delivered: 'Delivered',
@@ -48,6 +48,11 @@ export default function OperationsShipments() {
     const updatedShipment = await base44.entities.Shipment.update(selected.id, { 
       status: newStatus, 
       status_history: history,
+      bl_number: selected.bl_number,
+      shipping_line_airline: selected.shipping_line_airline,
+      actual_weight_kg: selected.actual_weight_kg,
+      num_containers: selected.num_containers,
+      commodity_description: selected.commodity_description,
       shipper_name: selected.shipper_name,
       shipper_address: selected.shipper_address,
       shipper_contact: selected.shipper_contact,
@@ -246,8 +251,24 @@ export default function OperationsShipments() {
                 </div>
               </div>
 
-              {/* Lead Time & Vessel Info */}
+              {/* BL & Vessel/Airline Info */}
               <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>BL / AWB Number</Label>
+                  <Input 
+                    value={selected.bl_number || ''} 
+                    onChange={e => setSelected({...selected, bl_number: e.target.value})}
+                    placeholder="Bill of Lading / Air Waybill number"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Shipping Line / Airline</Label>
+                  <Input 
+                    value={selected.shipping_line_airline || ''} 
+                    onChange={e => setSelected({...selected, shipping_line_airline: e.target.value})}
+                    placeholder="e.g. Maersk, Emirates"
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label>Lead Time (Days)</Label>
                   <Input 
@@ -264,6 +285,50 @@ export default function OperationsShipments() {
                     type="date"
                     value={selected.first_available_vessel || ''} 
                     onChange={e => setSelected({...selected, first_available_vessel: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              {/* Actual Weights & Containers */}
+              <div className="border rounded-lg p-4 space-y-3 bg-blue-50">
+                <h3 className="font-semibold text-[#1A1A1A]">Actual Cargo Details</h3>
+                <div className="grid md:grid-cols-3 gap-3">
+                  <div className="space-y-2">
+                    <Label>Actual Weight (KG)</Label>
+                    <Input 
+                      type="number"
+                      value={selected.actual_weight_kg || ''} 
+                      onChange={e => setSelected({...selected, actual_weight_kg: parseFloat(e.target.value) || null})}
+                      placeholder="Actual weight in KG"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Number of Containers</Label>
+                    <Input 
+                      type="number"
+                      value={selected.num_containers || ''} 
+                      onChange={e => setSelected({...selected, num_containers: parseInt(e.target.value) || null})}
+                      placeholder="e.g. 2"
+                      min="0"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Volume (CBM)</Label>
+                    <Input 
+                      type="number"
+                      value={selected.volume_cbm || ''} 
+                      onChange={e => setSelected({...selected, volume_cbm: parseFloat(e.target.value) || null})}
+                      placeholder="Cubic meters"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Commodity Description</Label>
+                  <Textarea 
+                    value={selected.commodity_description || ''} 
+                    onChange={e => setSelected({...selected, commodity_description: e.target.value})}
+                    placeholder="Detailed commodity description..."
+                    rows={2}
                   />
                 </div>
               </div>
