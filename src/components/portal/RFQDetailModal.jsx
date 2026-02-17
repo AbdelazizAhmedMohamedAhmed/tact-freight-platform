@@ -260,7 +260,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {canUploadQuotation && role === 'pricing' && rfq.status === 'pricing_review' && (
+            {!isReadOnly && canUploadQuotation && role === 'pricing' && rfq.status === 'pricing_review' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
