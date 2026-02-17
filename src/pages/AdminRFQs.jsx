@@ -58,7 +58,7 @@ export default function AdminRFQs() {
 
       {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : <RFQTable rfqs={filtered} onView={setSelectedRFQ} />}
 
-      <RFQDetailModal rfq={selectedRFQ} open={!!selectedRFQ} onClose={() => setSelectedRFQ(null)} role="sales" onUpdate={refetch} />
+      <RFQDetailModal rfq={selectedRFQ} open={!!selectedRFQ} onClose={() => setSelectedRFQ(null)} role={userDept} onUpdate={refetch} />
     </div>
   );
 }
