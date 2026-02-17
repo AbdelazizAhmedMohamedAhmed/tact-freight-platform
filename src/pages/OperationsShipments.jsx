@@ -23,11 +23,21 @@ const statusGroups = {
 export default function OperationsShipments() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('active');
+  const [selectedShipmentId, setSelectedShipmentId] = useState(null);
+  const [user, setUser] = useState(null);
+
+  React.useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
+
+  const userRole = user?.department || user?.role || 'user';
 
   const { data: shipments = [], isLoading } = useQuery({
     queryKey: ['operations_shipments'],
     queryFn: () => base44.entities.Shipment.list('-created_date', 100),
   });
+
+  const selectedShipment = shipments.find(s => s.id === selectedShipmentId);
 
   const filteredShipments = shipments.filter(s => {
     const matchesSearch = !searchTerm || 
@@ -100,11 +110,14 @@ export default function OperationsShipments() {
             {filteredShipments.map(shipment => {
               const ModeIcon = modeIcons[shipment.mode] || Ship;
               return (
-                <Link
-                  key={shipment.id}
-                  to={createPageUrl(`OperationsShipmentDetail?id=${shipment.id}`)}
-                >
-                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                <div
+                   key={shipment.id}
+                   onClick={() => userRole === 'admin' && setSelectedShipmentId(shipment.id)}
+                 >
+                   <Link
+                     to={userRole === 'admin' ? '#' : createPageUrl(`OperationsShipmentDetail?id=${shipment.id}`)}
+                   >
+                     <Card className="hover:shadow-md transition-shadow cursor-pointer">
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
@@ -152,14 +165,48 @@ export default function OperationsShipments() {
                           </p>
                         </div>
                       )}
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </Tabs>
-    </div>
-  );
-}
+                      </CardContent>
+                      </Card>
+                      </Link>
+                      </div>
+                      );
+                      })}
+                      </div>
+                      )}
+                      </Tabs>
+
+                      {/* Admin Shipment Detail Modal */}
+                      {userRole === 'admin' && selectedShipmentId && selectedShipment && (
+                      <div 
+                      className="fixed inset-0 bg-black/50 z-50 overflow-auto"
+                      onClick={() => setSelectedShipmentId(null)}
+                      >
+                      <div 
+                      className="min-h-screen w-full max-w-6xl mx-auto p-4 py-8"
+                      onClick={e => e.stopPropagation()}
+                      >
+                      <div className="bg-white rounded-2xl shadow-2xl">
+                      <div className="p-6 border-b flex items-center justify-between">
+                      <h2 className="text-2xl font-bold text-[#1A1A1A]">{selectedShipment.tracking_number}</h2>
+                      <Button 
+                      variant="ghost" 
+                      onClick={() => setSelectedShipmentId(null)}
+                      className="text-gray-500 hover:text-gray-700"
+                      >
+                      ✕
+                      </Button>
+                      </div>
+                      <div className="p-6">
+                      <iframe 
+                      src={createPageUrl(`OperationsShipmentDetail?id=${selectedShipmentId}`)}
+                      className="w-full h-[calc(100vh-200px)] border-0 rounded-lg"
+                      title="Shipment Details"
+                      />
+                      </div>
+                      </div>
+                      </div>
+                      </div>
+                      )}
+                      </div>
+                      );
+                      }
