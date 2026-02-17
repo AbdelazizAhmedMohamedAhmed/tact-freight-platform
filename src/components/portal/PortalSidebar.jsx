@@ -21,7 +21,13 @@ const menuByRole = {
   sales: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
     { label: 'RFQ Queue', icon: ClipboardList, page: 'SalesRFQs' },
+    { label: 'CRM — Leads', icon: Users, page: 'SalesCRM' },
+    { label: 'Companies', icon: Building2, page: 'SalesCompanies' },
     { label: 'Manage Pricing', icon: DollarSign, page: 'SalesManagePricing' },
+  ],
+  bizdev: [
+    { label: 'Partners & Agents', icon: Handshake, page: 'BizDevPartners' },
+    { label: 'Companies', icon: Building2, page: 'SalesCompanies' },
   ],
   pricing: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'PricingDashboard' },
