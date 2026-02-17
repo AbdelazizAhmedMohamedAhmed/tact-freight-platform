@@ -16,7 +16,7 @@ export default function CTASection() {
         transition={{ duration: 2 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1920&q=90"
           alt=""
           className="w-full h-full object-cover opacity-15"
         />

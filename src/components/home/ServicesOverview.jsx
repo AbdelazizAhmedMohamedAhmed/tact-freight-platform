@@ -6,14 +6,14 @@ import { Ship, Plane, Truck, FileCheck, Warehouse, Compass, Car, MessageSquare, 
 import { motion } from 'framer-motion';
 
 const services = [
-  { icon: Ship, title: 'Sea Freight', desc: 'FCL & LCL shipments across all major global trade routes.', image: 'https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&q=80' },
-  { icon: Plane, title: 'Air Freight', desc: 'Express and consolidated air cargo solutions worldwide.', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80' },
-  { icon: Truck, title: 'Inland Transport', desc: 'Door-to-door trucking and ground logistics coverage.', image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=400&q=80' },
-  { icon: FileCheck, title: 'Customs Clearance', desc: 'Full customs brokerage and regulatory compliance.', image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&q=80' },
-  { icon: Warehouse, title: 'Warehousing', desc: 'Storage, distribution, and inventory management.', image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=400&q=80' },
-  { icon: Compass, title: 'Project Logistics', desc: 'Oversized and heavy-lift project cargo handling.', image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80' },
-  { icon: Car, title: 'RoRo Services', desc: 'Roll-on/roll-off vehicle and machinery shipping.', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80' },
-  { icon: MessageSquare, title: 'Consultancy', desc: 'Supply chain advisory and logistics optimization.', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80' },
+  { icon: Ship, title: 'Sea Freight', desc: 'FCL & LCL shipments across all major global trade routes.', image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=90' },
+  { icon: Plane, title: 'Air Freight', desc: 'Express and consolidated air cargo solutions worldwide.', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=90' },
+  { icon: Truck, title: 'Inland Transport', desc: 'Door-to-door trucking and ground logistics coverage.', image: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=600&q=90' },
+  { icon: FileCheck, title: 'Customs Clearance', desc: 'Full customs brokerage and regulatory compliance.', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=90' },
+  { icon: Warehouse, title: 'Warehousing', desc: 'Storage, distribution, and inventory management.', image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=90' },
+  { icon: Compass, title: 'Project Logistics', desc: 'Oversized and heavy-lift project cargo handling.', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&q=90' },
+  { icon: Car, title: 'RoRo Services', desc: 'Roll-on/roll-off vehicle and machinery shipping.', image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=90' },
+  { icon: MessageSquare, title: 'Consultancy', desc: 'Supply chain advisory and logistics optimization.', image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=600&q=90' },
 ];
 
 export default function ServicesOverview() {
