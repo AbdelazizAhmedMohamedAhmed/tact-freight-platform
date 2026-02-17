@@ -144,7 +144,9 @@ export function getRoleLabel(role) {
     sales: 'Sales',
     pricing: 'Pricing',
     operations: 'Operations',
-    admin: 'Admin'
+    admin: 'Admin',
+    customer_service: 'Customer Service',
+    analyst: 'Analyst',
   };
   return labels[role] || 'User';
 }
