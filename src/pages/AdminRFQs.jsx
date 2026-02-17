@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import RFQTable from '../components/portal/RFQTable';
@@ -12,6 +12,11 @@ export default function AdminRFQs() {
   const [selectedRFQ, setSelectedRFQ] = useState(null);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
+  const [userDept, setUserDept] = useState('admin');
+
+  useEffect(() => {
+    base44.auth.me().then(u => setUserDept(u.department || u.role || 'admin')).catch(() => {});
+  }, []);
 
   const { data: rfqs = [], isLoading, refetch } = useQuery({
     queryKey: ['admin-all-rfqs'],
