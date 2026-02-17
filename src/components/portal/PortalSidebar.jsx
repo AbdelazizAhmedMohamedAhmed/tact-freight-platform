@@ -76,6 +76,8 @@ const roleLabels = {
   supervisor: 'Supervisor Portal',
   bizdev: 'Biz Dev Portal',
   admin: 'Admin Portal',
+  customer_service: 'Customer Service',
+  analyst: 'Analyst Portal',
 };
 
 export default function PortalSidebar({ userRole, currentPage }) {
