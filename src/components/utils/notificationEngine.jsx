@@ -183,6 +183,20 @@ export async function notifyShipmentStatusUpdate(shipment, status) {
   });
 }
 
+export async function notifyAmendmentRequested(amendment) {
+  const operations = await findUsersByRole('operations');
+  
+  await sendNotification({
+    type: 'shipment_update',
+    title: 'Amendment Request Received',
+    message: `Client requested amendment for shipment ${amendment.tracking_number}: ${amendment.reason}`,
+    recipients: operations.map(u => u.email),
+    entity_type: 'shipment',
+    entity_id: amendment.shipment_id,
+    entity_reference: amendment.tracking_number,
+  });
+}
+
 // Helper function
 async function findUsersByRole(role) {
   try {
