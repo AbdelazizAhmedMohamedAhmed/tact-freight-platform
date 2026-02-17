@@ -236,8 +236,15 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
+            {/* Read-only notice */}
+            {isReadOnly && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2 text-sm text-yellow-800">
+                You have view-only access to this RFQ.
+              </div>
+            )}
+
             {/* Actions by role */}
-            {canUpdateStatus && role === 'sales' && ['submitted', 'sales_review'].includes(rfq.status) && (
+            {!isReadOnly && canUpdateStatus && role === 'sales' && ['submitted', 'sales_review'].includes(rfq.status) && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="space-y-2"><Label>Notes</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Add notes for pricing team..." /></div>
                 <div className="flex gap-3">
