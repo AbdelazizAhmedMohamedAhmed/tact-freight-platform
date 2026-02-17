@@ -62,6 +62,7 @@ export default function ClientShipments() {
               key={shipment.id}
               shipment={shipment}
               onUploadDocs={() => setUploadEntity(shipment)}
+              onRefresh={refetch}
             />
           ))}
         </div>
