@@ -96,13 +96,16 @@ export function canAccessData(userRole, userEmail, data, module) {
   // Admin can access everything
   if (userRole === ROLES.ADMIN) return true;
   
-  // Staff can access all data in their modules
+  // Staff and read-only roles can access all data in their modules
   if (module === 'rfqs' && hasPermission(userRole, 'rfqs', 'viewAll')) {
     return true;
   }
   if (module === 'shipments' && hasPermission(userRole, 'shipments', 'viewAll')) {
     return true;
   }
+  
+  // Analyst can access analytics but no transactional data
+  if (userRole === ROLES.ANALYST) return false;
   
   // Clients can only access their own data
   if (userRole === ROLES.CLIENT) {
