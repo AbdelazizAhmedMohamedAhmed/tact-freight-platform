@@ -14,6 +14,11 @@ const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 export default function AdminShipments() {
   const [search, setSearch] = useState('');
   const [selectedShipment, setSelectedShipment] = useState(null);
+  const [userDept, setUserDept] = useState('admin');
+
+  useEffect(() => {
+    base44.auth.me().then(u => setUserDept(u.department || u.role || 'admin')).catch(() => {});
+  }, []);
 
   const { data: shipments = [], isLoading } = useQuery({
     queryKey: ['admin-all-shipments'],
