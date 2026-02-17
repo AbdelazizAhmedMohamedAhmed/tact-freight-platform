@@ -61,9 +61,9 @@ export default function AdminShipments() {
                 return (
                   <TableRow key={s.id} className="hover:bg-gray-50">
                     <TableCell>
-                      <Link to={createPageUrl(`TrackShipment?tn=${s.tracking_number}`)} className="font-mono font-semibold text-[#D50000] hover:underline">
+                      <button onClick={() => setSelectedShipment(s)} className="font-mono font-semibold text-[#D50000] hover:underline">
                         {s.tracking_number}
-                      </Link>
+                      </button>
                     </TableCell>
                     <TableCell>{s.company_name}</TableCell>
                     <TableCell className="text-sm">{s.origin} → {s.destination}</TableCell>
