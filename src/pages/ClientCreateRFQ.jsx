@@ -69,6 +69,10 @@ export default function ClientCreateRFQ() {
 
     await logRFQAction(rfq, 'rfq_created', `New RFQ ${ref} submitted by client ${user.email}`);
 
+    // Notify sales team
+    const { notifyRFQCreated } = await import('@/components/utils/notificationEngine');
+    await notifyRFQCreated(rfq);
+
     setSuccess(ref);
     setSubmitting(false);
   };
