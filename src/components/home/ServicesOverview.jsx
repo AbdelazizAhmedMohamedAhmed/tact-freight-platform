@@ -6,7 +6,7 @@ import { Ship, Plane, Truck, FileCheck, Warehouse, Compass, Car, MessageSquare, 
 import { motion } from 'framer-motion';
 
 const services = [
-  { icon: Ship, title: 'Sea Freight', desc: 'FCL & LCL shipments across all major global trade routes.', image: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=90' },
+  { icon: Ship, title: 'Sea Freight', desc: 'FCL & LCL shipments across all major global trade routes.', image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=90' },
   { icon: Plane, title: 'Air Freight', desc: 'Express and consolidated air cargo solutions worldwide.', image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=90' },
   { icon: Truck, title: 'Inland Transport', desc: 'Door-to-door trucking and ground logistics coverage.', image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=90' },
   { icon: FileCheck, title: 'Customs Clearance', desc: 'Full customs brokerage and regulatory compliance.', image: 'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?w=600&q=90' },
