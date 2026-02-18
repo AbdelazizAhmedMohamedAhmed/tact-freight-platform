@@ -49,8 +49,7 @@ const menuByRole = {
     { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
   ],
   analyst: [
-    { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
-    { label: 'Reporting', icon: ClipboardList, page: 'AdminReporting' },
+    { label: 'Reporting', icon: TrendingUp, page: 'Reporting' },
     { label: 'Activity Log', icon: FileText, page: 'AdminActivity' },
   ],
   supervisor: [
