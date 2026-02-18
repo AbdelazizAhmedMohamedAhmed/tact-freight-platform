@@ -48,7 +48,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
     const updateData = { status: newStatus, ...extraData };
-    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_in_progress'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
+    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_in_progress') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
     
@@ -371,7 +371,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               <div className="space-y-2 pt-4 border-t">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Admin Override — Force Status</p>
                 <div className="flex gap-2 flex-wrap">
-                  {['submitted','sales_review','pricing_review','quoted','sent_to_client','client_confirmed','rejected'].map(s => s !== rfq.status && (
+                  {['submitted','sales_review','pricing_in_progress','quotation_ready','sent_to_client','client_confirmed','rejected'].map(s => s !== rfq.status && (
                     <Button key={s} size="sm" variant="outline" disabled={updating} onClick={() => handleAction(s)}>
                       → {s.replace(/_/g, ' ')}
                     </Button>
