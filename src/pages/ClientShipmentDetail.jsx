@@ -12,6 +12,7 @@ import ShipmentDocuments from '../components/client/ShipmentDocuments';
 import ShipmentQuote from '../components/client/ShipmentQuote';
 import ShipmentTimeline from '../components/operations/ShipmentTimeline';
 import StatusBadge from '../components/shared/StatusBadge';
+import CommentThread from '../components/portal/CommentThread';
 
 export default function ClientShipmentDetail() {
   const [user, setUser] = useState(null);
