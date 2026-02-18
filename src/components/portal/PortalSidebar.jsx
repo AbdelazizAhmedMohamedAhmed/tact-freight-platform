@@ -18,6 +18,8 @@ const menuByRole = {
     { label: 'My RFQs', icon: FileText, page: 'ClientRFQs' },
     { label: 'My Shipments', icon: Ship, page: 'ClientShipments' },
     { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
+    { label: 'My Reports', icon: TrendingUp, page: 'ClientReporting' },
+    { label: 'Notifications', icon: Bell, page: 'Notifications' },
   ],
   sales: [
   { label: 'Dashboard', icon: LayoutDashboard, page: 'SalesDashboard' },
