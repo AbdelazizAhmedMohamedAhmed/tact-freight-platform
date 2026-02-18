@@ -103,7 +103,7 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import CompanyRegistration from './pages/CompanyRegistration';
+import Register from './pages/Register';
 import __Layout from './Layout.jsx';
 
 
@@ -164,7 +164,7 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "CompanyRegistration": CompanyRegistration,
+    "Register": Register,
 }
 
 export const pagesConfig = {
