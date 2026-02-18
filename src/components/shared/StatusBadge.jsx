@@ -5,10 +5,10 @@ const statusConfig = {
   // RFQ statuses
   submitted: { label: 'Submitted', color: 'bg-blue-100 text-blue-800 border-blue-200' },
   sales_review: { label: 'Sales Review', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-  pricing_review: { label: 'Pricing Review', color: 'bg-orange-100 text-orange-800 border-orange-200' },
-  quoted: { label: 'Quoted', color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  pricing_in_progress: { label: 'Pricing In Progress', color: 'bg-orange-100 text-orange-800 border-orange-200' },
+  quotation_ready: { label: 'Quotation Ready', color: 'bg-purple-100 text-purple-800 border-purple-200' },
   sent_to_client: { label: 'Sent to Client', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-  accepted: { label: 'Accepted', color: 'bg-green-100 text-green-800 border-green-200' },
+  client_confirmed: { label: 'Client Confirmed', color: 'bg-green-100 text-green-800 border-green-200' },
   rejected: { label: 'Rejected', color: 'bg-red-100 text-red-800 border-red-200' },
   cancelled: { label: 'Cancelled', color: 'bg-gray-100 text-gray-800 border-gray-200' },
   // Shipment statuses
