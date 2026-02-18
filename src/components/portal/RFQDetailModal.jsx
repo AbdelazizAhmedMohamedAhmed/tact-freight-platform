@@ -15,8 +15,8 @@ import { hasPermission } from '@/components/utils/permissions';
 import { logRFQAction, logFileAction } from '@/components/utils/activityLogger';
 import { sendStatusNotification, sendQuotationNotification } from '@/components/utils/notificationService';
 import { notifyRFQSentToPricing, notifyPricingComplete, notifyQuotationSent } from '@/components/utils/notificationEngine';
-import QuoteBreakdown from '@/components/client/QuoteBreakdown';
-import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle } from 'lucide-react';
+import QuoteBreakdown from '../client/QuoteBreakdown';
+import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
@@ -28,6 +28,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [assignType, setAssignType] = useState('sales');
   const [outcomeModalOpen, setOutcomeModalOpen] = useState(false);
+  const [convertingToShipment, setConvertingToShipment] = useState(false);
+  const [shipmentCreated, setShipmentCreated] = useState(null);
 
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
@@ -45,33 +47,6 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_review') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
-
-    // Auto-create shipment if quote is accepted (admin acting on behalf of client)
-    if (newStatus === 'client_confirmed') {
-      const year = new Date().getFullYear().toString().slice(-2);
-      const seq = String(Math.floor(10000 + Math.random() * 90000));
-      const trackingNumber = `TF-${year}-${seq}`;
-      await base44.entities.Shipment.create({
-        tracking_number: trackingNumber,
-        rfq_id: rfq.id,
-        status: 'booking_confirmed',
-        mode: rfq.mode,
-        origin: rfq.origin,
-        destination: rfq.destination,
-        client_email: rfq.client_email || rfq.email,
-        company_id: rfq.company_id || null,
-        company_name: rfq.company_name,
-        cargo_description: rfq.commodity_description,
-        weight_kg: rfq.weight_kg,
-        volume_cbm: rfq.volume_cbm,
-        status_history: [{
-          status: 'booking_confirmed',
-          timestamp: new Date().toISOString(),
-          note: `Booking confirmed. Quotation accepted.`,
-          updated_by: role,
-        }],
-      });
-    }
     
     await logRFQAction(
       { ...rfq, ...updateData }, 
@@ -264,17 +239,13 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {(rfq.quotation_amount || rfq.quotation_url) && (
+            {rfq.quotation_url && (
               <div className="text-sm">
-                <span className="text-gray-500 block mb-2">Quotation Breakdown</span>
-                <div className="border rounded-xl p-4 bg-gray-50 space-y-3">
-                  <QuoteBreakdown rfq={rfq} />
-                  {rfq.quotation_url && (
-                    <a href={rfq.quotation_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white border px-4 py-2 rounded-lg text-green-700 font-medium hover:bg-green-50 text-sm">
-                      <FileText className="w-4 h-4" /> Download Quotation PDF
-                    </a>
-                  )}
-                </div>
+                <span className="text-gray-500 block mb-1">Quotation</span>
+                <a href={rfq.quotation_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-green-50 px-4 py-3 rounded-lg text-green-700 font-medium hover:bg-green-100">
+                  <FileText className="w-4 h-4" /> View Quotation PDF
+                  {rfq.quotation_amount && <span className="ml-auto">${rfq.quotation_amount}</span>}
+                </a>
               </div>
             )}
 
@@ -319,19 +290,10 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {!isReadOnly && (role === 'sales' || role === 'operations' || role === 'admin') && rfq.status === 'client_confirmed' && (
-              <div className="space-y-4 pt-4 border-t">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <p className="font-semibold text-green-900 text-sm mb-1">✓ Client has accepted this quotation</p>
-                  <p className="text-green-700 text-xs">A shipment booking was automatically created upon client confirmation.</p>
-                </div>
-              </div>
-            )}
-
             {!isReadOnly && canAcceptReject && (role === 'client' || role === 'admin') && rfq.status === 'sent_to_client' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="flex gap-3">
-                  <Button onClick={() => handleAction('client_confirmed')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
+                  <Button onClick={() => handleAction('accepted')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
                   <Button variant="outline" onClick={() => handleAction('rejected')} disabled={updating} className="text-red-600 border-red-200">Reject</Button>
                 </div>
               </div>
