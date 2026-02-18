@@ -36,10 +36,13 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
 
   // Admin is master — always has full access
   const isAdmin = role === 'admin';
+  const isClient = role === 'client';
+  const isStaff = !isClient; // Only Tact Freight internal users
   const canUpdateStatus = isAdmin || hasPermission(role, 'rfqs', 'updateStatus');
   const canUploadQuotation = isAdmin || hasPermission(role, 'rfqs', 'uploadQuotation');
   const canSendToClient = isAdmin || hasPermission(role, 'rfqs', 'sendToClient');
   const canAcceptReject = isAdmin || hasPermission(role, 'rfqs', 'acceptReject');
+  const canAssign = isStaff && (isAdmin || role === 'sales' || role === 'pricing');
   const isReadOnly = !isAdmin && (role === 'customer_service' || role === 'analyst');
 
   const handleAction = async (newStatus, extraData = {}) => {
