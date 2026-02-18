@@ -222,23 +222,20 @@ export default function OperationsShipmentDetail() {
               <CardHeader>
                 <CardTitle>Update Shipment Status</CardTitle>
                 <p className="text-sm text-gray-600 mt-2">
-                  Current: <span className="font-semibold capitalize">{shipment.status.replace('_', ' ')}</span>
+                  Current: <span className="font-semibold capitalize">{shipment.status.replace(/_/g, ' ')}</span>
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Next Status</label>
-                  <Select
-                    value={updatingStatus || ''}
-                    onValueChange={setUpdatingStatus}
-                  >
+                  <Select value={selectedNextStatus} onValueChange={setSelectedNextStatus}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select next status" />
                     </SelectTrigger>
                     <SelectContent>
                       {availableNextStatuses.map(status => (
                         <SelectItem key={status} value={status}>
-                          {status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -256,18 +253,11 @@ export default function OperationsShipmentDetail() {
                 </div>
 
                 <Button
-                  onClick={() => handleStatusUpdate(updatingStatus)}
-                  disabled={!updatingStatus || updatingStatus === 'loading'}
+                  onClick={() => handleStatusUpdate(selectedNextStatus)}
+                  disabled={!selectedNextStatus || isUpdating}
                   className="w-full bg-[#D50000] hover:bg-[#B00000]"
                 >
-                  {updatingStatus === 'loading' ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Updating...
-                    </>
-                  ) : (
-                    'Update Status'
-                  )}
+                  {isUpdating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Updating...</> : 'Update Status'}
                 </Button>
               </CardContent>
             </Card>
