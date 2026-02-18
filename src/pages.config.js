@@ -102,6 +102,7 @@ import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
 import ClientReporting from './pages/ClientReporting';
+import Reporting from './pages/Reporting';
 import __Layout from './Layout.jsx';
 
 
@@ -161,6 +162,7 @@ export const PAGES = {
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
     "ClientReporting": ClientReporting,
+    "Reporting": Reporting,
 }
 
 export const pagesConfig = {
