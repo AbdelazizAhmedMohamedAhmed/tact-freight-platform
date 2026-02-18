@@ -67,6 +67,7 @@ const menuByRole = {
     { label: 'Create Quotation', icon: ClipboardList, page: 'PricingCreateQuotation' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
     { label: 'Clients', icon: Building2, page: 'AdminClients' },
+    { label: 'Client Report', icon: TrendingUp, page: 'ClientReporting' },
     { label: 'Activity Log', icon: BarChart3, page: 'AdminActivity' },
     { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
   ],
