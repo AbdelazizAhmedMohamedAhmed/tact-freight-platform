@@ -6,8 +6,7 @@ import { createPageUrl } from '../utils';
 import { Button } from "@/components/ui/button";
 import RFQCard from '../components/portal/RFQCard';
 import ShipmentCard from '../components/portal/ShipmentCard';
-import CompanySetupBanner from '../components/portal/CompanySetupBanner';
-import { Plus, FileText, Ship, TrendingUp } from 'lucide-react';
+import { Plus, FileText, Ship, TrendingUp, AlertCircle, ArrowRight } from 'lucide-react';
 
 export default function ClientDashboard() {
   const [user, setUser] = useState(null);
@@ -41,7 +40,6 @@ export default function ClientDashboard() {
 
   return (
     <div className="space-y-8">
-      <CompanySetupBanner user={user} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-[#1A1A1A]">Welcome back, {user?.full_name || 'Client'}</h1>
