@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Search } from 'lucide-react';
+import { Building2, Search, User } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from 'date-fns';
 import ClientManagementModal from '../components/admin/ClientManagementModal';
