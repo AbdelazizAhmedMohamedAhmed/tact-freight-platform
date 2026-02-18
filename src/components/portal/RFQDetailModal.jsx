@@ -325,6 +325,25 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
+            {/* Admin: delete RFQ */}
+            {isAdmin && (
+              <div className="pt-4 border-t">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={async () => {
+                    if (!window.confirm(`Delete RFQ ${rfq.reference_number}? This cannot be undone.`)) return;
+                    await base44.entities.RFQ.delete(rfq.id);
+                    onUpdate?.();
+                    onClose();
+                  }}
+                  className="w-full"
+                >
+                  Delete RFQ
+                </Button>
+              </div>
+            )}
+
             {/* Actions by role - Admin acts as all roles */}
             {!isReadOnly && canUpdateStatus && (role === 'sales' || role === 'admin') && ['submitted', 'sales_review'].includes(rfq.status) && (
               <div className="space-y-4 pt-4 border-t">
