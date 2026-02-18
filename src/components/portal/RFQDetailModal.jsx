@@ -34,12 +34,13 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
 
-  // Permission checks
-  const canUpdateStatus = hasPermission(role, 'rfqs', 'updateStatus');
-  const canUploadQuotation = hasPermission(role, 'rfqs', 'uploadQuotation');
-  const canSendToClient = hasPermission(role, 'rfqs', 'sendToClient');
-  const canAcceptReject = hasPermission(role, 'rfqs', 'acceptReject');
-  const isReadOnly = role === 'customer_service' || role === 'analyst';
+  // Admin is master — always has full access
+  const isAdmin = role === 'admin';
+  const canUpdateStatus = isAdmin || hasPermission(role, 'rfqs', 'updateStatus');
+  const canUploadQuotation = isAdmin || hasPermission(role, 'rfqs', 'uploadQuotation');
+  const canSendToClient = isAdmin || hasPermission(role, 'rfqs', 'sendToClient');
+  const canAcceptReject = isAdmin || hasPermission(role, 'rfqs', 'acceptReject');
+  const isReadOnly = !isAdmin && (role === 'customer_service' || role === 'analyst');
 
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
