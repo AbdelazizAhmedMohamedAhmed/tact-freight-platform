@@ -43,8 +43,8 @@ export default function OperationsShipments() {
 
   const filteredShipments = shipments.filter(s => {
     const matchesSearch = !searchTerm || 
-      s.tracking_number.includes(searchTerm) || 
-      s.company_name.toLowerCase().includes(searchTerm.toLowerCase());
+      (s.tracking_number || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+      (s.company_name || '').toLowerCase().includes(searchTerm.toLowerCase());
     
     if (activeTab === 'all') return matchesSearch;
     return matchesSearch && statusGroups[activeTab].includes(s.status);
