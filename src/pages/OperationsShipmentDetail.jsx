@@ -209,85 +209,66 @@ export default function OperationsShipmentDetail() {
                 <p className="text-yellow-800 font-medium">You don't have permission to update shipment status.</p>
               </CardContent>
             </Card>
-          ) : isAdmin && (
-        <Card className="border-[#D50000]/20 bg-red-50">
-          <CardHeader><CardTitle className="text-sm text-[#D50000]">Admin Override</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-xs text-gray-600">Force any status or delete this shipment.</p>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(nextStatuses).filter(s => s !== shipment.status).map(s => (
-                <Button key={s} size="sm" variant="outline" onClick={() => handleStatusUpdate(s)}>
-                  → {s.replace(/_/g, ' ')}
-                </Button>
-              ))}
-            </div>
-            <Button variant="destructive" size="sm" className="w-full" onClick={handleDeleteShipment}>
-              Delete Shipment
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {(userRole === 'operations' || userRole === 'admin') && availableNextStatuses.length > 0 ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Update Shipment Status</CardTitle>
-                <p className="text-sm text-gray-600 mt-2">
-                  Current: <span className="font-semibold capitalize">{shipment.status.replace(/_/g, ' ')}</span>
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Next Status</label>
-                  <Select value={selectedNextStatus} onValueChange={setSelectedNextStatus}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select next status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableNextStatuses.map(status => (
-                        <SelectItem key={status} value={status}>
-                          {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Note (Optional)</label>
-                  <Textarea
-                    value={statusNotes}
-                    onChange={e => setStatusNotes(e.target.value)}
-                    placeholder="Add internal notes about this status update..."
-                    rows={3}
-                  />
-                </div>
-
-                <Button
-                  onClick={() => handleStatusUpdate(selectedNextStatus)}
-                  disabled={!selectedNextStatus || isUpdating}
-                  className="w-full bg-[#D50000] hover:bg-[#B00000]"
-                >
-                  {isUpdating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Updating...</> : 'Update Status'}
-                </Button>
-              </CardContent>
-            </Card>
-          ) : userRole === 'operations' || userRole === 'admin' ? (
-            <Card className="bg-green-50 border-green-200">
-              <CardContent className="pt-6">
-                <p className="text-green-800 font-medium">
-                  ✓ This shipment has been delivered and cannot be updated further.
-                </p>
-              </CardContent>
-            </Card>
           ) : (
-            <Card className="bg-yellow-50 border-yellow-200">
-              <CardContent className="pt-6">
-                <p className="text-yellow-800 font-medium">
-                  You don't have permission to update shipment status.
-                </p>
-              </CardContent>
-            </Card>
+            <>
+              {isAdmin && (
+                <Card className="border-[#D50000]/20 bg-red-50">
+                  <CardHeader><CardTitle className="text-sm text-[#D50000]">Admin Override</CardTitle></CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-xs text-gray-600">Force any status or delete this shipment.</p>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.keys(nextStatuses).filter(s => s !== shipment.status).map(s => (
+                        <Button key={s} size="sm" variant="outline" onClick={() => handleStatusUpdate(s)}>
+                          → {s.replace(/_/g, ' ')}
+                        </Button>
+                      ))}
+                    </div>
+                    <Button variant="destructive" size="sm" className="w-full" onClick={handleDeleteShipment}>
+                      Delete Shipment
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+
+              {availableNextStatuses.length > 0 ? (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Update Shipment Status</CardTitle>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Current: <span className="font-semibold capitalize">{shipment.status.replace(/_/g, ' ')}</span>
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Next Status</label>
+                      <Select value={selectedNextStatus} onValueChange={setSelectedNextStatus}>
+                        <SelectTrigger><SelectValue placeholder="Select next status" /></SelectTrigger>
+                        <SelectContent>
+                          {availableNextStatuses.map(status => (
+                            <SelectItem key={status} value={status}>
+                              {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Note (Optional)</label>
+                      <Textarea value={statusNotes} onChange={e => setStatusNotes(e.target.value)} placeholder="Add internal notes about this status update..." rows={3} />
+                    </div>
+                    <Button onClick={() => handleStatusUpdate(selectedNextStatus)} disabled={!selectedNextStatus || isUpdating} className="w-full bg-[#D50000] hover:bg-[#B00000]">
+                      {isUpdating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Updating...</> : 'Update Status'}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="bg-green-50 border-green-200">
+                  <CardContent className="pt-6">
+                    <p className="text-green-800 font-medium">✓ This shipment has been delivered and cannot be updated further.</p>
+                  </CardContent>
+                </Card>
+              )}
+            </>
           )}
         </TabsContent>
       </Tabs>
