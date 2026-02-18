@@ -287,10 +287,19 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
+            {!isReadOnly && (role === 'sales' || role === 'operations' || role === 'admin') && rfq.status === 'client_confirmed' && (
+              <div className="space-y-4 pt-4 border-t">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <p className="font-semibold text-green-900 text-sm mb-1">✓ Client has accepted this quotation</p>
+                  <p className="text-green-700 text-xs">A shipment booking was automatically created upon client confirmation.</p>
+                </div>
+              </div>
+            )}
+
             {!isReadOnly && canAcceptReject && (role === 'client' || role === 'admin') && rfq.status === 'sent_to_client' && (
               <div className="space-y-4 pt-4 border-t">
                 <div className="flex gap-3">
-                  <Button onClick={() => handleAction('accepted')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
+                  <Button onClick={() => handleAction('client_confirmed')} disabled={updating} className="bg-green-600 hover:bg-green-700">Accept Quotation</Button>
                   <Button variant="outline" onClick={() => handleAction('rejected')} disabled={updating} className="text-red-600 border-red-200">Reject</Button>
                 </div>
               </div>
