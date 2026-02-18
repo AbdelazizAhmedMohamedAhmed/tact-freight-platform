@@ -48,7 +48,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
     const updateData = { status: newStatus, ...extraData };
-    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_in_progress'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
+    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_in_progress') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
     
