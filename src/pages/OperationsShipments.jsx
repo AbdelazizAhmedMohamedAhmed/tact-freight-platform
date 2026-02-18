@@ -114,13 +114,9 @@ export default function OperationsShipments() {
             {filteredShipments.map(shipment => {
               const ModeIcon = modeIcons[shipment.mode] || Ship;
               return (
-                <div
-                   key={shipment.id}
-                   onClick={() => userRole === 'admin' && setSelectedShipmentId(shipment.id)}
-                 >
-                   <Link
-                     to={userRole === 'admin' ? '#' : createPageUrl(`OperationsShipmentDetail?id=${shipment.id}`)}
-                   >
+                <div key={shipment.id}>
+                   <Link to={createPageUrl(`OperationsShipmentDetail?id=${shipment.id}`)}>
+
                      <Card className="hover:shadow-md transition-shadow cursor-pointer">
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between mb-4">
