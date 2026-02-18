@@ -101,36 +101,38 @@ export default function CommentThread({ entityType, entityId, userRole, readOnly
         )}
       </div>
 
-      <div className="space-y-3">
-        <Textarea
-          placeholder="Add a comment..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="min-h-[80px]"
-        />
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <input type="file" multiple onChange={handleFileUpload} className="hidden" id="comment-files" />
-            <label htmlFor="comment-files">
-              <Button variant="outline" size="sm" disabled={uploading} asChild>
-                <span><Upload className="w-4 h-4 mr-2" /> {uploading ? 'Uploading...' : 'Attach'}</span>
-              </Button>
-            </label>
-            {attachments.length > 0 && (
-              <span className="text-xs text-gray-500">{attachments.length} file(s)</span>
-            )}
-            {canSeeInternal && (
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={isInternal} onChange={(e) => setIsInternal(e.target.checked)} />
-                Internal only
+      {!readOnly && (
+        <div className="space-y-3">
+          <Textarea
+            placeholder="Add a comment..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="min-h-[80px]"
+          />
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <input type="file" multiple onChange={handleFileUpload} className="hidden" id="comment-files" />
+              <label htmlFor="comment-files">
+                <Button variant="outline" size="sm" disabled={uploading} asChild>
+                  <span><Upload className="w-4 h-4 mr-2" /> {uploading ? 'Uploading...' : 'Attach'}</span>
+                </Button>
               </label>
-            )}
+              {attachments.length > 0 && (
+                <span className="text-xs text-gray-500">{attachments.length} file(s)</span>
+              )}
+              {canSeeInternal && (
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={isInternal} onChange={(e) => setIsInternal(e.target.checked)} />
+                  Internal only
+                </label>
+              )}
+            </div>
+            <Button onClick={handleSubmit} disabled={!message.trim() && attachments.length === 0} className="bg-[#D50000] hover:bg-[#B00000]">
+              <Send className="w-4 h-4 mr-2" /> Send
+            </Button>
           </div>
-          <Button onClick={handleSubmit} disabled={!message.trim() && attachments.length === 0} className="bg-[#D50000] hover:bg-[#B00000]">
-            <Send className="w-4 h-4 mr-2" /> Send
-          </Button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
