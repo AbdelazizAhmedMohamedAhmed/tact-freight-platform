@@ -73,6 +73,39 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     onClose();
   };
 
+  const handleConvertToShipment = async () => {
+    setConvertingToShipment(true);
+    const year = new Date().getFullYear().toString().slice(-2);
+    const seq = String(Math.floor(10000 + Math.random() * 90000));
+    const trackingNumber = `TF-${year}-${seq}`;
+    const user = await base44.auth.me().catch(() => null);
+
+    const shipment = await base44.entities.Shipment.create({
+      tracking_number: trackingNumber,
+      rfq_id: rfq.id,
+      status: 'booking_confirmed',
+      mode: rfq.mode,
+      origin: rfq.origin,
+      destination: rfq.destination,
+      client_email: rfq.client_email || rfq.email,
+      company_id: rfq.company_id || null,
+      company_name: rfq.company_name,
+      cargo_description: rfq.commodity_description,
+      weight_kg: rfq.weight_kg,
+      volume_cbm: rfq.volume_cbm,
+      status_history: [{
+        status: 'booking_confirmed',
+        timestamp: new Date().toISOString(),
+        note: `Booking created from accepted RFQ ${rfq.reference_number}`,
+        updated_by: user?.email,
+      }],
+    });
+
+    setShipmentCreated(shipment);
+    setConvertingToShipment(false);
+    onUpdate?.();
+  };
+
   const handleQuotationUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
