@@ -12,6 +12,7 @@ import ShipmentTimeline from '../components/operations/ShipmentTimeline';
 import StatusBadge from '../components/shared/StatusBadge';
 import { Loader2, Ship, Plane, Truck, AlertCircle } from 'lucide-react';
 import { logRFQAction } from '../components/utils/activityLogger';
+import CommentThread from '../components/portal/CommentThread';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
