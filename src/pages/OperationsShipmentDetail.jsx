@@ -201,7 +201,26 @@ export default function OperationsShipmentDetail() {
 
         {/* Status Update Tab */}
         <TabsContent value="status" className="space-y-4">
-          {(userRole === 'operations' || userRole === 'admin') && availableNextStatuses.length > 0 ? (
+          {isAdmin && (
+        <Card className="border-[#D50000]/20 bg-red-50">
+          <CardHeader><CardTitle className="text-sm text-[#D50000]">Admin Override</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-xs text-gray-600">Force any status or delete this shipment.</p>
+            <div className="flex flex-wrap gap-2">
+              {Object.keys(nextStatuses).filter(s => s !== shipment.status).map(s => (
+                <Button key={s} size="sm" variant="outline" onClick={() => handleStatusUpdate(s)}>
+                  → {s.replace(/_/g, ' ')}
+                </Button>
+              ))}
+            </div>
+            <Button variant="destructive" size="sm" className="w-full" onClick={handleDeleteShipment}>
+              Delete Shipment
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {(userRole === 'operations' || userRole === 'admin') && availableNextStatuses.length > 0 ? (
             <Card>
               <CardHeader>
                 <CardTitle>Update Shipment Status</CardTitle>
