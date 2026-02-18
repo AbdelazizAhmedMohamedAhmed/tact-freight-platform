@@ -272,13 +272,48 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {rfq.quotation_url && (
-              <div className="text-sm">
+            {(rfq.quotation_url || rfq.quotation_amount || rfq.quotation_details) && (
+              <div className="text-sm space-y-3">
                 <span className="text-gray-500 block mb-1">Quotation</span>
-                <a href={rfq.quotation_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-green-50 px-4 py-3 rounded-lg text-green-700 font-medium hover:bg-green-100">
-                  <FileText className="w-4 h-4" /> View Quotation PDF
-                  {rfq.quotation_amount && <span className="ml-auto">${rfq.quotation_amount}</span>}
-                </a>
+                {rfq.quotation_url && (
+                  <a href={rfq.quotation_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-green-50 px-4 py-3 rounded-lg text-green-700 font-medium hover:bg-green-100">
+                    <FileText className="w-4 h-4" /> View Quotation PDF
+                    {rfq.quotation_amount && <span className="ml-auto">{rfq.quotation_currency || 'USD'} {Number(rfq.quotation_amount).toLocaleString()}</span>}
+                  </a>
+                )}
+                {rfq.quotation_details?.line_items?.length > 0 && (
+                  <div className="border rounded-lg p-4 bg-gray-50">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Pricing Breakdown</p>
+                    <QuoteBreakdown rfq={rfq} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Convert to Shipment - for admin/sales/operations when client confirmed */}
+            {['admin', 'sales', 'operations'].includes(role) && rfq.status === 'client_confirmed' && (
+              <div className="pt-4 border-t space-y-3">
+                {shipmentCreated ? (
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-green-900">Shipment Created!</p>
+                      <p className="text-green-700 text-sm font-mono">{shipmentCreated.tracking_number}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-sm text-gray-600 font-medium">Client has accepted the quotation. Create a shipment booking?</p>
+                    <Button
+                      onClick={handleConvertToShipment}
+                      disabled={convertingToShipment}
+                      className="bg-[#D50000] hover:bg-[#B00000] w-full"
+                    >
+                      <Ship className="w-4 h-4 mr-2" />
+                      {convertingToShipment ? 'Creating Shipment...' : 'Convert to Shipment'}
+                    </Button>
+                  </>
+                )}
               </div>
             )}
 
