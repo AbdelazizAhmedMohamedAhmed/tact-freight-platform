@@ -107,6 +107,7 @@ import CompanyRegistration from './pages/CompanyRegistration';
 import Register from './pages/Register';
 import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import Notifications from './pages/Notifications';
+import SalesRFQs from './pages/SalesRFQs';
 import __Layout from './Layout.jsx';
 
 
@@ -171,6 +172,7 @@ export const PAGES = {
     "Register": Register,
     "ClientCreateRFQ": ClientCreateRFQ,
     "Notifications": Notifications,
+    "SalesRFQs": SalesRFQs,
 }
 
 export const pagesConfig = {
