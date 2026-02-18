@@ -50,6 +50,7 @@
 import About from './pages/About';
 import AdminActivity from './pages/AdminActivity';
 import AdminAnalytics from './pages/AdminAnalytics';
+import AdminClients from './pages/AdminClients';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRFQs from './pages/AdminRFQs';
 import AdminReporting from './pages/AdminReporting';
@@ -61,6 +62,7 @@ import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
+import ClientShipmentDetail from './pages/ClientShipmentDetail';
 import ClientShipments from './pages/ClientShipments';
 import ClientSupport from './pages/ClientSupport';
 import Clients from './pages/Clients';
@@ -75,7 +77,9 @@ import InlandTransport from './pages/InlandTransport';
 import MyWorkspace from './pages/MyWorkspace';
 import OperationsDashboard from './pages/OperationsDashboard';
 import OperationsFlow from './pages/OperationsFlow';
+import OperationsShipmentDetail from './pages/OperationsShipmentDetail';
 import OperationsShipments from './pages/OperationsShipments';
+import PendingAmendments from './pages/PendingAmendments';
 import Portal from './pages/Portal';
 import PricingContactSales from './pages/PricingContactSales';
 import PricingCreateQuotation from './pages/PricingCreateQuotation';
@@ -88,6 +92,7 @@ import RequestQuote from './pages/RequestQuote';
 import RoRoServices from './pages/RoRoServices';
 import SalesCRM from './pages/SalesCRM';
 import SalesCompanies from './pages/SalesCompanies';
+import SalesCreateRFQ from './pages/SalesCreateRFQ';
 import SalesDashboard from './pages/SalesDashboard';
 import SalesManagePricing from './pages/SalesManagePricing';
 import SalesRFQQueue from './pages/SalesRFQQueue';
@@ -98,11 +103,6 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import AdminClients from './pages/AdminClients';
-import SalesCreateRFQ from './pages/SalesCreateRFQ';
-import OperationsShipmentDetail from './pages/OperationsShipmentDetail';
-import PendingAmendments from './pages/PendingAmendments';
-import ClientShipmentDetail from './pages/ClientShipmentDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -110,6 +110,7 @@ export const PAGES = {
     "About": About,
     "AdminActivity": AdminActivity,
     "AdminAnalytics": AdminAnalytics,
+    "AdminClients": AdminClients,
     "AdminDashboard": AdminDashboard,
     "AdminRFQs": AdminRFQs,
     "AdminReporting": AdminReporting,
@@ -121,6 +122,7 @@ export const PAGES = {
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
+    "ClientShipmentDetail": ClientShipmentDetail,
     "ClientShipments": ClientShipments,
     "ClientSupport": ClientSupport,
     "Clients": Clients,
@@ -135,7 +137,9 @@ export const PAGES = {
     "MyWorkspace": MyWorkspace,
     "OperationsDashboard": OperationsDashboard,
     "OperationsFlow": OperationsFlow,
+    "OperationsShipmentDetail": OperationsShipmentDetail,
     "OperationsShipments": OperationsShipments,
+    "PendingAmendments": PendingAmendments,
     "Portal": Portal,
     "PricingContactSales": PricingContactSales,
     "PricingCreateQuotation": PricingCreateQuotation,
@@ -148,6 +152,7 @@ export const PAGES = {
     "RoRoServices": RoRoServices,
     "SalesCRM": SalesCRM,
     "SalesCompanies": SalesCompanies,
+    "SalesCreateRFQ": SalesCreateRFQ,
     "SalesDashboard": SalesDashboard,
     "SalesManagePricing": SalesManagePricing,
     "SalesRFQQueue": SalesRFQQueue,
@@ -158,11 +163,6 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "AdminClients": AdminClients,
-    "SalesCreateRFQ": SalesCreateRFQ,
-    "OperationsShipmentDetail": OperationsShipmentDetail,
-    "PendingAmendments": PendingAmendments,
-    "ClientShipmentDetail": ClientShipmentDetail,
 }
 
 export const pagesConfig = {
