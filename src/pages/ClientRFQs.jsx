@@ -235,6 +235,71 @@ export default function ClientRFQs() {
               </Select>
             </div>
 
+            {/* FCL Container Section */}
+            {formData.mode === 'sea' && formData.cargo_type === 'FCL' && (
+              <div className="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-semibold">Containers</Label>
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, containers: [...prev.containers, { type: '', quantity: 1 }] }))}
+                    className="text-[#D50000] text-sm font-medium hover:underline flex items-center gap-1"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add Container
+                  </button>
+                </div>
+                {formData.containers.map((container, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="flex-1">
+                      <Select
+                        value={container.type}
+                        onValueChange={v => {
+                          const updated = [...formData.containers];
+                          updated[idx] = { ...updated[idx], type: v };
+                          setFormData(prev => ({ ...prev, containers: updated }));
+                        }}
+                      >
+                        <SelectTrigger><SelectValue placeholder="Container type" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="20'STD">20' Standard (20'STD)</SelectItem>
+                          <SelectItem value="40'STD">40' Standard (40'STD)</SelectItem>
+                          <SelectItem value="40'HQ">40' High Cube (40'HQ)</SelectItem>
+                          <SelectItem value="20'RF">20' Reefer (20'RF)</SelectItem>
+                          <SelectItem value="40'RF">40' Reefer (40'RF)</SelectItem>
+                          <SelectItem value="20'OT">20' Open Top (20'OT)</SelectItem>
+                          <SelectItem value="40'OT">40' Open Top (40'OT)</SelectItem>
+                          <SelectItem value="20'FR">20' Flat Rack (20'FR)</SelectItem>
+                          <SelectItem value="40'FR">40' Flat Rack (40'FR)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="w-24">
+                      <Input
+                        type="number"
+                        min="1"
+                        value={container.quantity}
+                        placeholder="Qty"
+                        onChange={e => {
+                          const updated = [...formData.containers];
+                          updated[idx] = { ...updated[idx], quantity: parseInt(e.target.value) || 1 };
+                          setFormData(prev => ({ ...prev, containers: updated }));
+                        }}
+                      />
+                    </div>
+                    {formData.containers.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, containers: prev.containers.filter((_, i) => i !== idx) }))}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div><Label>Commodity Description</Label><Textarea value={formData.commodity_description} onChange={e => setFormData(prev => ({ ...prev, commodity_description: e.target.value }))} /></div>
 
             <div>
