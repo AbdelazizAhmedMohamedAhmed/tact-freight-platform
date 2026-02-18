@@ -45,6 +45,13 @@ export default function AdminShipments() {
     s.company_name?.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleDeleteShipment = async (shipment) => {
+    if (!window.confirm(`Delete shipment ${shipment.tracking_number}? This cannot be undone.`)) return;
+    await base44.entities.Shipment.delete(shipment.id);
+    setSelectedShipment(null);
+    refetch();
+  };
+
   const handleStatusUpdate = async () => {
     if (!newStatus || !selectedShipment) return;
     setUpdating(true);
