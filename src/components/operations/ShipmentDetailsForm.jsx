@@ -24,6 +24,8 @@ export default function ShipmentDetailsForm({ shipment, onUpdate }) {
     shipping_line_airline: shipment?.shipping_line_airline || '',
     vessel_flight_info: shipment?.vessel_flight_info || '',
     first_available_vessel: shipment?.first_available_vessel || '',
+    mbl_acid: shipment?.mbl_acid || '',
+    hbl_acid: shipment?.hbl_acid || '',
     operations_notes: shipment?.operations_notes || '',
   });
 
