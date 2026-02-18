@@ -167,46 +167,13 @@ export default function OperationsShipments() {
                       )}
                       </CardContent>
                       </Card>
-                      </Link>
-                      </div>
-                      );
-                      })}
-                      </div>
-                      )}
-                      </Tabs>
-
-                      {/* Admin Shipment Detail Modal */}
-                      {userRole === 'admin' && selectedShipmentId && selectedShipment && (
-                      <div 
-                      className="fixed inset-0 bg-black/50 z-50 overflow-auto"
-                      onClick={() => setSelectedShipmentId(null)}
-                      >
-                      <div 
-                      className="min-h-screen w-full max-w-6xl mx-auto p-4 py-8"
-                      onClick={e => e.stopPropagation()}
-                      >
-                      <div className="bg-white rounded-2xl shadow-2xl">
-                      <div className="p-6 border-b flex items-center justify-between">
-                      <h2 className="text-2xl font-bold text-[#1A1A1A]">{selectedShipment.tracking_number}</h2>
-                      <Button 
-                      variant="ghost" 
-                      onClick={() => setSelectedShipmentId(null)}
-                      className="text-gray-500 hover:text-gray-700"
-                      >
-                      ✕
-                      </Button>
-                      </div>
-                      <div className="p-6">
-                      <iframe 
-                      src={createPageUrl(`OperationsShipmentDetail?id=${selectedShipmentId}`)}
-                      className="w-full h-[calc(100vh-200px)] border-0 rounded-lg"
-                      title="Shipment Details"
-                      />
-                      </div>
-                      </div>
-                      </div>
-                      </div>
-                      )}
-                      </div>
-                      );
-                      }
+                   </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Tabs>
+    </div>
+  );
+}
