@@ -16,6 +16,8 @@ import StatusBadge from '../components/shared/StatusBadge';
 export default function ClientShipmentDetail() {
   const [user, setUser] = useState(null);
   const [shipmentId, setShipmentId] = useState(null);
+  const [acidInput, setAcidInput] = useState('');
+  const [savingAcid, setSavingAcid] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
