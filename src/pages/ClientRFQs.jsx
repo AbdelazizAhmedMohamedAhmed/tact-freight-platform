@@ -10,7 +10,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import RFQCard from '../components/portal/RFQCard';
 import CommentThread from '../components/portal/CommentThread';
 import StatusBadge from '../components/portal/StatusBadge';
-import { Plus, Upload, X, FileText, Download, CheckCircle, Ship, Trash2 } from 'lucide-react';
+import QuoteBreakdown from '../components/client/QuoteBreakdown';
+import QuoteCompareModal from '../components/client/QuoteCompareModal';
+import { Plus, Upload, X, FileText, Download, CheckCircle, Ship, Trash2, GitCompare, Check, AlertCircle } from 'lucide-react';
 import { createPageUrl } from '../utils';
 import { format } from 'date-fns';
 import { logRFQAction } from '../components/utils/activityLogger';
