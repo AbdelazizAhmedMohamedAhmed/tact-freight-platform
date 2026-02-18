@@ -146,8 +146,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
           </TabsList>
 
           <TabsContent value="details" className="space-y-6 mt-4">
-            {/* Assignment Info */}
-            {(rfq.assigned_sales || rfq.assigned_pricing || role === 'admin' || role === 'sales' || role === 'pricing') && (
+            {/* Assignment Info — only visible to Tact Freight staff, never clients */}
+            {isStaff && (rfq.assigned_sales || rfq.assigned_pricing || canAssign) && (
               <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                 <h4 className="font-semibold text-sm flex items-center gap-2">
                   <UserPlus className="w-4 h-4" /> Assignments
@@ -158,10 +158,15 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
                     {rfq.assigned_sales ? (
                       <div className="flex items-center justify-between bg-white p-2 rounded">
                         <span className="text-sm font-medium">{rfq.assigned_sales_name || rfq.assigned_sales}</span>
+                        {(isAdmin || role === 'sales') && (
+                          <Button size="sm" variant="ghost" className="h-6 text-xs" onClick={() => { setAssignType('sales'); setAssignModalOpen(true); }}>
+                            Reassign
+                          </Button>
+                        )}
                       </div>
                     ) : (
                       <div>
-                        {(role === 'admin' || role === 'sales') && (
+                        {(isAdmin || role === 'sales') ? (
                           <Button 
                             size="sm" 
                             variant="outline" 
@@ -170,8 +175,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
                           >
                             <UserPlus className="w-3 h-3 mr-1" /> Assign
                           </Button>
-                        )}
-                        {role !== 'admin' && role !== 'sales' && (
+                        ) : (
                           <span className="text-sm text-gray-400">Not assigned</span>
                         )}
                       </div>
@@ -182,10 +186,15 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
                     {rfq.assigned_pricing ? (
                       <div className="flex items-center justify-between bg-white p-2 rounded">
                         <span className="text-sm font-medium">{rfq.assigned_pricing_name || rfq.assigned_pricing}</span>
+                        {(isAdmin || role === 'pricing') && (
+                          <Button size="sm" variant="ghost" className="h-6 text-xs" onClick={() => { setAssignType('pricing'); setAssignModalOpen(true); }}>
+                            Reassign
+                          </Button>
+                        )}
                       </div>
                     ) : (
                       <div>
-                        {(role === 'admin' || role === 'pricing') && (
+                        {(isAdmin || role === 'pricing') ? (
                           <Button 
                             size="sm" 
                             variant="outline" 
@@ -194,8 +203,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
                           >
                             <UserPlus className="w-3 h-3 mr-1" /> Assign
                           </Button>
-                        )}
-                        {role !== 'admin' && role !== 'pricing' && (
+                        ) : (
                           <span className="text-sm text-gray-400">Not assigned</span>
                         )}
                       </div>
