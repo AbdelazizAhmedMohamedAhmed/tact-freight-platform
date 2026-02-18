@@ -44,6 +44,33 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
     if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_review') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
+
+    // Auto-create shipment if quote is accepted (admin acting on behalf of client)
+    if (newStatus === 'client_confirmed') {
+      const year = new Date().getFullYear().toString().slice(-2);
+      const seq = String(Math.floor(10000 + Math.random() * 90000));
+      const trackingNumber = `TF-${year}-${seq}`;
+      await base44.entities.Shipment.create({
+        tracking_number: trackingNumber,
+        rfq_id: rfq.id,
+        status: 'booking_confirmed',
+        mode: rfq.mode,
+        origin: rfq.origin,
+        destination: rfq.destination,
+        client_email: rfq.client_email || rfq.email,
+        company_id: rfq.company_id || null,
+        company_name: rfq.company_name,
+        cargo_description: rfq.commodity_description,
+        weight_kg: rfq.weight_kg,
+        volume_cbm: rfq.volume_cbm,
+        status_history: [{
+          status: 'booking_confirmed',
+          timestamp: new Date().toISOString(),
+          note: `Booking confirmed. Quotation accepted.`,
+          updated_by: role,
+        }],
+      });
+    }
     
     await logRFQAction(
       { ...rfq, ...updateData }, 
