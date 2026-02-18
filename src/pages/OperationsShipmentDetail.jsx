@@ -60,6 +60,8 @@ export default function OperationsShipmentDetail() {
 
   const userRole = user?.department || user?.role || 'user';
   const isAdmin = userRole === 'admin';
+  const isClient = userRole === 'client';
+  const canEdit = !isClient; // Only Tact Freight staff (operations, admin, etc.) can edit
 
   const handleDeleteShipment = async () => {
     if (!window.confirm(`Delete shipment ${shipment.tracking_number}? This cannot be undone.`)) return;
