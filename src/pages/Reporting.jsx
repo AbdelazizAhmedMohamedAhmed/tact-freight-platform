@@ -72,7 +72,7 @@ function BusinessAnalytics({ rfqs, shipments, activities }) {
   const metrics = useMemo(() => {
     const totalRFQs = filteredRFQs.length;
     const pendingRFQs = filteredRFQs.filter(r => ['submitted', 'sales_review', 'pricing_in_progress'].includes(r.status)).length;
-    const confirmedRFQs = filteredRFQs.filter(r => r.status === 'client_confirmed').length;
+    const confirmedRFQs = filteredRFQs.filter(r => r.status === 'client_confirmed' || r.status === 'accepted').length;
     const rejectedRFQs = filteredRFQs.filter(r => r.status === 'rejected').length;
     const conversionRate = totalRFQs > 0 ? ((confirmedRFQs / totalRFQs) * 100).toFixed(1) : '0.0';
     const totalQuotedValue = filteredRFQs.reduce((s, r) => s + (r.quotation_amount || 0), 0);
