@@ -283,7 +283,7 @@ export default function ClientShipmentDetail() {
 
         {/* Documents Tab */}
         <TabsContent value="documents">
-          <ShipmentDocuments shipment={shipment} />
+          <ShipmentDocuments shipment={shipment} onUpdate={() => window.location.reload()} />
         </TabsContent>
 
         {/* Comments Tab */}
