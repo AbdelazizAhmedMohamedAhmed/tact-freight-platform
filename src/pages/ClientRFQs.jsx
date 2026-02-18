@@ -367,6 +367,38 @@ export default function ClientRFQs() {
         </DialogContent>
       </Dialog>
 
+      {/* Compare Modal */}
+      <QuoteCompareModal
+        open={compareOpen}
+        onClose={() => setCompareOpen(false)}
+        rfqs={quotedRFQs}
+        onAccept={(rfq) => confirmQuoteMutation.mutate(rfq)}
+        onReject={(rfq) => setRejectConfirm(rfq)}
+        accepting={confirmQuoteMutation.isPending}
+      />
+
+      {/* Reject Confirm Dialog */}
+      <Dialog open={!!rejectConfirm} onOpenChange={() => setRejectConfirm(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Reject Quote?</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <p className="text-gray-600 text-sm">Are you sure you want to reject the quote for <strong>{rejectConfirm?.reference_number}</strong>? This action cannot be undone.</p>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setRejectConfirm(null)}>Cancel</Button>
+              <Button
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => rejectQuoteMutation.mutate(rejectConfirm)}
+                disabled={rejectQuoteMutation.isPending}
+              >
+                {rejectQuoteMutation.isPending ? 'Rejecting...' : 'Reject Quote'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* RFQ Details Dialog */}
       <Dialog open={!!selectedRFQ} onOpenChange={() => setSelectedRFQ(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
