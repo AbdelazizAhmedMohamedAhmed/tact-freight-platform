@@ -95,6 +95,7 @@ export default function ClientRFQs() {
         cargo_type: '', weight_kg: '', volume_cbm: '', num_packages: '',
         commodity_description: '', is_hazardous: false, preferred_shipping_date: '',
         document_urls: [],
+        containers: [{ type: '', quantity: 1 }],
       });
     },
   });
