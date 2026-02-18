@@ -60,7 +60,7 @@ export default function AdminClients() {
             <TableHeader>
               <TableRow className="bg-gray-50">
                 <TableHead>Company Name</TableHead>
-                <TableHead>Primary Contact</TableHead>
+                <TableHead>Primary Email</TableHead>
                 <TableHead>Linked Users</TableHead>
                 <TableHead>Country</TableHead>
                 <TableHead>Industry</TableHead>
@@ -76,23 +76,25 @@ export default function AdminClients() {
                 </TableRow>
               ) : (
                 filtered.map(c => {
-                  const memberUsers = (c.member_emails || [c.primary_contact_email]).filter(Boolean).map(e => emailToUser[e]).filter(Boolean);
+                  const memberEmails = c.member_emails || (c.primary_contact_email ? [c.primary_contact_email] : []);
+                  const linkedUsers = memberEmails.map(e => emailToUser[e]).filter(Boolean);
                   return (
                     <TableRow key={c.id}>
                       <TableCell className="font-medium">{c.name}</TableCell>
-                      <TableCell className="text-sm text-gray-600">{c.primary_contact_email || '-'}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{c.primary_contact_email}</TableCell>
                       <TableCell>
-                        {memberUsers.length === 0 ? (
-                          <span className="text-xs text-gray-400">No registered users</span>
-                        ) : (
-                          <div className="flex flex-wrap gap-1">
-                            {memberUsers.map(u => (
-                              <span key={u.id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                <User className="w-3 h-3" />
-                                {u.full_name || u.email}
+                        {linkedUsers.length > 0 ? (
+                          <div className="flex flex-col gap-1">
+                            {linkedUsers.map(u => (
+                              <span key={u.id} className="flex items-center gap-1.5 text-sm">
+                                <User className="w-3.5 h-3.5 text-gray-400" />
+                                <span className="font-medium">{u.full_name || u.email}</span>
+                                {u.full_name && <span className="text-xs text-gray-400">{u.email}</span>}
                               </span>
                             ))}
                           </div>
+                        ) : (
+                          <span className="text-xs text-gray-400">No linked users</span>
                         )}
                       </TableCell>
                       <TableCell><Badge variant="outline">{c.country || '-'}</Badge></TableCell>
