@@ -63,11 +63,13 @@ export default function OperationsShipments() {
           <h1 className="text-2xl font-bold text-[#1A1A1A]">Operations Shipments</h1>
           <p className="text-sm text-gray-600 mt-1">Manage and track all shipments</p>
         </div>
-        <Link to={createPageUrl('CreateShipment')}>
-          <Button className="bg-[#D50000] hover:bg-[#B00000]">
-            + New Shipment
-          </Button>
-        </Link>
+        {!isClient && (
+          <Link to={createPageUrl('CreateShipment')}>
+            <Button className="bg-[#D50000] hover:bg-[#B00000]">
+              + New Shipment
+            </Button>
+          </Link>
+        )}
       </div>
 
       {/* Search */}
