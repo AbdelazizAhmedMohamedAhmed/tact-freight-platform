@@ -94,7 +94,7 @@ export default function SalesDashboard() {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-[#1A1A1A]">RFQ Queue</h2>
-          <Link to={createPageUrl('SalesRFQs')}>
+          <Link to={createPageUrl('SalesRFQQueue')}>
             <Button variant="outline" size="sm">View All</Button>
           </Link>
         </div>
