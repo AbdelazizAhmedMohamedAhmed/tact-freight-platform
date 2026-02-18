@@ -144,11 +144,11 @@ export default function AdminDashboard() {
           </div>
         </Link>
 
-        <Link to={createPageUrl('ClientReporting')}>
+        <Link to={createPageUrl('Reporting')}>
           <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-[#D50000]">
             <TrendingUp className="w-8 h-8 text-[#D50000] mb-3" />
-            <h3 className="font-bold text-[#1A1A1A]">Client Intelligence</h3>
-            <p className="text-sm text-gray-500 mt-1">Shipments per client, top clients</p>
+            <h3 className="font-bold text-[#1A1A1A]">Reporting & Analytics</h3>
+            <p className="text-sm text-gray-500 mt-1">Business intelligence, client insights, operations</p>
           </div>
         </Link>
       </div>

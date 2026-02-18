@@ -49,7 +49,7 @@ const menuByRole = {
     { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
   ],
   analyst: [
-    { label: 'Reporting', icon: TrendingUp, page: 'Reporting' },
+    { label: 'Reporting', icon: BarChart3, page: 'Reporting' },
     { label: 'Activity Log', icon: FileText, page: 'AdminActivity' },
   ],
   supervisor: [
@@ -66,9 +66,8 @@ const menuByRole = {
     { label: 'Create Quotation', icon: ClipboardList, page: 'PricingCreateQuotation' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
     { label: 'Clients', icon: Building2, page: 'AdminClients' },
-    { label: 'Client Report', icon: TrendingUp, page: 'ClientReporting' },
+    { label: 'Reporting', icon: TrendingUp, page: 'Reporting' },
     { label: 'Activity Log', icon: BarChart3, page: 'AdminActivity' },
-    { label: 'Analytics', icon: BarChart3, page: 'AdminAnalytics' },
   ],
 };
 
