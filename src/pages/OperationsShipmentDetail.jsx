@@ -20,7 +20,8 @@ export default function OperationsShipmentDetail() {
   const shipmentId = urlParams.get('id');
   const [user, setUser] = useState(null);
   const [statusNotes, setStatusNotes] = useState('');
-  const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [selectedNextStatus, setSelectedNextStatus] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {
