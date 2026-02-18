@@ -285,6 +285,18 @@ export default function ClientShipmentDetail() {
         <TabsContent value="documents">
           <ShipmentDocuments shipment={shipment} />
         </TabsContent>
+
+        {/* Comments Tab */}
+        <TabsContent value="comments">
+          {shipment.status !== 'delivered' ? (
+            <CommentThread entityType="shipment" entityId={shipment.id} userRole="user" />
+          ) : (
+            <div className="space-y-4">
+              <CommentThread entityType="shipment" entityId={shipment.id} userRole="user" readOnly />
+              <p className="text-center text-sm text-gray-500 italic">This shipment is closed — no new comments can be added.</p>
+            </div>
+          )}
+        </TabsContent>
       </Tabs>
     </div>
   );
