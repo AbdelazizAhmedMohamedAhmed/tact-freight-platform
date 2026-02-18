@@ -51,7 +51,8 @@ export default function AdminRFQs() {
           <TabsTrigger value="sales_review">Sales Review</TabsTrigger>
           <TabsTrigger value="pricing_review">Pricing</TabsTrigger>
           <TabsTrigger value="quoted">Quoted</TabsTrigger>
-          <TabsTrigger value="accepted">Accepted</TabsTrigger>
+          <TabsTrigger value="sent_to_client">Sent to Client</TabsTrigger>
+          <TabsTrigger value="client_confirmed">Confirmed</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
       </Tabs>
