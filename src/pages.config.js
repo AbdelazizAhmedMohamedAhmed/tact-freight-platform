@@ -108,6 +108,7 @@ import Register from './pages/Register';
 import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import Notifications from './pages/Notifications';
 import SalesRFQs from './pages/SalesRFQs';
+import AdminManagement from './pages/AdminManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -173,6 +174,7 @@ export const PAGES = {
     "ClientCreateRFQ": ClientCreateRFQ,
     "Notifications": Notifications,
     "SalesRFQs": SalesRFQs,
+    "AdminManagement": AdminManagement,
 }
 
 export const pagesConfig = {
