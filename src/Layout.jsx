@@ -6,12 +6,12 @@ import { RoleProvider } from './components/utils/roleContext';
 import { base44 } from '@/api/base44Client';
 
 const publicPages = [
-  'Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'Portal',
-  'TrackShipment', 'RequestQuote',
-  'SeaFreight', 'AirFreight', 'InlandTransport', 'CustomsClearance',
-  'Warehousing', 'ProjectLogistics', 'RoRoServices', 'Consultancy',
-  'PrivacyPolicy', 'TermsOfService'
-];
+    'Home', 'About', 'Services', 'Industries', 'WhyChooseUs', 'GlobalNetwork', 'Contact', 'Portal',
+    'TrackShipment', 'RequestQuote', 'CompanyRegistration',
+    'SeaFreight', 'AirFreight', 'InlandTransport', 'CustomsClearance',
+    'Warehousing', 'ProjectLogistics', 'RoRoServices', 'Consultancy',
+    'PrivacyPolicy', 'TermsOfService'
+  ];
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
