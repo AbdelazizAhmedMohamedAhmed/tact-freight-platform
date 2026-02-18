@@ -60,7 +60,7 @@ export default function AdminClients() {
             <TableHeader>
               <TableRow className="bg-gray-50">
                 <TableHead>Company Name</TableHead>
-                <TableHead>Primary Contact</TableHead>
+                <TableHead>Primary Email</TableHead>
                 <TableHead>Linked Users</TableHead>
                 <TableHead>Country</TableHead>
                 <TableHead>Industry</TableHead>
