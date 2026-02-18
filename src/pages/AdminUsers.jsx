@@ -42,6 +42,18 @@ export default function AdminUsers() {
     queryFn: () => base44.entities.User.list('-created_date', 200),
   });
 
+  const { data: companies = [] } = useQuery({
+    queryKey: ['admin-companies-for-users'],
+    queryFn: () => base44.entities.ClientCompany.list('-created_date', 500),
+  });
+
+  // Build a map: email -> company
+  const emailToCompany = {};
+  companies.forEach(c => {
+    (c.member_emails || []).forEach(email => { emailToCompany[email] = c; });
+    if (c.primary_contact_email) emailToCompany[c.primary_contact_email] = c;
+  });
+
   const filtered = users.filter(u =>
     u.full_name?.toLowerCase().includes(search.toLowerCase()) ||
     u.email?.toLowerCase().includes(search.toLowerCase())
