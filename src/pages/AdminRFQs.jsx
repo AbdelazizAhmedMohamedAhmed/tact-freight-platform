@@ -49,7 +49,7 @@ export default function AdminRFQs() {
           <TabsTrigger value="all">All ({rfqs.length})</TabsTrigger>
           <TabsTrigger value="submitted">Submitted</TabsTrigger>
           <TabsTrigger value="sales_review">Sales Review</TabsTrigger>
-          <TabsTrigger value="pricing_review">Pricing</TabsTrigger>
+          <TabsTrigger value="pricing_in_progress">Pricing</TabsTrigger>
           <TabsTrigger value="quoted">Quoted</TabsTrigger>
           <TabsTrigger value="sent_to_client">Sent to Client</TabsTrigger>
           <TabsTrigger value="client_confirmed">Confirmed</TabsTrigger>
