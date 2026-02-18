@@ -9,10 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQuery } from '@tanstack/react-query';
 
 export default function AssignTaskModal({ shipment, open, onClose, onUpdate, userRole }) {
-  // Only Tact Freight staff can assign tasks
-  if (open && userRole === 'client') return null;
   const [task, setTask] = useState({ agent: '', title: '', description: '', priority: 'medium', dueDate: '' });
   const [submitting, setSubmitting] = useState(false);
+
+  // Only Tact Freight staff can assign tasks — guard after hooks
+  if (open && userRole === 'client') return null;
 
   const { data: users = [] } = useQuery({
     queryKey: ['staff-users'],
