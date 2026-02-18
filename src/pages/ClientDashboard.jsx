@@ -40,6 +40,24 @@ export default function ClientDashboard() {
 
   return (
     <div className="space-y-8">
+      {/* Company setup reminder */}
+      {user && !user.company_id && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-amber-800">Complete your company profile</p>
+              <p className="text-xs text-amber-600 mt-0.5">Add your company details to get personalised quotes and full portal access.</p>
+            </div>
+          </div>
+          <Link to={createPageUrl('CompanyRegistration')}>
+            <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white whitespace-nowrap flex-shrink-0">
+              Set Up Now <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-[#1A1A1A]">Welcome back, {user?.full_name || 'Client'}</h1>
