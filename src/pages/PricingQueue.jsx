@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PricingQueue() {
   const [selectedRFQ, setSelectedRFQ] = useState(null);
-  const [filter, setFilter] = useState('pricing_review');
+  const [filter, setFilter] = useState('pricing_in_progress');
 
   const { data: rfqs = [], isLoading, refetch } = useQuery({
     queryKey: ['pricing-queue'],
