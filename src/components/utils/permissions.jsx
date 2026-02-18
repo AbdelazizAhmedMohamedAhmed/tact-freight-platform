@@ -31,6 +31,7 @@ const PERMISSIONS = {
     delete: [ROLES.ADMIN],
     viewAll: [ROLES.OPERATIONS, ROLES.ADMIN, ROLES.CUSTOMER_SERVICE],
     updateStatus: [ROLES.OPERATIONS, ROLES.ADMIN],
+    assign: [ROLES.OPERATIONS, ROLES.ADMIN],
     uploadDocuments: [ROLES.OPERATIONS, ROLES.ADMIN],
     trackPublic: ['*']
   },
