@@ -58,7 +58,6 @@ import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
 import AirFreight from './pages/AirFreight';
 import BizDevPartners from './pages/BizDevPartners';
-import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
@@ -88,7 +87,6 @@ import PricingQueue from './pages/PricingQueue';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import ProjectLogistics from './pages/ProjectLogistics';
-import RequestQuote from './pages/RequestQuote';
 import RoRoServices from './pages/RoRoServices';
 import SalesCRM from './pages/SalesCRM';
 import SalesCompanies from './pages/SalesCompanies';
@@ -118,7 +116,6 @@ export const PAGES = {
     "AdminUsers": AdminUsers,
     "AirFreight": AirFreight,
     "BizDevPartners": BizDevPartners,
-    "ClientCreateRFQ": ClientCreateRFQ,
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
@@ -148,7 +145,6 @@ export const PAGES = {
     "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
     "ProjectLogistics": ProjectLogistics,
-    "RequestQuote": RequestQuote,
     "RoRoServices": RoRoServices,
     "SalesCRM": SalesCRM,
     "SalesCompanies": SalesCompanies,
