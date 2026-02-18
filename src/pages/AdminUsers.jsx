@@ -160,24 +160,37 @@ export default function AdminUsers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map(u => (
-                <TableRow key={u.id}>
-                  <TableCell className="font-medium">{u.full_name || '-'}</TableCell>
-                  <TableCell className="text-sm text-gray-600">{u.email}</TableCell>
-                  <TableCell><Badge variant="outline">{u.role}</Badge></TableCell>
-                  <TableCell>
-                    <Badge className={deptColors[u.department] || 'bg-gray-100 text-gray-800'}>
-                      {u.department || 'client'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-sm text-gray-500">{u.created_date ? format(new Date(u.created_date), 'MMM d, yyyy') : '-'}</TableCell>
-                  <TableCell>
-                    <Button size="sm" variant="ghost" onClick={() => setEditUser(u)}>
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filtered.map(u => {
+                const company = emailToCompany[u.email];
+                return (
+                  <TableRow key={u.id}>
+                    <TableCell className="font-medium">{u.full_name || '-'}</TableCell>
+                    <TableCell className="text-sm text-gray-600">{u.email}</TableCell>
+                    <TableCell><Badge variant="outline">{u.role}</Badge></TableCell>
+                    <TableCell>
+                      <Badge className={deptColors[u.department] || 'bg-gray-100 text-gray-800'}>
+                        {u.department || 'client'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {company ? (
+                        <span className="flex items-center gap-1.5 text-sm text-gray-700">
+                          <Building2 className="w-3.5 h-3.5 text-gray-400" />
+                          {company.name}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-sm text-gray-500">{u.created_date ? format(new Date(u.created_date), 'MMM d, yyyy') : '-'}</TableCell>
+                    <TableCell>
+                      <Button size="sm" variant="ghost" onClick={() => setEditUser(u)}>
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
