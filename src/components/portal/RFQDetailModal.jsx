@@ -48,7 +48,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
     const updateData = { status: newStatus, ...extraData };
-    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_in_progress'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
+    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_in_progress') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
     
@@ -399,7 +399,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
                   </div>
                 </div>
                 <div className="space-y-2"><Label>Pricing Notes</Label><Textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Pricing details..." /></div>
-                <Button onClick={() => handleAction('quoted', { quotation_amount: Number(quotationAmount) || 0 })} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Submit Quotation</Button>
+                <Button onClick={() => handleAction('quotation_ready', { quotation_amount: Number(quotationAmount) || 0 })} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Submit Quotation</Button>
               </div>
             )}
 
