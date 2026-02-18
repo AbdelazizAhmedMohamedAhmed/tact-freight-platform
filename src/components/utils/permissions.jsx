@@ -70,6 +70,9 @@ const PERMISSIONS = {
  */
 export function hasPermission(userRole, module, action, effectiveRole) {
   if (!userRole || !module || !action) return false;
+
+  // ADMIN is master — always has full access to everything
+  if (userRole === ROLES.ADMIN) return true;
   
   // Use effective role if provided (for admins acting as another role)
   const roleToCheck = effectiveRole || userRole;
