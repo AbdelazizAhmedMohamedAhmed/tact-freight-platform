@@ -202,6 +202,27 @@ export default function ShipmentDetailsForm({ shipment, onUpdate }) {
               />
             </div>
           </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>MBL ACID</Label>
+              <Input 
+                value={form.mbl_acid} 
+                onChange={e => setForm({...form, mbl_acid: e.target.value})}
+                placeholder="Master Bill of Lading ACID"
+                className="font-mono"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>HBL ACID</Label>
+              <Input 
+                value={form.hbl_acid} 
+                onChange={e => setForm({...form, hbl_acid: e.target.value})}
+                placeholder="House Bill of Lading ACID"
+                className="font-mono"
+              />
+            </div>
+          </div>
         </CardContent>
       </Card>
 
