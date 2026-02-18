@@ -48,7 +48,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const handleAction = async (newStatus, extraData = {}) => {
     setUpdating(true);
     const updateData = { status: newStatus, ...extraData };
-    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
+    if ((role === 'sales' || role === 'admin') && notes && ['submitted','sales_review','pricing_in_progress'].includes(rfq.status)) updateData.sales_notes = (rfq.sales_notes || '') + '\n' + notes;
     if ((role === 'pricing' || role === 'admin') && notes && rfq.status === 'pricing_in_progress') updateData.pricing_notes = (rfq.pricing_notes || '') + '\n' + notes;
     await base44.entities.RFQ.update(rfq.id, updateData);
     
@@ -380,7 +380,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {!isReadOnly && canSendToClient && (role === 'sales' || role === 'admin') && rfq.status === 'quoted' && (
+            {!isReadOnly && canSendToClient && (role === 'sales' || role === 'admin') && rfq.status === 'quotation_ready' && (
               <div className="space-y-4 pt-4 border-t">
                 <Button onClick={() => handleAction('sent_to_client')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Send Quotation to Client</Button>
               </div>
