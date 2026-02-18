@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Building2, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { resolveOrCreateCompany } from '../components/utils/companyResolver';
+import { resolveOrCreateCompany } from '../components/utils/companyResolver.jsx';
 
 const INDUSTRIES = [
   'Manufacturing',
