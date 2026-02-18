@@ -112,7 +112,6 @@ export default function ClientRFQs() {
         new_value: 'client_confirmed' 
       });
 
-      // Create a shipment from this confirmed RFQ
       const year = new Date().getFullYear().toString().slice(-2);
       const seq = String(Math.floor(10000 + Math.random() * 90000));
       const trackingNumber = `TF-${year}-${seq}`;
@@ -143,7 +142,24 @@ export default function ClientRFQs() {
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
       setSelectedRFQ(null);
+      setCompareOpen(false);
       window.location.href = createPageUrl('ClientShipments');
+    },
+  });
+
+  const rejectQuoteMutation = useMutation({
+    mutationFn: async (rfq) => {
+      const updated = await base44.entities.RFQ.update(rfq.id, { status: 'rejected' });
+      await logRFQAction(updated, 'rfq_status_changed', `RFQ ${updated.reference_number} rejected by client`, {
+        old_value: rfq.status,
+        new_value: 'rejected'
+      });
+      return updated;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['my-rfqs']);
+      setRejectConfirm(null);
+      setSelectedRFQ(null);
     },
   });
 
