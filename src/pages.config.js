@@ -61,6 +61,7 @@ import BizDevPartners from './pages/BizDevPartners';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
+import ClientReporting from './pages/ClientReporting';
 import ClientShipmentDetail from './pages/ClientShipmentDetail';
 import ClientShipments from './pages/ClientShipments';
 import ClientSupport from './pages/ClientSupport';
@@ -87,6 +88,7 @@ import PricingQueue from './pages/PricingQueue';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import ProjectLogistics from './pages/ProjectLogistics';
+import Reporting from './pages/Reporting';
 import RoRoServices from './pages/RoRoServices';
 import SalesCRM from './pages/SalesCRM';
 import SalesCompanies from './pages/SalesCompanies';
@@ -101,8 +103,7 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import ClientReporting from './pages/ClientReporting';
-import Reporting from './pages/Reporting';
+import CompanyRegistration from './pages/CompanyRegistration';
 import __Layout from './Layout.jsx';
 
 
@@ -121,6 +122,7 @@ export const PAGES = {
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
+    "ClientReporting": ClientReporting,
     "ClientShipmentDetail": ClientShipmentDetail,
     "ClientShipments": ClientShipments,
     "ClientSupport": ClientSupport,
@@ -147,6 +149,7 @@ export const PAGES = {
     "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
     "ProjectLogistics": ProjectLogistics,
+    "Reporting": Reporting,
     "RoRoServices": RoRoServices,
     "SalesCRM": SalesCRM,
     "SalesCompanies": SalesCompanies,
@@ -161,8 +164,7 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "ClientReporting": ClientReporting,
-    "Reporting": Reporting,
+    "CompanyRegistration": CompanyRegistration,
 }
 
 export const pagesConfig = {
