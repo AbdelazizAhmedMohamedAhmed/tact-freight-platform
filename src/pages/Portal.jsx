@@ -21,16 +21,14 @@ export default function Portal() {
 
   useEffect(() => {
     if (user) {
-      // Check if client user needs to complete registration
       const role = user.role || 'user';
-      const isClient = !['admin', 'sales', 'pricing', 'operations', 'supervisor', 'bizdev'].includes(role);
+      const isStaffRole = ['admin', 'sales', 'pricing', 'operations', 'supervisor', 'bizdev'].includes(role);
       
-      if (isClient && !user.company_id) {
-        // Client without company - redirect to registration
-        navigate(createPageUrl('Register'));
+      if (!isStaffRole && !user.company_id) {
+        navigate(createPageUrl('CompanyRegistration'));
         return;
       }
-      
+
       const redirectPage = 
         role === 'admin' ? 'AdminDashboard' :
         role === 'sales' ? 'SalesDashboard' :
@@ -91,9 +89,7 @@ export default function Portal() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            Freight Forwarding,
-            <br />
-            <span className="text-[#D50000]">Simplified</span>
+            Welcome to Tact Freight
           </motion.h1>
           <motion.p 
             className="text-white/70 mb-8 text-lg"
@@ -101,7 +97,7 @@ export default function Portal() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Access your personalized logistics dashboard. Track shipments, manage quotes, and streamline operations.
+            Sign in to manage your shipments and logistics.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
