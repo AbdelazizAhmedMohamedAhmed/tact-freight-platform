@@ -192,15 +192,24 @@ export default function OperationsShipmentDetail() {
 
         {/* Details Tab */}
         <TabsContent value="details" className="space-y-4">
-          <ShipmentDetailsForm
-            shipment={shipment}
-            onUpdate={refetch}
-          />
+          {canEdit ? (
+            <ShipmentDetailsForm shipment={shipment} onUpdate={refetch} />
+          ) : (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">
+              You have view-only access to this shipment.
+            </div>
+          )}
         </TabsContent>
 
         {/* Status Update Tab */}
         <TabsContent value="status" className="space-y-4">
-          {isAdmin && (
+          {isClient ? (
+            <Card className="bg-yellow-50 border-yellow-200">
+              <CardContent className="pt-6">
+                <p className="text-yellow-800 font-medium">You don't have permission to update shipment status.</p>
+              </CardContent>
+            </Card>
+          ) : isAdmin && (
         <Card className="border-[#D50000]/20 bg-red-50">
           <CardHeader><CardTitle className="text-sm text-[#D50000]">Admin Override</CardTitle></CardHeader>
           <CardContent className="space-y-4">
