@@ -220,7 +220,7 @@ export default function ClientShipmentDetail() {
               </CardContent>
             </Card>
 
-            {/* BL/AWB Info */}
+            {/* BL/AWB + ACID Info */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Transport Docs</CardTitle>
@@ -234,6 +234,41 @@ export default function ClientShipmentDetail() {
                   <p className="text-xs text-gray-500 mb-1">Vessel/Flight</p>
                   <p className="font-medium">{shipment.vessel_flight_info}</p>
                 </div>}
+                {shipment.mbl_acid && <div>
+                  <p className="text-xs text-gray-500 mb-1">MBL ACID</p>
+                  <p className="font-mono font-semibold">{shipment.mbl_acid}</p>
+                </div>}
+                {/* Client can submit their HBL ACID */}
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">HBL ACID</p>
+                  {shipment.hbl_acid && !savingAcid ? (
+                    <div className="flex items-center gap-2">
+                      <p className="font-mono font-semibold flex-1">{shipment.hbl_acid}</p>
+                      <button
+                        onClick={() => setAcidInput(shipment.hbl_acid)}
+                        className="text-xs text-[#D50000] hover:underline"
+                      >Edit</button>
+                    </div>
+                  ) : null}
+                  {(!shipment.hbl_acid || acidInput !== shipment.hbl_acid) && (
+                    <div className="flex gap-2 mt-1">
+                      <Input
+                        value={acidInput}
+                        onChange={e => setAcidInput(e.target.value)}
+                        placeholder="Enter HBL ACID number"
+                        className="font-mono text-sm h-8"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={handleSaveAcid}
+                        disabled={savingAcid || !acidInput.trim()}
+                        className="bg-[#D50000] hover:bg-[#B00000] h-8 px-3"
+                      >
+                        {savingAcid ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
