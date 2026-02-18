@@ -205,6 +205,11 @@ export default function OperationsShipmentDetail() {
           )}
         </TabsContent>
 
+        {/* Documents Tab */}
+        <TabsContent value="documents" className="space-y-4">
+          <OperationsShipmentDocuments shipment={shipment} onUpdate={refetch} />
+        </TabsContent>
+
         {/* Status Update Tab */}
         <TabsContent value="status" className="space-y-4">
           {isClient ? (
