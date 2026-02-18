@@ -367,38 +367,6 @@ export default function ClientRFQs() {
         </DialogContent>
       </Dialog>
 
-      {/* Compare Modal */}
-      <QuoteCompareModal
-        open={compareOpen}
-        onClose={() => setCompareOpen(false)}
-        rfqs={quotedRFQs}
-        onAccept={(rfq) => confirmQuoteMutation.mutate(rfq)}
-        onReject={(rfq) => setRejectConfirm(rfq)}
-        accepting={confirmQuoteMutation.isPending}
-      />
-
-      {/* Reject Confirm Dialog */}
-      <Dialog open={!!rejectConfirm} onOpenChange={() => setRejectConfirm(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Reject Quote?</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <p className="text-gray-600 text-sm">Are you sure you want to reject the quote for <strong>{rejectConfirm?.reference_number}</strong>? This action cannot be undone.</p>
-            <div className="flex gap-3 justify-end">
-              <Button variant="outline" onClick={() => setRejectConfirm(null)}>Cancel</Button>
-              <Button
-                className="bg-red-600 hover:bg-red-700"
-                onClick={() => rejectQuoteMutation.mutate(rejectConfirm)}
-                disabled={rejectQuoteMutation.isPending}
-              >
-                {rejectQuoteMutation.isPending ? 'Rejecting...' : 'Reject Quote'}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* RFQ Details Dialog */}
       <Dialog open={!!selectedRFQ} onOpenChange={() => setSelectedRFQ(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -435,47 +403,58 @@ export default function ClientRFQs() {
                 )}
               </div>
 
-              {(selectedRFQ.quotation_url || selectedRFQ.quotation_amount) && (
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  {/* Quote header */}
-                  <div className={`p-4 flex items-center justify-between flex-wrap gap-3 ${
-                    selectedRFQ.status === 'client_confirmed' ? 'bg-green-50 border-b border-green-200' :
-                    selectedRFQ.status === 'rejected' ? 'bg-gray-50 border-b border-gray-200' :
-                    'bg-blue-50 border-b border-blue-200'
-                  }`}>
+              {(selectedRFQ.quotation_url || selectedRFQ.quotation_amount || selectedRFQ.quotation_details) && (
+                <div className={`border rounded-xl overflow-hidden ${selectedRFQ.status === 'rejected' ? 'border-gray-200' : selectedRFQ.status === 'client_confirmed' ? 'border-green-300' : 'border-blue-200'}`}>
+                  {/* Header */}
+                  <div className={`px-6 py-4 flex items-center justify-between flex-wrap gap-3 ${selectedRFQ.status === 'rejected' ? 'bg-gray-50' : selectedRFQ.status === 'client_confirmed' ? 'bg-green-50' : 'bg-blue-50'}`}>
                     <div>
-                      <p className="font-bold text-lg text-[#1A1A1A]">
-                        {selectedRFQ.quotation_details?.currency || selectedRFQ.quotation_currency || 'USD'}{' '}
-                        {Number(selectedRFQ.quotation_amount).toLocaleString()}
+                      <p className={`font-bold text-lg ${selectedRFQ.status === 'rejected' ? 'text-gray-700' : selectedRFQ.status === 'client_confirmed' ? 'text-green-900' : 'text-blue-900'}`}>
+                        {selectedRFQ.status === 'client_confirmed' ? '✅ Quotation Accepted' : selectedRFQ.status === 'rejected' ? '❌ Quotation Rejected' : '📋 Quotation Received'}
                       </p>
-                      <p className="text-sm text-gray-600 mt-0.5">
-                        {selectedRFQ.status === 'client_confirmed' ? '✓ Quote accepted — shipment booked' :
-                         selectedRFQ.status === 'rejected' ? '✗ Quote rejected' :
-                         'Quote ready for your review'}
-                      </p>
+                      {selectedRFQ.quotation_amount && (
+                        <p className={`text-3xl font-black mt-1 ${selectedRFQ.status === 'rejected' ? 'text-gray-500 line-through' : selectedRFQ.status === 'client_confirmed' ? 'text-green-700' : 'text-blue-700'}`}>
+                          {selectedRFQ.quotation_currency || 'USD'} {Number(selectedRFQ.quotation_amount).toLocaleString()}
+                        </p>
+                      )}
                     </div>
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-2">
                       {selectedRFQ.quotation_url && (
                         <a href={selectedRFQ.quotation_url} target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" size="sm"><Download className="w-4 h-4 mr-1" /> Download</Button>
+                          <Button size="sm" variant="outline"><Download className="w-4 h-4 mr-2" /> Download PDF</Button>
                         </a>
                       )}
                     </div>
                   </div>
 
-                  {/* Quote breakdown */}
-                  <div className="p-4">
-                    <QuoteBreakdown rfq={selectedRFQ} />
-                  </div>
+                  {/* Pricing Breakdown */}
+                  {selectedRFQ.quotation_details?.line_items?.length > 0 && (
+                    <div className="px-6 py-4 border-t">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Detailed Pricing Breakdown</p>
+                      <QuoteBreakdown rfq={selectedRFQ} />
+                    </div>
+                  )}
 
                   {/* Actions */}
+                  {selectedRFQ.status === 'client_confirmed' && (
+                    <div className="px-6 py-4 border-t bg-green-50 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <span className="text-green-800 font-medium text-sm">Booking confirmed — shipment is being arranged</span>
+                    </div>
+                  )}
+
+                  {selectedRFQ.status === 'rejected' && (
+                    <div className="px-6 py-4 border-t bg-gray-50">
+                      <p className="text-sm text-gray-500">This quotation was rejected. You can submit a new RFQ if needed.</p>
+                    </div>
+                  )}
+
                   {['quotation_ready', 'sent_to_client'].includes(selectedRFQ.status) && (
-                    <div className="p-4 border-t bg-gray-50 space-y-3">
-                      <p className="text-sm text-gray-600">Accepting will automatically create a shipment booking.</p>
+                    <div className="px-6 py-4 border-t space-y-3">
+                      <p className="text-sm text-gray-600">Accepting will create a shipment booking automatically.</p>
                       <div className="flex gap-3">
                         <Button
                           onClick={() => confirmQuoteMutation.mutate(selectedRFQ)}
-                          disabled={confirmQuoteMutation.isPending}
+                          disabled={confirmQuoteMutation.isPending || rejectQuoteMutation.isPending}
                           className="flex-1 bg-green-600 hover:bg-green-700 font-semibold"
                         >
                           <Check className="w-4 h-4 mr-2" />
@@ -483,20 +462,13 @@ export default function ClientRFQs() {
                         </Button>
                         <Button
                           variant="outline"
+                          onClick={() => rejectQuoteMutation.mutate(selectedRFQ)}
+                          disabled={confirmQuoteMutation.isPending || rejectQuoteMutation.isPending}
                           className="text-red-600 border-red-200 hover:bg-red-50"
-                          onClick={() => setRejectConfirm(selectedRFQ)}
-                          disabled={confirmQuoteMutation.isPending}
                         >
-                          <X className="w-4 h-4 mr-2" /> Reject
+                          {rejectQuoteMutation.isPending ? 'Rejecting...' : 'Reject Quote'}
                         </Button>
                       </div>
-                    </div>
-                  )}
-
-                  {selectedRFQ.status === 'client_confirmed' && (
-                    <div className="p-4 border-t bg-green-50 flex items-center gap-2 text-green-800">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                      <span className="font-medium text-sm">Quotation accepted — your shipment is being arranged</span>
                     </div>
                   )}
                 </div>
