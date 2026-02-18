@@ -78,16 +78,33 @@ export default function AdminUsers() {
   const handleUpdateDept = async (dept) => {
     if (!editUser) return;
     await base44.entities.User.update(editUser.id, { department: dept });
-    
-    await logUserAction(
-      editUser,
-      'user_dept_changed',
+    await logUserAction(editUser, 'user_dept_changed',
       `User ${editUser.email} department changed from ${editUser.department || 'none'} to ${dept}`,
       { old_value: editUser.department || 'none', new_value: dept }
     );
-    
     setEditUser(null);
     refetch();
+  };
+
+  const handleLinkCompany = async (companyId) => {
+    if (!editUser) return;
+    if (companyId === '__none__') {
+      // Unlink: remove email from all companies that have it
+      const linked = companies.filter(c => (c.member_emails || []).includes(editUser.email));
+      await Promise.all(linked.map(c =>
+        base44.entities.ClientCompany.update(c.id, {
+          member_emails: (c.member_emails || []).filter(e => e !== editUser.email),
+          ...(c.primary_contact_email === editUser.email ? { primary_contact_email: '' } : {}),
+        })
+      ));
+    } else {
+      const company = companies.find(c => c.id === companyId);
+      if (!company) return;
+      const emails = Array.from(new Set([...(company.member_emails || []), editUser.email]));
+      await base44.entities.ClientCompany.update(companyId, { member_emails: emails });
+    }
+    refetch();
+    setEditUser(null);
   };
 
   const handleCreateDummy = async () => {
