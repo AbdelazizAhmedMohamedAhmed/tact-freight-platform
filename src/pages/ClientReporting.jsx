@@ -115,23 +115,26 @@ export default function ClientReporting() {
       {isLoading ? <Skeleton className="h-24 rounded-xl" /> : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Total Clients', value: clients.length, color: 'blue', Icon: Users },
-            { label: 'Total Shipments', value: shipments.length, color: 'green', Icon: Ship },
-            { label: 'Linked Shipments', value: totalLinked, color: 'orange', Icon: Package },
-            { label: 'Total RFQs', value: rfqs.length, color: 'red', Icon: TrendingUp },
-          ].map(({ label, value, color, Icon }) => (
-            <div key={label} className={`bg-white rounded-xl shadow-sm p-5 border-l-4 border-${color}-500`}>
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-lg bg-${color}-100 flex items-center justify-center`}>
-                  <Icon className={`w-5 h-5 text-${color}-600`} />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-[#1A1A1A]">{value}</p>
-                  <p className="text-xs text-gray-500">{label}</p>
+            { label: 'Total Clients', value: clients.length, cls: 'border-blue-500 bg-blue-100 text-blue-600', Icon: Users },
+            { label: 'Total Shipments', value: shipments.length, cls: 'border-green-500 bg-green-100 text-green-600', Icon: Ship },
+            { label: 'Linked Shipments', value: totalLinked, cls: 'border-orange-500 bg-orange-100 text-orange-600', Icon: Package },
+            { label: 'Total RFQs', value: rfqs.length, cls: 'border-red-500 bg-red-100 text-red-600', Icon: TrendingUp },
+          ].map(({ label, value, cls, Icon }) => {
+            const [borderCls, bgCls, textCls] = cls.split(' ');
+            return (
+              <div key={label} className={`bg-white rounded-xl shadow-sm p-5 border-l-4 ${borderCls}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg ${bgCls} flex items-center justify-center`}>
+                    <Icon className={`w-5 h-5 ${textCls}`} />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-[#1A1A1A]">{value}</p>
+                    <p className="text-xs text-gray-500">{label}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
