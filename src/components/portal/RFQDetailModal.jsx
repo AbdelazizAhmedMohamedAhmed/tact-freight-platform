@@ -355,6 +355,20 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
+            {/* Admin: force any status */}
+            {isAdmin && (
+              <div className="space-y-2 pt-4 border-t">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Admin Override — Force Status</p>
+                <div className="flex gap-2 flex-wrap">
+                  {['submitted','sales_review','pricing_review','quoted','sent_to_client','client_confirmed','rejected'].map(s => s !== rfq.status && (
+                    <Button key={s} size="sm" variant="outline" disabled={updating} onClick={() => handleAction(s)}>
+                      → {s.replace(/_/g, ' ')}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {!isReadOnly && canSendToClient && (role === 'sales' || role === 'admin') && rfq.status === 'quoted' && (
               <div className="space-y-4 pt-4 border-t">
                 <Button onClick={() => handleAction('sent_to_client')} disabled={updating} className="bg-[#D50000] hover:bg-[#B00000]">Send Quotation to Client</Button>
