@@ -4,10 +4,10 @@ const statusLabels = {
   // RFQ statuses
   submitted: 'Submitted',
   sales_review: 'Under Sales Review',
-  pricing_review: 'Under Pricing Review',
-  quoted: 'Quoted',
+  pricing_in_progress: 'Pricing In Progress',
+  quotation_ready: 'Quotation Ready',
   sent_to_client: 'Sent to Client',
-  accepted: 'Accepted',
+  client_confirmed: 'Client Confirmed',
   rejected: 'Rejected',
   cancelled: 'Cancelled',
   won: 'Won',
