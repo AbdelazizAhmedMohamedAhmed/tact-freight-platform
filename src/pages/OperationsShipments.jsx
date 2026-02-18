@@ -32,6 +32,8 @@ export default function OperationsShipments() {
 
   const userRole = user?.department || user?.role || 'user';
 
+  const isClient = userRole === 'client';
+
   const { data: shipments = [], isLoading } = useQuery({
     queryKey: ['operations_shipments'],
     queryFn: () => base44.entities.Shipment.list('-created_date', 100),
