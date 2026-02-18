@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { MessageSquare, Upload, Paperclip, Send } from 'lucide-react';
 import { format } from 'date-fns';
 
-export default function CommentThread({ entityType, entityId, userRole }) {
+export default function CommentThread({ entityType, entityId, userRole, readOnly = false }) {
   const [message, setMessage] = useState('');
   const [isInternal, setIsInternal] = useState(false);
   const [uploading, setUploading] = useState(false);
