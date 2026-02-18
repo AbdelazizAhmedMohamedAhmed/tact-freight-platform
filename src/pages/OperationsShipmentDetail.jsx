@@ -58,6 +58,13 @@ export default function OperationsShipmentDetail() {
   const ModeIcon = modeIcons[shipment.mode] || Ship;
 
   const userRole = user?.department || user?.role || 'user';
+  const isAdmin = userRole === 'admin';
+
+  const handleDeleteShipment = async () => {
+    if (!window.confirm(`Delete shipment ${shipment.tracking_number}? This cannot be undone.`)) return;
+    await base44.entities.Shipment.delete(shipment.id);
+    window.history.back();
+  };
   
   const handleStatusUpdate = async (newStatus) => {
     if (!newStatus || updatingStatus) return;
