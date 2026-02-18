@@ -100,7 +100,7 @@ export default function AdminShipments() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#1A1A1A]">All Shipments</h1>
-          <p className="text-gray-500 text-sm mt-1">View all shipment records</p>
+          <p className="text-gray-500 text-sm mt-1">Full admin control — view, edit, delete all shipments</p>
         </div>
         <div className="relative w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
