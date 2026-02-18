@@ -273,6 +273,11 @@ export default function OperationsShipmentDetail() {
             </>
           )}
         </TabsContent>
+
+        {/* Messages Tab */}
+        <TabsContent value="messages" className="space-y-4">
+          <CommentThread entityType="shipment" entityId={shipment.id} userRole={userRole} />
+        </TabsContent>
       </Tabs>
     </div>
   );
