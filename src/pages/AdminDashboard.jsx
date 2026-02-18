@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { FileText, Ship, Users, BarChart3, TrendingUp, DollarSign } from 'lucide-react';
+import { FileText, Ship, Users, BarChart3, TrendingUp, DollarSign, Building2 } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../utils';
