@@ -68,39 +68,35 @@ export default function OperationsShipmentDetail() {
   };
   
   const handleStatusUpdate = async (newStatus) => {
-    if (!newStatus || updatingStatus) return;
-    setUpdatingStatus(newStatus);
+    if (!newStatus || isUpdating) return;
+    setIsUpdating(true);
 
-    try {
-      const statusHistory = shipment.status_history || [];
-      statusHistory.push({
-        status: newStatus,
-        timestamp: new Date().toISOString(),
-        note: statusNotes || undefined,
-        updated_by: user.email,
-      });
+    const statusHistory = [...(shipment.status_history || []), {
+      status: newStatus,
+      timestamp: new Date().toISOString(),
+      note: statusNotes || undefined,
+      updated_by: user.email,
+    }];
 
-      await base44.entities.Shipment.update(shipment.id, {
-        status: newStatus,
-        status_history: statusHistory,
-      });
+    await base44.entities.Shipment.update(shipment.id, {
+      status: newStatus,
+      status_history: statusHistory,
+    });
 
-      await logRFQAction(
-        { tracking_number: shipment.tracking_number },
-        'shipment_status_changed',
-        `Shipment ${shipment.tracking_number} status changed to ${newStatus}`,
-        { old_value: shipment.status, new_value: newStatus }
-      );
+    await logRFQAction(
+      { tracking_number: shipment.tracking_number },
+      'shipment_status_changed',
+      `Shipment ${shipment.tracking_number} status changed to ${newStatus}`,
+      { old_value: shipment.status, new_value: newStatus }
+    );
 
-      // Send notifications
-      const { notifyShipmentStatusUpdate } = await import('../components/utils/notificationEngine');
-      await notifyShipmentStatusUpdate(shipment, newStatus);
+    const { notifyShipmentStatusUpdate } = await import('../components/utils/notificationEngine');
+    await notifyShipmentStatusUpdate(shipment, newStatus);
 
-      setStatusNotes('');
-      refetch();
-    } finally {
-      setUpdatingStatus(null);
-    }
+    setStatusNotes('');
+    setSelectedNextStatus('');
+    setIsUpdating(false);
+    refetch();
   };
 
   const nextStatuses = {
