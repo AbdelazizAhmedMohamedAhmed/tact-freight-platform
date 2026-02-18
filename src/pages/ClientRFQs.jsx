@@ -479,6 +479,16 @@ export default function ClientRFQs() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Quote Compare Modal */}
+      <QuoteCompareModal
+        open={compareOpen}
+        onClose={() => setCompareOpen(false)}
+        rfqs={quotedRFQs}
+        onAccept={(rfq) => confirmQuoteMutation.mutate(rfq)}
+        onReject={(rfq) => rejectQuoteMutation.mutate(rfq)}
+        accepting={confirmQuoteMutation.isPending || rejectQuoteMutation.isPending}
+      />
     </div>
   );
 }
