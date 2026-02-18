@@ -26,8 +26,8 @@ export default function PricingQueue() {
 
       <Tabs value={filter} onValueChange={setFilter}>
         <TabsList>
-          <TabsTrigger value="pricing_review">Pending</TabsTrigger>
-          <TabsTrigger value="quoted">Quoted</TabsTrigger>
+          <TabsTrigger value="pricing_in_progress">Pending</TabsTrigger>
+          <TabsTrigger value="quotation_ready">Quoted</TabsTrigger>
           <TabsTrigger value="all">All</TabsTrigger>
         </TabsList>
       </Tabs>
