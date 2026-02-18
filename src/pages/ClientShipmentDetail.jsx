@@ -34,6 +34,17 @@ export default function ClientShipmentDetail() {
     select: (data) => data[0],
   });
 
+  useEffect(() => {
+    if (shipment) setAcidInput(shipment.hbl_acid || '');
+  }, [shipment?.id]);
+
+  const handleSaveAcid = async () => {
+    if (!shipment) return;
+    setSavingAcid(true);
+    await base44.entities.Shipment.update(shipment.id, { hbl_acid: acidInput });
+    setSavingAcid(false);
+  };
+
   const { data: rfq } = useQuery({
     queryKey: ['shipment-rfq', shipment?.rfq_id],
     queryFn: () => base44.entities.RFQ.filter({ id: shipment?.rfq_id }, '', 1),
