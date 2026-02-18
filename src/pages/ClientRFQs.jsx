@@ -178,14 +178,40 @@ export default function ClientRFQs() {
     createRFQMutation.mutate(formData);
   };
 
+  // RFQs with a quote that can be compared/accepted
+  const quotedRFQs = rfqs.filter(r => ['quotation_ready', 'sent_to_client', 'client_confirmed', 'rejected'].includes(r.status) && (r.quotation_amount || r.quotation_url));
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-3xl font-black text-[#1A1A1A]">My RFQs</h1>
-        <Button onClick={() => setShowNewRFQ(true)} className="bg-[#D50000] hover:bg-[#B00000]">
-          <Plus className="w-5 h-5 mr-2" /> New RFQ
-        </Button>
+        <div className="flex gap-3">
+          {quotedRFQs.length >= 1 && (
+            <Button variant="outline" onClick={() => setCompareOpen(true)}>
+              <GitCompare className="w-4 h-4 mr-2" /> Compare Quotes ({quotedRFQs.length})
+            </Button>
+          )}
+          <Button onClick={() => setShowNewRFQ(true)} className="bg-[#D50000] hover:bg-[#B00000]">
+            <Plus className="w-5 h-5 mr-2" /> New RFQ
+          </Button>
+        </div>
       </div>
+
+      {/* Pending action banner */}
+      {rfqs.some(r => ['quotation_ready', 'sent_to_client'].includes(r.status)) && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+          <div className="flex-1">
+            <p className="font-semibold text-amber-900 text-sm">You have quotes awaiting your response</p>
+            <p className="text-amber-700 text-xs mt-0.5">Click on an RFQ below to review and accept or reject the quote.</p>
+          </div>
+          {quotedRFQs.length >= 2 && (
+            <Button size="sm" variant="outline" className="border-amber-300 text-amber-800 hover:bg-amber-100 flex-shrink-0" onClick={() => setCompareOpen(true)}>
+              Compare All
+            </Button>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {rfqs.map(rfq => (
