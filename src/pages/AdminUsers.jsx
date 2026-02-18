@@ -236,30 +236,52 @@ export default function AdminUsers() {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Department Dialog */}
+      {/* Edit User Dialog */}
       <Dialog open={!!editUser} onOpenChange={() => setEditUser(null)}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Edit User Department</DialogTitle></DialogHeader>
-          {editUser && (
-            <div className="space-y-4 mt-4">
-              <p className="text-sm text-gray-500">{editUser.full_name} ({editUser.email})</p>
-              <div className="space-y-2">
-                <Label>Department</Label>
-                <Select value={editUser.department || 'client'} onValueChange={handleUpdateDept}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="client">Client</SelectItem>
-                    <SelectItem value="sales">Sales</SelectItem>
-                    <SelectItem value="pricing">Pricing</SelectItem>
-                    <SelectItem value="operations">Operations</SelectItem>
-                    <SelectItem value="customer_service">Customer Service</SelectItem>
-                    <SelectItem value="analyst">Analyst</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
+          <DialogHeader><DialogTitle>Edit User</DialogTitle></DialogHeader>
+          {editUser && (() => {
+            const currentCompany = emailToCompany[editUser.email];
+            return (
+              <div className="space-y-4 mt-4">
+                <p className="text-sm text-gray-500">{editUser.full_name} ({editUser.email})</p>
+
+                <div className="space-y-2">
+                  <Label>Department</Label>
+                  <Select value={editUser.department || 'client'} onValueChange={handleUpdateDept}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="client">Client</SelectItem>
+                      <SelectItem value="sales">Sales</SelectItem>
+                      <SelectItem value="pricing">Pricing</SelectItem>
+                      <SelectItem value="operations">Operations</SelectItem>
+                      <SelectItem value="customer_service">Customer Service</SelectItem>
+                      <SelectItem value="analyst">Analyst</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Linked Company</Label>
+                  {currentCompany && (
+                    <p className="text-xs text-green-600 flex items-center gap-1">
+                      <Building2 className="w-3 h-3" /> Currently linked to <strong>{currentCompany.name}</strong>
+                    </p>
+                  )}
+                  <Select onValueChange={handleLinkCompany} defaultValue={currentCompany?.id || '__none__'}>
+                    <SelectTrigger><SelectValue placeholder="Select company…" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__none__">— No company —</SelectItem>
+                      {companies.map(c => (
+                        <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
 
