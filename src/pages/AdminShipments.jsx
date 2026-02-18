@@ -204,9 +204,14 @@ export default function AdminShipments() {
               <div className="space-y-2"><Label>Note</Label><Textarea value={note} onChange={e => setNote(e.target.value)} placeholder="Optional status update note..." /></div>
               <div className="space-y-2"><Label>Upload Document</Label><Input type="file" onChange={handleDocUpload} /></div>
 
-              <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000] w-full h-12">
-                {updating ? 'Updating...' : 'Update Shipment'}
-              </Button>
+              <div className="flex gap-3">
+                <Button onClick={handleStatusUpdate} disabled={updating || !newStatus} className="bg-[#D50000] hover:bg-[#B00000] flex-1 h-12">
+                  {updating ? 'Updating...' : 'Update Shipment'}
+                </Button>
+                <Button variant="destructive" onClick={() => handleDeleteShipment(selectedShipment)} className="h-12 px-6">
+                  Delete
+                </Button>
+              </div>
             </div>
           )}
         </DialogContent>
