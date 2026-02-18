@@ -19,6 +19,15 @@ export default function AdminClients() {
     queryFn: () => base44.entities.ClientCompany.list('-created_date', 200),
   });
 
+  const { data: users = [] } = useQuery({
+    queryKey: ['admin-users-for-clients'],
+    queryFn: () => base44.entities.User.list('-created_date', 500),
+  });
+
+  // Map email -> user
+  const emailToUser = {};
+  users.forEach(u => { if (u.email) emailToUser[u.email] = u; });
+
   const filtered = clients.filter(c =>
     c.name?.toLowerCase().includes(search.toLowerCase()) ||
     c.primary_contact_email?.toLowerCase().includes(search.toLowerCase()) ||
