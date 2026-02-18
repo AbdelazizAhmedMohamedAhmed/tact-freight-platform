@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { UserPlus, Search, Edit2 } from 'lucide-react';
+import { UserPlus, Search, Edit2, Building2 } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from 'date-fns';
 import { logUserAction } from '@/components/utils/activityLogger';
