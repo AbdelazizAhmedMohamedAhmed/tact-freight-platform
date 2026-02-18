@@ -302,8 +302,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {/* Convert to Shipment - for admin/sales/operations when client confirmed */}
-            {['admin', 'sales', 'operations'].includes(role) && rfq.status === 'client_confirmed' && (
+            {/* Convert to Shipment - staff only */}
+            {isStaff && ['admin', 'sales', 'operations'].includes(role) && rfq.status === 'client_confirmed' && (
               <div className="pt-4 border-t space-y-3">
                 {shipmentCreated ? (
                   <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
