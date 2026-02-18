@@ -31,6 +31,42 @@ export async function createAndLinkCompany(user, companyData) {
 }
 
 /**
+ * Resolve or create a company based on company name and user email.
+ * Returns company ID.
+ */
+export async function resolveOrCreateCompany({ company_name, email, industry, country, city, phone }) {
+  // Check if a company with this name already exists
+  const existingCompanies = await base44.entities.ClientCompany.filter({ name: company_name });
+  
+  if (existingCompanies.length > 0) {
+    const company = existingCompanies[0];
+    
+    // Add user to member_emails if not already there
+    const memberEmails = company.member_emails || [];
+    if (!memberEmails.includes(email)) {
+      await base44.entities.ClientCompany.update(company.id, {
+        member_emails: [...memberEmails, email],
+      });
+    }
+    
+    return company.id;
+  }
+  
+  // Create new company
+  const newCompany = await base44.entities.ClientCompany.create({
+    name: company_name,
+    industry,
+    country,
+    city,
+    phone,
+    primary_contact_email: email,
+    member_emails: [email],
+  });
+  
+  return newCompany.id;
+}
+
+/**
  * Get all shipments & RFQs for a company (all members).
  * Pass member_emails array.
  */
