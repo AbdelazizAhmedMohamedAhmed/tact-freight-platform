@@ -18,6 +18,7 @@ import { notifyRFQSentToPricing, notifyPricingComplete, notifyQuotationSent } fr
 import QuoteBreakdown from '../client/QuoteBreakdown';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
+import { createPageUrl } from '@/utils';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
@@ -28,7 +29,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [assignType, setAssignType] = useState('sales');
   const [outcomeModalOpen, setOutcomeModalOpen] = useState(false);
-  const [convertingToShipment, setConvertingToShipment] = useState(false);
+
 
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
@@ -77,8 +78,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   };
 
   const handleConvertToShipment = () => {
-    onClose();
-    window.location.href = `/CreateShipment?rfq_id=${rfq.id}`;
+    // Redirect to CreateShipment page — tracking number must be entered manually by operations
+    window.location.href = createPageUrl(`CreateShipment?rfq_id=${rfq.id}`);
   };
 
   const handleQuotationUpload = async (e) => {
@@ -273,23 +274,30 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
               </div>
             )}
 
-            {/* Convert to Shipment - sales/admin only, on client_confirmed */}
-            {isStaff && ['admin', 'sales'].includes(role) && rfq.status === 'client_confirmed' && (
+            {/* Convert to Shipment - staff only */}
+            {isStaff && ['admin', 'sales', 'operations'].includes(role) && rfq.status === 'client_confirmed' && (
               <div className="pt-4 border-t space-y-3">
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <div className="flex-1">
-                    <p className="font-semibold text-amber-900 text-sm">Client has confirmed this quotation</p>
-                    <p className="text-amber-700 text-xs mt-1">Convert this RFQ to a shipment. The operations team will assign the tracking number.</p>
+                {shipmentCreated ? (
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-green-900">Shipment Created!</p>
+                      <p className="text-green-700 text-sm font-mono">{shipmentCreated.tracking_number}</p>
+                    </div>
                   </div>
-                </div>
-                <Button
-                  onClick={handleConvertToShipment}
-                  className="bg-[#D50000] hover:bg-[#B00000] w-full"
-                >
-                  <Ship className="w-4 h-4 mr-2" />
-                  Convert to Shipment
-                </Button>
+                ) : (
+                  <>
+                    <p className="text-sm text-gray-600 font-medium">Client has accepted the quotation. Create a shipment booking?</p>
+                    <Button
+                      onClick={handleConvertToShipment}
+                      disabled={convertingToShipment}
+                      className="bg-[#D50000] hover:bg-[#B00000] w-full"
+                    >
+                      <Ship className="w-4 h-4 mr-2" />
+                      {convertingToShipment ? 'Creating Shipment...' : 'Convert to Shipment'}
+                    </Button>
+                  </>
+                )}
               </div>
             )}
 
