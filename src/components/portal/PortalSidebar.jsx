@@ -86,6 +86,7 @@ const menuByRole = {
 };
 
 const roleLabels = {
+  client: 'Client Portal',
   user: 'Client Portal',
   sales: 'Sales Portal',
   pricing: 'Pricing Portal',
@@ -93,6 +94,7 @@ const roleLabels = {
   supervisor: 'Supervisor Portal',
   bizdev: 'Biz Dev Portal',
   admin: 'Admin Portal',
+  manager: 'Admin Portal',
   customer_service: 'Customer Service',
   analyst: 'Analyst Portal',
 };
