@@ -120,7 +120,7 @@ export default function CommentThread({ entityType, entityId, userRole, readOnly
                 <span className="text-xs text-gray-500">{attachments.length} file(s)</span>
               )}
               {canSeeInternal && (
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="checkbox" checked={isInternal} onChange={(e) => setIsInternal(e.target.checked)} />
                   Internal only
                 </label>
