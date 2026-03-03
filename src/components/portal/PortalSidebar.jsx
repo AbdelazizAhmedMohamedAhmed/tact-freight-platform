@@ -5,7 +5,7 @@ import Logo from '../shared/Logo';
 import { 
   LayoutDashboard, FileText, Truck, Users, LogOut, Menu, X, 
   Ship, ClipboardList, DollarSign, Package, BarChart3, MessageSquare, Plus,
-  Building2, Handshake, UserCircle, ArrowLeft, TrendingUp, Bell
+  Building2, Handshake, UserCircle, ArrowLeft, TrendingUp, Bell, Shield
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { logAuthAction } from '../utils/activityLogger';
