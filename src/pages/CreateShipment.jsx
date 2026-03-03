@@ -85,7 +85,7 @@ export default function CreateShipment() {
         recipient_email: form.client_email,
         entity_type: 'shipment',
         entity_id: newShipment.id,
-        entity_reference: trackingNum,
+        entity_reference: form.tracking_number,
         action_url: '/ClientShipments',
       });
     }
