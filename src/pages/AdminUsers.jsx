@@ -195,6 +195,7 @@ export default function AdminUsers() {
                 <TableHead>Email</TableHead>
                 <TableHead>Role</TableHead>
                 <TableHead>Department</TableHead>
+                <TableHead>Custom Roles</TableHead>
                 <TableHead>Company</TableHead>
                 <TableHead>Joined</TableHead>
                 <TableHead>Action</TableHead>
