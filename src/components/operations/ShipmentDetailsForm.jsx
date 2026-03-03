@@ -20,6 +20,7 @@ export default function ShipmentDetailsForm({ shipment, onUpdate }) {
     consignee_contact: shipment?.consignee_contact || '',
     consignee_phone: shipment?.consignee_phone || '',
     consignee_email: shipment?.consignee_email || '',
+    tracking_number: shipment?.tracking_number || '',
     bl_number: shipment?.bl_number || '',
     shipping_line_airline: shipment?.shipping_line_airline || '',
     vessel_flight_info: shipment?.vessel_flight_info || '',
