@@ -18,6 +18,7 @@ import { notifyRFQSentToPricing, notifyPricingComplete, notifyQuotationSent } fr
 import QuoteBreakdown from '../client/QuoteBreakdown';
 import { Ship, Plane, Truck, FileText, Upload, MessageSquare, UserPlus, Trophy, XCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
+import { createPageUrl } from '@/utils';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
@@ -29,6 +30,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const [assignType, setAssignType] = useState('sales');
   const [outcomeModalOpen, setOutcomeModalOpen] = useState(false);
   const [convertingToShipment, setConvertingToShipment] = useState(false);
+  const [shipmentCreated, setShipmentCreated] = useState(null);
 
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
@@ -77,8 +79,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   };
 
   const handleConvertToShipment = () => {
-    onClose();
-    window.location.href = `/CreateShipment?rfq_id=${rfq.id}`;
+    // Redirect to CreateShipment page — tracking number must be entered manually by operations
+    window.location.href = createPageUrl(`CreateShipment?rfq_id=${rfq.id}`);
   };
 
   const handleQuotationUpload = async (e) => {
