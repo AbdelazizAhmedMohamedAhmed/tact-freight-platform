@@ -13,10 +13,9 @@ import { sendStatusNotification } from '@/components/utils/notificationService';
 export default function CreateShipment() {
   const [rfq, setRfq] = useState(null);
   const [created, setCreated] = useState(false);
-  const [trackingNum, setTrackingNum] = useState('');
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    mode: '', origin: '', destination: '', eta: '',
+    tracking_number: '', mode: '', origin: '', destination: '', eta: '',
     vessel_flight_info: '', cargo_description: '', weight_kg: '',
     volume_cbm: '', operations_notes: '', client_email: '', company_name: '',
   });
