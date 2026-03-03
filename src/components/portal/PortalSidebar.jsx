@@ -12,6 +12,15 @@ import { logAuthAction } from '../utils/activityLogger';
 import AdminRoleSelector from './AdminRoleSelector';
 
 const menuByRole = {
+  client: [
+    { label: 'Dashboard', icon: LayoutDashboard, page: 'ClientDashboard' },
+    { label: 'New RFQ', icon: Plus, page: 'ClientCreateRFQ' },
+    { label: 'My RFQs', icon: FileText, page: 'ClientRFQs' },
+    { label: 'My Shipments', icon: Ship, page: 'ClientShipments' },
+    { label: 'Track Shipment', icon: Truck, page: 'TrackShipment' },
+    { label: 'My Reports', icon: TrendingUp, page: 'ClientReporting' },
+    { label: 'Notifications', icon: Bell, page: 'Notifications' },
+  ],
   user: [
     { label: 'Dashboard', icon: LayoutDashboard, page: 'ClientDashboard' },
     { label: 'New RFQ', icon: Plus, page: 'ClientCreateRFQ' },
