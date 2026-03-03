@@ -275,7 +275,7 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
             )}
 
             {/* Convert to Shipment - staff only */}
-            {isStaff && ['admin', 'sales'].includes(role) && rfq.status === 'client_confirmed' && (
+            {isStaff && ['admin', 'sales', 'operations'].includes(role) && rfq.status === 'client_confirmed' && (
               <div className="pt-4 border-t space-y-3">
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
