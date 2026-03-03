@@ -29,7 +29,6 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   const [assignType, setAssignType] = useState('sales');
   const [outcomeModalOpen, setOutcomeModalOpen] = useState(false);
   const [convertingToShipment, setConvertingToShipment] = useState(false);
-  const [shipmentCreated, setShipmentCreated] = useState(null);
 
   if (!rfq) return null;
   const MIcon = modeIcons[rfq.mode] || Ship;
@@ -78,8 +77,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   };
 
   const handleConvertToShipment = () => {
-    // Redirect to CreateShipment page — tracking number must be entered manually by operations
-    window.location.href = createPageUrl(`CreateShipment?rfq_id=${rfq.id}`);
+    onClose();
+    window.location.href = `/CreateShipment?rfq_id=${rfq.id}`;
   };
 
   const handleQuotationUpload = async (e) => {
