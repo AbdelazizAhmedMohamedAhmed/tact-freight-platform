@@ -396,6 +396,38 @@ export default function ClientRFQs() {
                 )}
               </div>
 
+              {/* Timeline & Response Times */}
+              <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-2"><Clock className="w-3.5 h-3.5" /> Timeline</p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-2"><ArrowRight className="w-3.5 h-3.5 text-[#D50000]" /> RFQ Submitted</span>
+                    <span className="font-medium text-gray-800">{format(new Date(selectedRFQ.created_date), 'MMM d, yyyy h:mm a')}</span>
+                  </div>
+                  {selectedRFQ.status !== 'submitted' && selectedRFQ.updated_date && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 flex items-center gap-2"><ArrowRight className="w-3.5 h-3.5 text-blue-500" /> Last Update</span>
+                      <span className="font-medium text-gray-800">{format(new Date(selectedRFQ.updated_date), 'MMM d, yyyy h:mm a')}</span>
+                    </div>
+                  )}
+                  {(selectedRFQ.quotation_url || selectedRFQ.quotation_amount) && selectedRFQ.updated_date && (() => {
+                    const submitted = new Date(selectedRFQ.created_date);
+                    const quoted = new Date(selectedRFQ.updated_date);
+                    const diffHours = Math.round((quoted - submitted) / (1000 * 60 * 60));
+                    const diffDays = Math.floor(diffHours / 24);
+                    const remHours = diffHours % 24;
+                    return (
+                      <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-dashed border-[#D50000]/30">
+                        <span className="text-gray-600 flex items-center gap-2"><Clock className="w-3.5 h-3.5 text-[#D50000]" /> Lead Time (RFQ → Quotation)</span>
+                        <span className="font-bold text-[#D50000]">
+                          {diffDays > 0 ? `${diffDays}d ${remHours}h` : `${diffHours}h`}
+                        </span>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
               {(selectedRFQ.quotation_url || selectedRFQ.quotation_amount || selectedRFQ.quotation_details) && (
                 <div className={`border rounded-xl overflow-hidden ${selectedRFQ.status === 'rejected' ? 'border-gray-200' : selectedRFQ.status === 'client_confirmed' ? 'border-green-300' : 'border-blue-200'}`}>
                   {/* Header */}
