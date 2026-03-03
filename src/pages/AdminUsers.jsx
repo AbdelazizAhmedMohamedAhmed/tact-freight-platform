@@ -13,14 +13,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from 'date-fns';
 import { logUserAction } from '@/components/utils/activityLogger';
 
-const deptColors = {
+const roleColors = {
+  admin: 'bg-red-100 text-red-800',
+  user: 'bg-gray-100 text-gray-800',
   client: 'bg-blue-100 text-blue-800',
+};
+
+const deptColors = {
   sales: 'bg-green-100 text-green-800',
   pricing: 'bg-purple-100 text-purple-800',
   operations: 'bg-orange-100 text-orange-800',
-  admin: 'bg-red-100 text-red-800',
-  customer_service: 'bg-yellow-100 text-yellow-800',
-  analyst: 'bg-indigo-100 text-indigo-800',
+  manager: 'bg-yellow-100 text-yellow-800',
 };
 
 export default function AdminUsers() {
