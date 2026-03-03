@@ -25,6 +25,7 @@ export default function ClientRFQs() {
   const [uploading, setUploading] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
   const [rejectConfirm, setRejectConfirm] = useState(null);
+  const [rejectionReason, setRejectionReason] = useState('');
   const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState({
