@@ -13,6 +13,7 @@ export default function ClientShipments() {
   const [companyId, setCompanyId] = useState(null);
   const [uploadEntity, setUploadEntity] = useState(null);
   const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(u => {
