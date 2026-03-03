@@ -73,6 +73,17 @@ export default function ClientRFQs() {
     enabled: !!user,
   });
 
+  const { data: shipments = [] } = useQuery({
+    queryKey: ['client-shipments-rfq-ids'],
+    queryFn: () => base44.entities.Shipment.filter({ client_email: user.email }, '-created_date', 200),
+    enabled: !!user,
+  });
+
+  // Build set of rfq_ids that have been converted to shipments
+  const convertedRFQIds = new Set(shipments.filter(s => s.rfq_id).map(s => s.rfq_id));
+  // Only show RFQs that have NOT been converted to shipments
+  const visibleRFQs = rfqs.filter(r => !convertedRFQIds.has(r.id));
+
   const createRFQMutation = useMutation({
     mutationFn: async (data) => {
       const year = new Date().getFullYear();
