@@ -6,7 +6,7 @@ import UploadDocumentModal from '../components/client/UploadDocumentModal';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { createPageUrl } from '../utils';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function ClientShipments() {
   const [user, setUser] = useState(null);

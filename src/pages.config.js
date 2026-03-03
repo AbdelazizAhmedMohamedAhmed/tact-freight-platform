@@ -52,12 +52,14 @@ import AdminActivity from './pages/AdminActivity';
 import AdminAnalytics from './pages/AdminAnalytics';
 import AdminClients from './pages/AdminClients';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminManagement from './pages/AdminManagement';
 import AdminRFQs from './pages/AdminRFQs';
 import AdminReporting from './pages/AdminReporting';
 import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
 import AirFreight from './pages/AirFreight';
 import BizDevPartners from './pages/BizDevPartners';
+import ClientCreateRFQ from './pages/ClientCreateRFQ';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientPreferences from './pages/ClientPreferences';
 import ClientRFQs from './pages/ClientRFQs';
@@ -66,6 +68,7 @@ import ClientShipmentDetail from './pages/ClientShipmentDetail';
 import ClientShipments from './pages/ClientShipments';
 import ClientSupport from './pages/ClientSupport';
 import Clients from './pages/Clients';
+import CompanyRegistration from './pages/CompanyRegistration';
 import Consultancy from './pages/Consultancy';
 import Contact from './pages/Contact';
 import CreateShipment from './pages/CreateShipment';
@@ -75,6 +78,7 @@ import Home from './pages/Home';
 import Industries from './pages/Industries';
 import InlandTransport from './pages/InlandTransport';
 import MyWorkspace from './pages/MyWorkspace';
+import Notifications from './pages/Notifications';
 import OperationsDashboard from './pages/OperationsDashboard';
 import OperationsFlow from './pages/OperationsFlow';
 import OperationsShipmentDetail from './pages/OperationsShipmentDetail';
@@ -88,6 +92,7 @@ import PricingQueue from './pages/PricingQueue';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import ProjectLogistics from './pages/ProjectLogistics';
+import Register from './pages/Register';
 import Reporting from './pages/Reporting';
 import RoRoServices from './pages/RoRoServices';
 import SalesCRM from './pages/SalesCRM';
@@ -96,6 +101,7 @@ import SalesCreateRFQ from './pages/SalesCreateRFQ';
 import SalesDashboard from './pages/SalesDashboard';
 import SalesManagePricing from './pages/SalesManagePricing';
 import SalesRFQQueue from './pages/SalesRFQQueue';
+import SalesRFQs from './pages/SalesRFQs';
 import SeaFreight from './pages/SeaFreight';
 import Services from './pages/Services';
 import SupervisorDashboard from './pages/SupervisorDashboard';
@@ -103,12 +109,6 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import CompanyRegistration from './pages/CompanyRegistration';
-import Register from './pages/Register';
-import ClientCreateRFQ from './pages/ClientCreateRFQ';
-import Notifications from './pages/Notifications';
-import SalesRFQs from './pages/SalesRFQs';
-import AdminManagement from './pages/AdminManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -118,12 +118,14 @@ export const PAGES = {
     "AdminAnalytics": AdminAnalytics,
     "AdminClients": AdminClients,
     "AdminDashboard": AdminDashboard,
+    "AdminManagement": AdminManagement,
     "AdminRFQs": AdminRFQs,
     "AdminReporting": AdminReporting,
     "AdminShipments": AdminShipments,
     "AdminUsers": AdminUsers,
     "AirFreight": AirFreight,
     "BizDevPartners": BizDevPartners,
+    "ClientCreateRFQ": ClientCreateRFQ,
     "ClientDashboard": ClientDashboard,
     "ClientPreferences": ClientPreferences,
     "ClientRFQs": ClientRFQs,
@@ -132,6 +134,7 @@ export const PAGES = {
     "ClientShipments": ClientShipments,
     "ClientSupport": ClientSupport,
     "Clients": Clients,
+    "CompanyRegistration": CompanyRegistration,
     "Consultancy": Consultancy,
     "Contact": Contact,
     "CreateShipment": CreateShipment,
@@ -141,6 +144,7 @@ export const PAGES = {
     "Industries": Industries,
     "InlandTransport": InlandTransport,
     "MyWorkspace": MyWorkspace,
+    "Notifications": Notifications,
     "OperationsDashboard": OperationsDashboard,
     "OperationsFlow": OperationsFlow,
     "OperationsShipmentDetail": OperationsShipmentDetail,
@@ -154,6 +158,7 @@ export const PAGES = {
     "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
     "ProjectLogistics": ProjectLogistics,
+    "Register": Register,
     "Reporting": Reporting,
     "RoRoServices": RoRoServices,
     "SalesCRM": SalesCRM,
@@ -162,6 +167,7 @@ export const PAGES = {
     "SalesDashboard": SalesDashboard,
     "SalesManagePricing": SalesManagePricing,
     "SalesRFQQueue": SalesRFQQueue,
+    "SalesRFQs": SalesRFQs,
     "SeaFreight": SeaFreight,
     "Services": Services,
     "SupervisorDashboard": SupervisorDashboard,
@@ -169,12 +175,6 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "CompanyRegistration": CompanyRegistration,
-    "Register": Register,
-    "ClientCreateRFQ": ClientCreateRFQ,
-    "Notifications": Notifications,
-    "SalesRFQs": SalesRFQs,
-    "AdminManagement": AdminManagement,
 }
 
 export const pagesConfig = {
