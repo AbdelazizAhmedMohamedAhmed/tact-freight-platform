@@ -32,12 +32,12 @@ export default function AdminUsers() {
   const [editUser, setEditUser] = useState(null);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('user');
-  const [inviteDept, setInviteDept] = useState('client');
+  const [inviteDept, setInviteDept] = useState('');
   const [inviting, setInviting] = useState(false);
   const [dummyOpen, setDummyOpen] = useState(false);
   const [dummyName, setDummyName] = useState('');
   const [dummyRole, setDummyRole] = useState('user');
-  const [dummyDept, setDummyDept] = useState('client');
+  const [dummyDept, setDummyDept] = useState('');
   const [creatingDummy, setCreatingDummy] = useState(false);
 
   const { data: users = [], isLoading, error, refetch } = useQuery({
