@@ -165,7 +165,7 @@ export default function ClientRFQs() {
   };
 
   // RFQs with a quote that can be compared/accepted
-  const quotedRFQs = rfqs.filter(r => ['quotation_ready', 'sent_to_client', 'client_confirmed', 'rejected'].includes(r.status) && (r.quotation_amount || r.quotation_url));
+  const quotedRFQs = visibleRFQs.filter(r => ['quotation_ready', 'sent_to_client', 'client_confirmed', 'rejected'].includes(r.status) && (r.quotation_amount || r.quotation_url));
 
   return (
     <div className="space-y-6">
