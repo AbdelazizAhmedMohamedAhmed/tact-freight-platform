@@ -475,7 +475,7 @@ export default function ClientRFQs() {
 
                   {['quotation_ready', 'sent_to_client'].includes(selectedRFQ.status) && (
                     <div className="px-6 py-4 border-t space-y-3">
-                      <p className="text-sm text-gray-600">Accepting will create a shipment booking automatically.</p>
+                      <p className="text-sm text-gray-600">Review the quotation and accept or negotiate with your team.</p>
                       <div className="flex gap-3">
                         <Button
                           onClick={() => confirmQuoteMutation.mutate(selectedRFQ)}
@@ -483,15 +483,15 @@ export default function ClientRFQs() {
                           className="flex-1 bg-green-600 hover:bg-green-700 font-semibold"
                         >
                           <Check className="w-4 h-4 mr-2" />
-                          {confirmQuoteMutation.isPending ? 'Accepting...' : 'Accept & Book Shipment'}
+                          {confirmQuoteMutation.isPending ? 'Accepting...' : 'Accept Quotation'}
                         </Button>
                         <Button
                           variant="outline"
-                          onClick={() => rejectQuoteMutation.mutate(selectedRFQ)}
+                          onClick={() => setRejectConfirm(selectedRFQ)}
                           disabled={confirmQuoteMutation.isPending || rejectQuoteMutation.isPending}
                           className="text-red-600 border-red-200 hover:bg-red-50"
                         >
-                          {rejectQuoteMutation.isPending ? 'Rejecting...' : 'Reject Quote'}
+                          Reject Quote
                         </Button>
                       </div>
                     </div>
