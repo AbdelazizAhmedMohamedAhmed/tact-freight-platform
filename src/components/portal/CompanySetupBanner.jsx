@@ -8,8 +8,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function CompanySetupBanner({ user, onDismiss }) {
   const [dismissed, setDismissed] = React.useState(false);
 
-  // Don't show if user has company_id or banner was dismissed
-  if (user?.company_id || dismissed) return null;
+  // Only show for client-role users without a company set up
+  const isInternalUser = ['admin', 'user'].includes(user?.role);
+  if (isInternalUser || user?.company_id || dismissed) return null;
 
   const handleDismiss = () => {
     setDismissed(true);
