@@ -48,7 +48,18 @@ export default function Layout({ children, currentPageName }) {
   }
 
   // Portal pages
-  const userRole = user?.department || user?.role || 'user';
+  // For internal users (role='user'), use their department as the sidebar role
+  // For admins, use 'admin'. For clients, use 'client'.
+  let userRole;
+  if (user?.role === 'admin') {
+    userRole = 'admin';
+  } else if (user?.role === 'user' && user?.department) {
+    userRole = user.department;
+  } else if (user?.role === 'client') {
+    userRole = 'client';
+  } else {
+    userRole = user?.role || 'client';
+  }
   
   return (
     <RoleProvider userRole={userRole}>
