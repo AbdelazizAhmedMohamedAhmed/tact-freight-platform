@@ -52,6 +52,20 @@ export default function AdminUsers() {
     queryFn: () => base44.entities.ClientCompany.list('-created_date', 500),
   });
 
+  const { data: customRoles = [] } = useQuery({
+    queryKey: ['custom-roles-for-users'],
+    queryFn: () => base44.entities.CustomRole.list('-created_date', 100),
+  });
+
+  // Build map: email -> custom role names
+  const emailToCustomRoles = {};
+  customRoles.forEach(cr => {
+    (cr.assigned_user_emails || []).forEach(email => {
+      if (!emailToCustomRoles[email]) emailToCustomRoles[email] = [];
+      emailToCustomRoles[email].push(cr);
+    });
+  });
+
   // Build a map: email -> company
   const emailToCompany = {};
   companies.forEach(c => {
