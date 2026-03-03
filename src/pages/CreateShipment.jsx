@@ -119,11 +119,14 @@ export default function CreateShipment() {
       </div>
 
       <div className="bg-white rounded-2xl p-8 shadow-sm space-y-6">
-        <div className="bg-gray-50 rounded-xl p-4 flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Tracking Number</p>
-            <p className="text-xl font-mono font-bold text-[#D50000]">{trackingNum}</p>
-          </div>
+        <div className="bg-gray-50 rounded-xl p-4">
+          <Label className="text-sm text-gray-500 font-medium">Tracking Number *</Label>
+          <Input
+            className="mt-1 h-12 font-mono font-bold text-[#D50000] text-lg"
+            value={form.tracking_number}
+            onChange={e => set('tracking_number', e.target.value)}
+            placeholder="e.g. TF-26-00001"
+          />
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6">
