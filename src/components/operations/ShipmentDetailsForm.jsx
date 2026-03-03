@@ -166,6 +166,16 @@ export default function ShipmentDetailsForm({ shipment, onUpdate }) {
       <Card>
         <CardHeader><CardTitle className="text-base">Transport Details</CardTitle></CardHeader>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label>Tracking Number</Label>
+            <Input
+              value={form.tracking_number}
+              onChange={e => setForm({...form, tracking_number: e.target.value})}
+              placeholder="e.g. TF-26-00001"
+              className="font-mono font-bold text-[#D50000]"
+            />
+          </div>
+
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>BL / AWB Number</Label>
