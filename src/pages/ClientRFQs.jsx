@@ -411,7 +411,7 @@ export default function ClientRFQs() {
                   {selectedRFQ.status === 'client_confirmed' && (
                     <div className="px-6 py-4 border-t bg-green-50 flex items-center gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-green-800 font-medium text-sm">Booking confirmed — shipment is being arranged</span>
+                      <span className="text-green-800 font-medium text-sm">Quotation accepted — sales team will process your booking shortly</span>
                     </div>
                   )}
 
