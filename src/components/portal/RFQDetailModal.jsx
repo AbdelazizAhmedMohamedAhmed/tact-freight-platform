@@ -78,8 +78,8 @@ export default function RFQDetailModal({ rfq, open, onClose, role, onUpdate }) {
   };
 
   const handleConvertToShipment = () => {
-    onClose();
-    window.location.href = `/CreateShipment?rfq_id=${rfq.id}`;
+    // Redirect to CreateShipment page — tracking number must be entered manually by operations
+    window.location.href = createPageUrl(`CreateShipment?rfq_id=${rfq.id}`);
   };
 
   const handleQuotationUpload = async (e) => {
