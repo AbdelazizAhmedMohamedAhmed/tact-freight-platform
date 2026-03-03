@@ -200,9 +200,16 @@ export default function ClientRFQs() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {rfqs.map(rfq => (
+        {visibleRFQs.map(rfq => (
           <RFQCard key={rfq.id} rfq={rfq} onClick={() => setSelectedRFQ(rfq)} />
         ))}
+        {visibleRFQs.length === 0 && (
+          <div className="col-span-3 text-center py-16 text-gray-400">
+            <Package className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p className="font-medium text-gray-500">No active RFQs</p>
+            <p className="text-sm">Submit a new RFQ to get started</p>
+          </div>
+        )}
       </div>
 
       {/* New RFQ Dialog */}
