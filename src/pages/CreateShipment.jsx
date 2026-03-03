@@ -75,7 +75,7 @@ export default function CreateShipment() {
       await base44.integrations.Core.SendEmail({
         to: form.client_email,
         subject: `Shipment Created - ${form.tracking_number}`,
-        body: `Dear Customer,\n\nYour shipment has been created.\n\nTracking Number: ${trackingNum}\nMode: ${form.mode}\nOrigin: ${form.origin}\nDestination: ${form.destination}\n\nTrack your shipment at any time using your tracking number.\n\nBest regards,\nTact Freight Operations`,
+        body: `Dear Customer,\n\nYour shipment has been created.\n\nTracking Number: ${form.tracking_number}\nMode: ${form.mode}\nOrigin: ${form.origin}\nDestination: ${form.destination}\n\nTrack your shipment at any time using your tracking number.\n\nBest regards,\nTact Freight Operations`,
       });
 
       await base44.entities.Notification.create({
