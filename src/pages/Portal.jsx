@@ -22,21 +22,25 @@ export default function Portal() {
   useEffect(() => {
     if (user) {
       const role = user.role || 'user';
-      const isStaffRole = ['admin', 'sales', 'pricing', 'operations', 'supervisor', 'bizdev'].includes(role);
-      
-      if (!isStaffRole && !user.company_id) {
+      const dept = user.department || '';
+      const isInternal = role === 'admin' || role === 'user';
+
+      // Clients without a company must register first
+      if (!isInternal && !user.company_id) {
         navigate(createPageUrl('CompanyRegistration'));
         return;
       }
 
-      const redirectPage = 
-        role === 'admin' ? 'AdminDashboard' :
-        role === 'sales' ? 'SalesDashboard' :
-        role === 'pricing' ? 'PricingDashboard' :
-        role === 'operations' ? 'OperationsDashboard' :
-        role === 'supervisor' ? 'SupervisorDashboard' :
-        role === 'bizdev' ? 'BizDevPartners' :
-        'ClientDashboard';
+      let redirectPage = 'ClientDashboard';
+      if (role === 'admin') {
+        redirectPage = 'AdminDashboard';
+      } else if (role === 'user') {
+        if (dept === 'sales') redirectPage = 'SalesDashboard';
+        else if (dept === 'pricing') redirectPage = 'PricingDashboard';
+        else if (dept === 'operations') redirectPage = 'OperationsDashboard';
+        else if (dept === 'manager') redirectPage = 'AdminDashboard';
+        else redirectPage = 'AdminDashboard'; // fallback for internal users
+      }
       
       navigate(createPageUrl(redirectPage));
     }
