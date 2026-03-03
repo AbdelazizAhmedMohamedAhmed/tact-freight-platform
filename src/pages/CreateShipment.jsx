@@ -47,7 +47,7 @@ export default function CreateShipment() {
     setSaving(true);
     const now = new Date().toISOString();
     const newShipment = await base44.entities.Shipment.create({
-      tracking_number: trackingNum,
+      tracking_number: form.tracking_number,
       rfq_id: rfq?.id || '',
       status: 'booking_confirmed',
       mode: form.mode,
