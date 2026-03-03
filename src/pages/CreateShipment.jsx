@@ -81,7 +81,7 @@ export default function CreateShipment() {
       await base44.entities.Notification.create({
         type: 'shipment_update',
         title: 'Shipment Created',
-        message: `Your shipment ${trackingNum} has been created`,
+        message: `Your shipment ${form.tracking_number} has been created`,
         recipient_email: form.client_email,
         entity_type: 'shipment',
         entity_id: newShipment.id,
