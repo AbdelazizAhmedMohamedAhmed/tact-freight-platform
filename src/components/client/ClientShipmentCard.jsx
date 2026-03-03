@@ -9,7 +9,7 @@ import RequestAmendmentModal from './RequestAmendmentModal';
 
 const modeIcons = { sea: Ship, air: Plane, inland: Truck };
 
-export default function ClientShipmentCard({ shipment, onUploadDocs, onRefresh }) {
+export default function ClientShipmentCard({ shipment, onUploadDocs, onRefresh, onViewDetails }) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [amendOpen, setAmendOpen] = useState(false);
   const MIcon = modeIcons[shipment.mode] || Ship;
