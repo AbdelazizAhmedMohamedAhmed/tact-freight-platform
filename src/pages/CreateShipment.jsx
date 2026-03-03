@@ -30,21 +30,17 @@ export default function CreateShipment() {
         if (results.length > 0) {
           const r = results[0];
           setRfq(r);
-          setForm({
+          setForm(prev => ({
+            ...prev,
             mode: r.mode || '', origin: r.origin || '', destination: r.destination || '',
-            eta: '', vessel_flight_info: '', cargo_description: r.commodity_description || '',
+            cargo_description: r.commodity_description || '',
             weight_kg: r.weight_kg || '', volume_cbm: r.volume_cbm || '',
-            operations_notes: '', client_email: r.client_email || r.email || '',
+            client_email: r.client_email || r.email || '',
             company_name: r.company_name || '',
-          });
+          }));
         }
       });
     }
-
-    // Generate tracking number
-    const yr = String(new Date().getFullYear()).slice(-2);
-    const seq = String(Math.floor(10000 + Math.random() * 90000));
-    setTrackingNum(`TF-${yr}-${seq}`);
   }, []);
 
   const handleCreate = async () => {
