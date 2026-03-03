@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, Shield, Pencil, Trash2, Users } from 'lucide-react';
 import { Skeleton } from "@/components/ui/skeleton";
-import CustomRoleModal from '../components/admin/CustomRoleModal';
+import CustomRoleModal from '../components/admin/CustomRoleModal.jsx';
 
 const baseRoleColors = {
   admin: 'bg-red-100 text-red-800',
