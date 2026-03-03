@@ -133,14 +133,124 @@ export default function CreateShipment() {
     );
   }
 
+  const modeIcon = { sea: <Ship className="w-4 h-4" />, air: <Plane className="w-4 h-4" />, inland: <Truck className="w-4 h-4" /> };
+
   return (
-    <div className="max-w-3xl space-y-8">
+    <div className="max-w-4xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#1A1A1A]">Create Shipment</h1>
         <p className="text-gray-500 text-sm mt-1">
           {rfq ? `From RFQ: ${rfq.reference_number}` : 'Create a new shipment record'}
         </p>
       </div>
+
+      {/* RFQ & Client Summary Panel */}
+      {rfq && (
+        <div className="grid sm:grid-cols-2 gap-4">
+          {/* RFQ Details */}
+          <div className="bg-white rounded-2xl shadow-sm p-5 border-l-4 border-[#D50000]">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><Package className="w-3.5 h-3.5" /> RFQ Details</p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">Reference</span>
+                <span className="font-bold text-[#D50000]">{rfq.reference_number}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">Mode</span>
+                <Badge variant="outline" className="flex items-center gap-1 capitalize">
+                  {modeIcon[rfq.mode]} {rfq.mode}
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">Route</span>
+                <span className="text-sm font-medium flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5 text-gray-400" /> {rfq.origin} <ChevronRight className="w-3 h-3 text-gray-300" /> {rfq.destination}
+                </span>
+              </div>
+              {rfq.cargo_type && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Cargo Type</span>
+                  <span className="text-sm font-medium">{rfq.cargo_type}</span>
+                </div>
+              )}
+              {rfq.incoterm && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Incoterm</span>
+                  <Badge className="bg-gray-100 text-gray-700">{rfq.incoterm}</Badge>
+                </div>
+              )}
+              {(rfq.weight_kg || rfq.volume_cbm) && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Cargo</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    {rfq.weight_kg ? `${rfq.weight_kg} kg` : ''}{rfq.weight_kg && rfq.volume_cbm ? ' · ' : ''}{rfq.volume_cbm ? `${rfq.volume_cbm} CBM` : ''}
+                  </span>
+                </div>
+              )}
+              {rfq.quotation_amount && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Quoted</span>
+                  <span className="text-sm font-bold text-green-700">{rfq.quotation_currency || 'USD'} {rfq.quotation_amount.toLocaleString()}</span>
+                </div>
+              )}
+              {rfq.commodity_description && (
+                <div className="pt-2 border-t mt-2">
+                  <p className="text-xs text-gray-500 mb-1">Commodity</p>
+                  <p className="text-sm text-gray-700">{rfq.commodity_description}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Client Details */}
+          <div className="bg-white rounded-2xl shadow-sm p-5 border-l-4 border-blue-400">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5"><User className="w-3.5 h-3.5" /> Client Details</p>
+            <div className="space-y-2">
+              {rfq.company_name && (
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span className="font-semibold text-gray-800">{rfq.company_name}</span>
+                </div>
+              )}
+              {rfq.contact_person && (
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span className="text-sm text-gray-700">{rfq.contact_person}</span>
+                </div>
+              )}
+              {(rfq.client_email || rfq.email) && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span className="text-sm text-gray-600">{rfq.client_email || rfq.email}</span>
+                </div>
+              )}
+              {rfq.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-gray-400 shrink-0" />
+                  <span className="text-sm text-gray-600">{rfq.phone}</span>
+                </div>
+              )}
+              {rfq.preferred_shipping_date && (
+                <div className="flex items-center justify-between pt-2 border-t mt-2">
+                  <span className="text-sm text-gray-500">Preferred Ship Date</span>
+                  <span className="text-sm font-medium">{rfq.preferred_shipping_date}</span>
+                </div>
+              )}
+              {rfq.is_hazardous && (
+                <div className="flex items-center gap-2 bg-red-50 rounded-lg px-3 py-2 mt-2">
+                  <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+                  <span className="text-sm font-medium text-red-700">Hazardous Cargo {rfq.un_number ? `· UN ${rfq.un_number}` : ''}</span>
+                </div>
+              )}
+              {rfq.requires_temperature_control && (
+                <div className="flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2">
+                  <span className="text-sm font-medium text-blue-700">🌡️ Temperature Control {rfq.temperature_range ? `· ${rfq.temperature_range}` : ''}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white rounded-2xl p-8 shadow-sm space-y-6">
         <div className="bg-gray-50 rounded-xl p-4">
