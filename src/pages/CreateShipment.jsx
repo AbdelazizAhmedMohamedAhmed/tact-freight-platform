@@ -27,7 +27,7 @@ export default function CreateShipment() {
     const params = new URLSearchParams(window.location.search);
     const rfqId = params.get('rfq_id');
     if (rfqId) {
-      base44.entities.RFQ.filter({ id: rfqId }).then(results => {
+      base44.entities.RFQ.filter({ id: rfqId }).then(async results => {
         if (results.length > 0) {
           const r = results[0];
           setRfq(r);
@@ -39,6 +39,11 @@ export default function CreateShipment() {
             client_email: r.client_email || r.email || '',
             company_name: r.company_name || '',
           }));
+          // Check if shipment already exists for this RFQ
+          const existing = await base44.entities.Shipment.filter({ rfq_id: rfqId }, '-created_date', 1);
+          if (existing.length > 0) {
+            setExistingShipment(existing[0]);
+          }
         }
       });
     }
