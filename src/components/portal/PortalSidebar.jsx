@@ -78,6 +78,7 @@ const menuByRole = {
     { label: 'Pricing Queue', icon: DollarSign, page: 'PricingQueue' },
     { label: 'Create Quotation', icon: ClipboardList, page: 'PricingCreateQuotation' },
     { label: 'Users', icon: Users, page: 'AdminUsers' },
+    { label: 'Custom Roles', icon: Shield, page: 'AdminRoles' },
     { label: 'Clients', icon: Building2, page: 'AdminClients' },
     { label: 'Management', icon: BarChart3, page: 'AdminManagement' },
     { label: 'Reporting', icon: TrendingUp, page: 'Reporting' },
