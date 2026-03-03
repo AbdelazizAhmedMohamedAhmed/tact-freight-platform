@@ -320,30 +320,30 @@ export default function AdminUsers() {
               <Input value={dummyName} onChange={e => setDummyName(e.target.value)} placeholder="e.g., Test Sales User" />
             </div>
             <div className="space-y-2">
-              <Label>App Role</Label>
-              <Select value={dummyRole} onValueChange={setDummyRole}>
+              <Label>Role</Label>
+              <Select value={dummyRole} onValueChange={v => { setDummyRole(v); if (v !== 'user') setDummyDept(''); }}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="user">User</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Department</Label>
-              <Select value={dummyDept} onValueChange={setDummyDept}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
+                  <SelectItem value="user">Internal User</SelectItem>
                   <SelectItem value="client">Client</SelectItem>
-                  <SelectItem value="sales">Sales</SelectItem>
-                  <SelectItem value="pricing">Pricing</SelectItem>
-                  <SelectItem value="operations">Operations</SelectItem>
-                  <SelectItem value="customer_service">Customer Service</SelectItem>
-                  <SelectItem value="analyst">Analyst</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+            {dummyRole === 'user' && (
+              <div className="space-y-2">
+                <Label>Department</Label>
+                <Select value={dummyDept} onValueChange={setDummyDept}>
+                  <SelectTrigger><SelectValue placeholder="Select department…" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sales">Sales</SelectItem>
+                    <SelectItem value="operations">Operations</SelectItem>
+                    <SelectItem value="pricing">Pricing</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <Button onClick={handleCreateDummy} disabled={creatingDummy || !dummyName} className="bg-[#D50000] hover:bg-[#B00000] w-full">
               {creatingDummy ? 'Creating...' : 'Create Dummy User'}
             </Button>
