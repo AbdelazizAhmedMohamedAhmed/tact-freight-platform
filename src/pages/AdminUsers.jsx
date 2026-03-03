@@ -344,7 +344,7 @@ export default function AdminUsers() {
                 </Select>
               </div>
             )}
-            <Button onClick={handleCreateDummy} disabled={creatingDummy || !dummyName} className="bg-[#D50000] hover:bg-[#B00000] w-full">
+            <Button onClick={handleCreateDummy} disabled={creatingDummy || !dummyName || (dummyRole === 'user' && !dummyDept)} className="bg-[#D50000] hover:bg-[#B00000] w-full">
               {creatingDummy ? 'Creating...' : 'Create Dummy User'}
             </Button>
           </div>
