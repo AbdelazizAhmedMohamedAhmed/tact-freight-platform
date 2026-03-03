@@ -100,6 +100,23 @@ export default function CreateShipment() {
     setSaving(false);
   };
 
+  if (existingShipment) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-md">
+          <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Ship className="w-8 h-8 text-amber-600" />
+          </div>
+          <h2 className="text-2xl font-bold">Shipment Already Exists</h2>
+          <p className="text-gray-500 text-sm mt-2">A shipment has already been created from this RFQ.</p>
+          <div className="mt-4 bg-gray-100 rounded-xl py-3 px-6 inline-block">
+            <span className="font-mono font-bold text-[#D50000] text-xl">{existingShipment.tracking_number || '(No tracking yet)'}</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   if (created) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
