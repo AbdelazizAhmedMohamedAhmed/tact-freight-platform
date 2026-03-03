@@ -61,13 +61,13 @@ export default function ClientShipments() {
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
            {filtered.map(shipment => (
-             <Link key={shipment.id} to={createPageUrl(`ClientShipmentDetail?id=${shipment.id}`)}>
-               <ClientShipmentCard
-                 shipment={shipment}
-                 onUploadDocs={() => setUploadEntity(shipment)}
-                 onRefresh={refetch}
-               />
-             </Link>
+             <ClientShipmentCard
+               key={shipment.id}
+               shipment={shipment}
+               onUploadDocs={(e) => { e.stopPropagation(); setUploadEntity(shipment); }}
+               onRefresh={refetch}
+               onViewDetails={() => navigate(createPageUrl(`ClientShipmentDetail?id=${shipment.id}`))}
+             />
            ))}
          </div>
       )}
