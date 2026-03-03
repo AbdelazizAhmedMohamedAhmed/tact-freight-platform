@@ -30,7 +30,7 @@ export default function ClientShipmentCard({ shipment, onUploadDocs, onRefresh, 
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onViewDetails}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div>
@@ -75,7 +75,7 @@ export default function ClientShipmentCard({ shipment, onUploadDocs, onRefresh, 
         </div>
 
         <div className="flex gap-2 flex-col">
-          <Button onClick={onViewDetails || (() => setDetailOpen(true))} className="bg-[#D50000] hover:bg-[#B00000]">
+          <Button onClick={() => setDetailOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
             <Eye className="w-4 h-4 mr-2" /> View Details
           </Button>
           <div className="flex gap-2">
