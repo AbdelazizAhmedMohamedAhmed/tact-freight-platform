@@ -223,6 +223,16 @@ export default function AdminUsers() {
                       )}
                     </TableCell>
                     <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {(emailToCustomRoles[u.email] || []).map(cr => (
+                          <Badge key={cr.id} variant="outline" className="text-xs px-1.5 py-0 border-[#D50000]/30 text-[#D50000]">
+                            <Shield className="w-2.5 h-2.5 mr-1" />{cr.name}
+                          </Badge>
+                        ))}
+                        {!emailToCustomRoles[u.email] && <span className="text-xs text-gray-400">—</span>}
+                      </div>
+                    </TableCell>
+                    <TableCell>
                       {company ? (
                         <span className="flex items-center gap-1.5 text-sm text-gray-700">
                           <Building2 className="w-3.5 h-3.5 text-gray-400" />
