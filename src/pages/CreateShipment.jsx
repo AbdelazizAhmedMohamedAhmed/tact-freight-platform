@@ -68,13 +68,13 @@ export default function CreateShipment() {
     await logShipmentAction(
       newShipment,
       'shipment_created',
-      `Shipment ${trackingNum} created${rfq ? ` from RFQ ${rfq.reference_number}` : ''}`
+      `Shipment ${form.tracking_number} created${rfq ? ` from RFQ ${rfq.reference_number}` : ''}`
     );
 
     if (form.client_email) {
       await base44.integrations.Core.SendEmail({
         to: form.client_email,
-        subject: `Shipment Created - ${trackingNum}`,
+        subject: `Shipment Created - ${form.tracking_number}`,
         body: `Dear Customer,\n\nYour shipment has been created.\n\nTracking Number: ${trackingNum}\nMode: ${form.mode}\nOrigin: ${form.origin}\nDestination: ${form.destination}\n\nTrack your shipment at any time using your tracking number.\n\nBest regards,\nTact Freight Operations`,
       });
 
