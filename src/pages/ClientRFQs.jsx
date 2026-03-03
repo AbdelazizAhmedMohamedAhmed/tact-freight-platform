@@ -184,7 +184,7 @@ export default function ClientRFQs() {
       </div>
 
       {/* Pending action banner */}
-      {rfqs.some(r => ['quotation_ready', 'sent_to_client'].includes(r.status)) && (
+      {visibleRFQs.some(r => ['quotation_ready', 'sent_to_client'].includes(r.status)) && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
           <div className="flex-1">
