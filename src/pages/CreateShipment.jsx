@@ -153,7 +153,7 @@ export default function CreateShipment() {
         <div className="space-y-2"><Label>Cargo Description</Label><Textarea value={form.cargo_description} onChange={e => set('cargo_description', e.target.value)} /></div>
         <div className="space-y-2"><Label>Operations Notes</Label><Textarea value={form.operations_notes} onChange={e => set('operations_notes', e.target.value)} /></div>
 
-        <Button onClick={handleCreate} disabled={saving || !form.tracking_number || !form.mode || !form.origin || !form.destination} className="bg-[#D50000] hover:bg-[#B00000] h-12 px-10 font-bold">
+        <Button onClick={handleCreate} disabled={saving || !form.mode || !form.origin || !form.destination} className="bg-[#D50000] hover:bg-[#B00000] h-12 px-10 font-bold">
           {saving ? 'Creating...' : 'Create Shipment'}
         </Button>
       </div>
