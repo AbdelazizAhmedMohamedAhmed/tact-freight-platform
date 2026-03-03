@@ -101,7 +101,7 @@ export default function CreateShipment() {
           <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold">Shipment Created!</h2>
           <div className="mt-4 bg-gray-100 rounded-xl py-3 px-6 inline-block">
-            <span className="font-mono font-bold text-[#D50000] text-xl">{trackingNum}</span>
+            <span className="font-mono font-bold text-[#D50000] text-xl">{form.tracking_number}</span>
           </div>
           <p className="text-gray-500 text-sm mt-4">Client has been notified via email.</p>
         </motion.div>
