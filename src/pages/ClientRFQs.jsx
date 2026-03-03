@@ -122,8 +122,8 @@ export default function ClientRFQs() {
   });
 
   const rejectQuoteMutation = useMutation({
-    mutationFn: async (rfq) => {
-      const updated = await base44.entities.RFQ.update(rfq.id, { status: 'rejected' });
+    mutationFn: async ({ rfq, reason }) => {
+      const updated = await base44.entities.RFQ.update(rfq.id, { status: 'rejected', client_rejection_reason: reason || '' });
       await logRFQAction(updated, 'rfq_status_changed', `RFQ ${updated.reference_number} rejected by client`, {
         old_value: rfq.status,
         new_value: 'rejected'
@@ -133,7 +133,8 @@ export default function ClientRFQs() {
     onSuccess: () => {
       queryClient.invalidateQueries(['my-rfqs']);
       setRejectConfirm(null);
-      setSelectedRFQ(null);
+      setRejectionReason('');
+      setSelectedRFQ(prev => prev ? { ...prev, status: 'rejected' } : null);
     },
   });
 
