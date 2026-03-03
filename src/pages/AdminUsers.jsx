@@ -163,18 +163,23 @@ export default function AdminUsers() {
           <h1 className="text-2xl font-bold text-[#1A1A1A]">Users</h1>
           <p className="text-gray-500 text-sm mt-1">Manage all system users</p>
         </div>
-        <div className="flex items-center gap-3">
-           <div className="relative w-64">
-             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-             <Input placeholder="Search users..." className="pl-10" value={search} onChange={e => setSearch(e.target.value)} />
-           </div>
-           <Button onClick={() => setInviteOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
-             <UserPlus className="w-4 h-4 mr-2" /> Invite User
-           </Button>
-           <Button onClick={() => setDummyOpen(true)} variant="outline">
-             <UserPlus className="w-4 h-4 mr-2" /> Create Dummy
-           </Button>
-         </div>
+        <div className="flex items-center gap-3 flex-wrap">
+        <div className="relative w-64">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Input placeholder="Search users..." className="pl-10" value={search} onChange={e => setSearch(e.target.value)} />
+        </div>
+        <Link to={createPageUrl('AdminRoles')}>
+        <Button variant="outline">
+          <Shield className="w-4 h-4 mr-2" /> Manage Roles
+        </Button>
+        </Link>
+        <Button onClick={() => setInviteOpen(true)} className="bg-[#D50000] hover:bg-[#B00000]">
+        <UserPlus className="w-4 h-4 mr-2" /> Invite User
+        </Button>
+        <Button onClick={() => setDummyOpen(true)} variant="outline">
+        <UserPlus className="w-4 h-4 mr-2" /> Create Dummy
+        </Button>
+        </div>
       </div>
 
       {isLoading ? <Skeleton className="h-48 rounded-2xl" /> : error ? (
