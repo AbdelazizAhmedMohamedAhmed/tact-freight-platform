@@ -231,16 +231,31 @@ export default function AdminUsers() {
           <div className="space-y-4 mt-4">
             <div className="space-y-2"><Label>Email</Label><Input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@company.com" /></div>
             <div className="space-y-2">
-              <Label>App Role</Label>
-              <Select value={inviteRole} onValueChange={setInviteRole}>
+              <Label>Role</Label>
+              <Select value={inviteRole} onValueChange={v => { setInviteRole(v); if (v !== 'user') setInviteDept(''); }}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="user">User</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="user">Internal User</SelectItem>
+                  <SelectItem value="client">Client</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <Button onClick={handleInvite} disabled={inviting || !inviteEmail} className="bg-[#D50000] hover:bg-[#B00000] w-full">
+            {inviteRole === 'user' && (
+              <div className="space-y-2">
+                <Label>Department</Label>
+                <Select value={inviteDept} onValueChange={setInviteDept}>
+                  <SelectTrigger><SelectValue placeholder="Select department…" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sales">Sales</SelectItem>
+                    <SelectItem value="operations">Operations</SelectItem>
+                    <SelectItem value="pricing">Pricing</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            <Button onClick={handleInvite} disabled={inviting || !inviteEmail || (inviteRole === 'user' && !inviteDept)} className="bg-[#D50000] hover:bg-[#B00000] w-full">
               {inviting ? 'Inviting...' : 'Send Invite'}
             </Button>
           </div>
