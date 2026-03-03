@@ -17,11 +17,11 @@ import StatusBadge from '../components/shared/StatusBadge';
 import CommentThread from '../components/portal/CommentThread';
 
 export default function ClientShipmentDetail() {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [shipmentId, setShipmentId] = useState(null);
   const [acidInput, setAcidInput] = useState('');
   const [savingAcid, setSavingAcid] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
@@ -85,6 +85,12 @@ export default function ClientShipmentDetail() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
+          <button
+            onClick={() => navigate(createPageUrl('ClientShipments'))}
+            className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#D50000] mb-3 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Shipments
+          </button>
           <div className="flex items-center gap-3 mb-2">
             <ModeIcon className="w-6 h-6 text-[#D50000]" />
             <span className="font-mono font-bold text-[#D50000] text-2xl">{shipment.tracking_number}</span>
