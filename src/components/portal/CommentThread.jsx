@@ -60,10 +60,9 @@ export default function CommentThread({ entityType, entityId, userRole, readOnly
     });
   };
 
-  const canSeeInternal = userRole !== 'user';
-  const filteredComments = comments.filter(c => 
-    !c.is_internal || canSeeInternal
-  );
+  const isClient = userRole === 'client';
+  const canSeeInternal = !isClient;
+  const filteredComments = comments.filter(c => !c.is_internal || canSeeInternal);
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">
