@@ -505,6 +505,35 @@ export default function ClientRFQs() {
         </DialogContent>
       </Dialog>
 
+      {/* Reject Reason Dialog */}
+      <Dialog open={!!rejectConfirm} onOpenChange={() => { setRejectConfirm(null); setRejectionReason(''); }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Reject Quotation</DialogTitle></DialogHeader>
+          <div className="space-y-4 mt-2">
+            <p className="text-sm text-gray-600">Please let us know why you're rejecting this quotation so we can better assist you.</p>
+            <div>
+              <Label>Reason for Rejection</Label>
+              <Textarea
+                className="mt-1 min-h-[100px]"
+                placeholder="e.g. Price too high, need a different route, timeline doesn't work..."
+                value={rejectionReason}
+                onChange={e => setRejectionReason(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => { setRejectConfirm(null); setRejectionReason(''); }}>Cancel</Button>
+              <Button
+                className="bg-red-600 hover:bg-red-700"
+                disabled={rejectQuoteMutation.isPending}
+                onClick={() => rejectQuoteMutation.mutate({ rfq: rejectConfirm, reason: rejectionReason })}
+              >
+                {rejectQuoteMutation.isPending ? 'Submitting...' : 'Submit Rejection'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Quote Compare Modal */}
       <QuoteCompareModal
         open={compareOpen}
