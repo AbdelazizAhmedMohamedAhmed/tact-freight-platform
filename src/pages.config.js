@@ -55,6 +55,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminManagement from './pages/AdminManagement';
 import AdminRFQs from './pages/AdminRFQs';
 import AdminReporting from './pages/AdminReporting';
+import AdminRoles from './pages/AdminRoles';
 import AdminShipments from './pages/AdminShipments';
 import AdminUsers from './pages/AdminUsers';
 import AirFreight from './pages/AirFreight';
@@ -109,7 +110,6 @@ import TermsOfService from './pages/TermsOfService';
 import TrackShipment from './pages/TrackShipment';
 import Warehousing from './pages/Warehousing';
 import WhyChooseUs from './pages/WhyChooseUs';
-import AdminRoles from './pages/AdminRoles';
 import __Layout from './Layout.jsx';
 
 
@@ -122,6 +122,7 @@ export const PAGES = {
     "AdminManagement": AdminManagement,
     "AdminRFQs": AdminRFQs,
     "AdminReporting": AdminReporting,
+    "AdminRoles": AdminRoles,
     "AdminShipments": AdminShipments,
     "AdminUsers": AdminUsers,
     "AirFreight": AirFreight,
@@ -176,7 +177,6 @@ export const PAGES = {
     "TrackShipment": TrackShipment,
     "Warehousing": Warehousing,
     "WhyChooseUs": WhyChooseUs,
-    "AdminRoles": AdminRoles,
 }
 
 export const pagesConfig = {
