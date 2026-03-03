@@ -21,6 +21,7 @@ export default function ClientShipmentDetail() {
   const [shipmentId, setShipmentId] = useState(null);
   const [acidInput, setAcidInput] = useState('');
   const [savingAcid, setSavingAcid] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
