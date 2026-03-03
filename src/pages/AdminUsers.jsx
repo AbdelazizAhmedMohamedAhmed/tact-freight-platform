@@ -186,11 +186,19 @@ export default function AdminUsers() {
                   <TableRow key={u.id}>
                     <TableCell className="font-medium">{u.full_name || '-'}</TableCell>
                     <TableCell className="text-sm text-gray-600">{u.email}</TableCell>
-                    <TableCell><Badge variant="outline">{u.role}</Badge></TableCell>
                     <TableCell>
-                      <Badge className={deptColors[u.department] || 'bg-gray-100 text-gray-800'}>
-                        {u.department || 'client'}
+                      <Badge className={roleColors[u.role] || 'bg-gray-100 text-gray-800'}>
+                        {u.role || 'user'}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {u.department ? (
+                        <Badge className={deptColors[u.department] || 'bg-gray-100 text-gray-800'}>
+                          {u.department}
+                        </Badge>
+                      ) : (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {company ? (
