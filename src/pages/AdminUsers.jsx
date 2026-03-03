@@ -272,21 +272,20 @@ export default function AdminUsers() {
               <div className="space-y-4 mt-4">
                 <p className="text-sm text-gray-500">{editUser.full_name} ({editUser.email})</p>
 
-                <div className="space-y-2">
-                  <Label>Department</Label>
-                  <Select value={editUser.department || 'client'} onValueChange={handleUpdateDept}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="client">Client</SelectItem>
-                      <SelectItem value="sales">Sales</SelectItem>
-                      <SelectItem value="pricing">Pricing</SelectItem>
-                      <SelectItem value="operations">Operations</SelectItem>
-                      <SelectItem value="customer_service">Customer Service</SelectItem>
-                      <SelectItem value="analyst">Analyst</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                {editUser.role === 'user' && (
+                  <div className="space-y-2">
+                    <Label>Department</Label>
+                    <Select value={editUser.department || ''} onValueChange={handleUpdateDept}>
+                      <SelectTrigger><SelectValue placeholder="Select department…" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sales">Sales</SelectItem>
+                        <SelectItem value="operations">Operations</SelectItem>
+                        <SelectItem value="pricing">Pricing</SelectItem>
+                        <SelectItem value="manager">Manager</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label>Linked Company</Label>
