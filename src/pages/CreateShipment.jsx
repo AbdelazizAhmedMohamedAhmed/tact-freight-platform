@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle2, Ship, Plane, Truck } from 'lucide-react';
+import { CheckCircle2, Ship, Plane, Truck, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { logShipmentAction } from '@/components/utils/activityLogger';
 import { sendStatusNotification } from '@/components/utils/notificationService';
